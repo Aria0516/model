@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1150" viewBox="0 0 1600 1150" font-family="'Microsoft YaHei','PingFang SC','Noto Sans CJK SC','Source Han Sans SC','WenQuanYi Zen Hei',sans-serif">
+<rect width="1600" height="1150" fill="#FFFFFF"/>
+<defs><marker id="ah" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="13" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L12,5 L0,10 z" fill="#1A1A1A"/></marker><marker id="ahg" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="11" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L12,5 L0,10 z" fill="#8A8A8A"/></marker></defs>
+<rect x="30" y="22" width="1540" height="156" rx="6" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.2"/>
+<path d="M31.1,66 V28 a5,5 0 0 1 5,-4.9 H1564 a5,5 0 0 1 5,4.9 V66 Z" fill="#E6E6E6"/>
+<line x1="30" y1="66" x2="1570" y2="66" stroke="#1A1A1A" stroke-width="1.2"/>
+<text x="46" y="52" font-size="23" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >组织几何与生长</tspan></text>
+<text x="1556" y="51" font-size="16" text-anchor="end" font-weight="400" fill="#555555"><tspan >尺度依据：21 个茎尖实测；Galvan-Ampudia 2020</tspan></text>
+<circle cx="118" cy="122" r="50" fill="none" stroke="#555555" stroke-width="1.4" stroke-dasharray="3 4"/>
+<circle cx="118" cy="122" r="41" fill="none" stroke="#555555" stroke-width="1"/>
+<circle cx="118" cy="122" r="45" fill="none" stroke="#8A8A8A" stroke-width="1" stroke-dasharray="1 3"/>
+<circle cx="118" cy="122" r="48" fill="none" stroke="#8A8A8A" stroke-width="1" stroke-dasharray="1 3"/>
+<circle cx="118" cy="122" r="33" fill="#BDBDBD" stroke="#1A1A1A" stroke-width="1.2"/>
+<circle cx="118" cy="122" r="19" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.2"/>
+<text x="196" y="90" font-size="20" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >表皮 Voronoi 细胞层：均匀生长 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">γ</tspan><tspan >，细胞分裂，越过外缘后移出</tspan></text>
+<text x="196" y="122" font-size="20" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >分区（俯视，左图）：中央区（白）｜发生环（灰）｜外围源区（点线）</tspan></text>
+<text x="196" y="154" font-size="20" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >起始方式：发生环由小长大，内半径 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">R</tspan><tspan dy="6.0" font-size="13.6" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">c</tspan><tspan dy="-6.0"> 2 → 5.57（由实测 CLV3 区半径换算）</tspan></text>
+<text x="1556" y="122" font-size="18" text-anchor="end" font-weight="400" fill="#555555"><tspan >1 长度单位 ≈ 1 个细胞 = 4.91 µm</tspan></text>
+<text x="1556" y="154" font-size="18" text-anchor="end" font-weight="400" fill="#555555"><tspan >1 时间单位 ≈ 1.6 h</tspan></text>
+<rect x="30" y="262" width="600" height="418" rx="6" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.2"/>
+<path d="M31.1,306 V268 a5,5 0 0 1 5,-4.9 H624 a5,5 0 0 1 5,4.9 V306 Z" fill="#E6E6E6"/>
+<line x1="30" y1="306" x2="630" y2="306" stroke="#1A1A1A" stroke-width="1.2"/>
+<text x="46" y="292" font-size="23" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >表皮层：生长素运输</tspan></text>
+<text x="616" y="291" font-size="16" text-anchor="end" font-weight="400" fill="#555555"><tspan >Smith 2006；Jönsson 2006</tspan></text>
+<rect x="50" y="324" width="255" height="86" rx="5" fill="#F6F6F6" stroke="#555555" stroke-width="1.3"/>
+<text x="64" y="352" font-size="20" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >产生</tspan></text>
+<text x="64" y="381" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >外围 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">ρ</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">far</tspan><tspan dy="-5.7">，茎尖内 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">ρ</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">in</tspan><tspan dy="-5.7">*</tspan></text>
+<rect x="355" y="324" width="255" height="86" rx="5" fill="#F6F6F6" stroke="#555555" stroke-width="1.3"/>
+<text x="369" y="352" font-size="20" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >损失</tspan></text>
+<text x="369" y="381" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >周转 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">μ</tspan><tspan >，生长稀释 2</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">γ</tspan></text>
+<rect x="225.0" y="438.0" width="210" height="56" rx="28.0" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.6"/>
+<text x="330" y="474.28" font-size="23" text-anchor="middle" font-weight="700" fill="#1A1A1A"><tspan >生长素 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">A</tspan><tspan dy="6.9" font-size="15.6" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">i</tspan></text>
+<path d="M262,410 L262,438" fill="none" stroke="#1A1A1A" stroke-width="2.2" marker-end="url(#ah)"/>
+<path d="M398,438 L398,410" fill="none" stroke="#1A1A1A" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="50" y="560" width="560" height="104" rx="5" fill="#F6F6F6" stroke="#555555" stroke-width="1.3"/>
+<text x="64" y="588" font-size="20" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >PIN1 分配 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">P</tspan><tspan dy="6.0" font-size="13.6" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">ij</tspan></text>
+<text x="64" y="615" font-size="18" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >每个细胞 PIN 总量有限（中央区 ×0.2），在各膜面间分配</tspan></text>
+<text x="64" y="642" font-size="18" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >朝生长素高处与原基线索极化，</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">b</tspan><tspan > = 3；整体向心偏置 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">κ</tspan><tspan dy="5.4" font-size="12.2" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">c</tspan><tspan dy="-5.4">*</tspan></text>
+<path d="M292,494 L292,560" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#ah)"/>
+<path d="M368,560 L368,494" fill="none" stroke="#1A1A1A" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="196" y="511" width="86" height="24.65" fill="#FFFFFF"/>
+<text x="282" y="528" font-size="17" text-anchor="end" font-weight="400" fill="#1A1A1A"><tspan >极化依据</tspan></text>
+<rect x="378" y="511" width="182" height="24.65" fill="#FFFFFF"/>
+<text x="378" y="528" font-size="17" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >主动运输 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">T</tspan><tspan > + 扩散 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">D</tspan></text>
+<text x="150" y="530" font-size="17" text-anchor="middle" font-weight="400" fill="#555555"><tspan >上梯度</tspan></text>
+<text x="150" y="551" font-size="17" text-anchor="middle" font-weight="400" fill="#555555"><tspan >正反馈</tspan></text>
+<rect x="690" y="262" width="410" height="418" rx="6" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.2"/>
+<path d="M691.1,306 V268 a5,5 0 0 1 5,-4.9 H1094 a5,5 0 0 1 5,4.9 V306 Z" fill="#E6E6E6"/>
+<line x1="690" y1="306" x2="1100" y2="306" stroke="#1A1A1A" stroke-width="1.2"/>
+<text x="706" y="292" font-size="23" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >细胞读取与原基启动</tspan></text>
+<rect x="780.0" y="320.0" width="230" height="52" rx="26.0" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.6"/>
+<text x="895.0" y="353.92" font-size="22" text-anchor="middle" font-weight="700" fill="#1A1A1A"><tspan >时间整合 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">M</tspan></text>
+<text x="895.0" y="405" font-size="19" text-anchor="middle" font-weight="400" fill="#1A1A1A"><tspan >d</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">M</tspan><tspan >/d</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">t</tspan><tspan > = (</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">A</tspan><tspan > − </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">M</tspan><tspan >) / </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">τ</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">M</tspan><tspan dy="-5.7">†</tspan></text>
+<text x="895.0" y="432" font-size="17" text-anchor="middle" font-weight="400" fill="#555555"><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">τ</tspan><tspan dy="5.1" font-size="11.6" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">M</tspan><tspan dy="-5.1"> = 0 时即瞬时阈值</tspan></text>
+<path d="M895.0,442 L895.0,470" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#ah)"/>
+<rect x="724" y="470" width="356" height="106" rx="5" fill="#F6F6F6" stroke="#555555" stroke-width="1.3"/>
+<text x="738" y="498" font-size="20" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >启动判据</tspan></text>
+<text x="738" y="526" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >发生环内 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">M</tspan><tspan > − </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">I</tspan><tspan > ≥ </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">Th</tspan><tspan >*</tspan></text>
+<text x="738" y="554" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >且距已有原基 &gt; </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">r</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">ex</tspan></text>
+<rect x="760.0" y="597.0" width="270" height="42" rx="21.0" fill="#FFFFFF" stroke="#8A8A8A" stroke-width="1.6"/>
+<text x="895.0" y="624.48" font-size="18" text-anchor="middle" font-weight="700" fill="#555555"><tspan >DR5 样读出 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">R</tspan><tspan >（被动）</tspan></text>
+<path d="M782.0,358 L706,358 L706,618 L760.0,618" fill="none" stroke="#8A8A8A" stroke-width="1.6" stroke-dasharray="9 6" marker-end="url(#ahg)"/>
+<text x="704" y="668" font-size="16" text-anchor="start" font-weight="400" fill="#555555"><tspan >Galvan-Ampudia 2020</tspan></text>
+<rect x="1180" y="262" width="390" height="418" rx="6" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.2"/>
+<path d="M1181.1,306 V268 a5,5 0 0 1 5,-4.9 H1564 a5,5 0 0 1 5,4.9 V306 Z" fill="#E6E6E6"/>
+<line x1="1180" y1="306" x2="1570" y2="306" stroke="#1A1A1A" stroke-width="1.2"/>
+<text x="1196" y="292" font-size="23" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >原基（放置的对象）</tspan></text>
+<text x="1200" y="346" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >位置随组织外移</tspan></text>
+<text x="1200" y="387" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >足迹 exp(−</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">d</tspan><tspan dy="-7.6" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">2</tspan><tspan dy="7.6"> / 2</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">w</tspan><tspan dy="-7.6" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">2</tspan><tspan dy="7.6">)，</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">w</tspan><tspan >*</tspan></text>
+<text x="1200" y="428" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >汇 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">η</tspan><tspan >*：表皮生长素送入内层</tspan></text>
+<text x="1200" y="469" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >极化线索 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">A</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">q</tspan><tspan dy="-5.7">*：PIN 指向原基</tspan></text>
+<text x="1200" y="510" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >次级场 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">I</tspan><tspan >†：原基年龄 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">a</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">on</tspan><tspan dy="-5.7">–</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">a</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">off</tspan></text>
+<text x="1200" y="551" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >　出现，范围 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">w</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">I</tspan><tspan dy="-5.7">（AHP6 型）</tspan></text>
+<text x="1200" y="592" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >维管排出 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">η</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">2</tspan><tspan dy="-5.7">*（作用于内层）</tspan></text>
+<text x="1556" y="668" font-size="16" text-anchor="end" font-weight="400" fill="#555555"><tspan >Smith 2006；Besnard 2014</tspan></text>
+<path d="M435,466 L660,466 L660,336 L781.0,336" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#ah)"/>
+<rect x="642.0" y="401" width="36" height="27.55" fill="#FFFFFF"/>
+<text x="660" y="420" font-size="19" text-anchor="middle" font-weight="400" fill="#1A1A1A"><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">A</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">i</tspan></text>
+<path d="M1080,512 L1180,512" fill="none" stroke="#1A1A1A" stroke-width="2.8" stroke-dasharray="9 6" marker-end="url(#ah)"/>
+<rect x="1107.0" y="482" width="66" height="26.099999999999998" fill="#FFFFFF"/>
+<text x="1140.0" y="500" font-size="18" text-anchor="middle" font-weight="400" fill="#1A1A1A"><tspan >新原基</tspan></text>
+<path d="M1180,566 L1080,566" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#ah)"/>
+<rect x="1105.0" y="538" width="70" height="26.099999999999998" fill="#FFFFFF"/>
+<text x="1140.0" y="556" font-size="18" text-anchor="middle" font-weight="400" fill="#1A1A1A"><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">I</tspan><tspan >，</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">r</tspan><tspan dy="5.4" font-size="12.2" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">ex</tspan></text>
+<path d="M1260,262 L1260,236 L520,236 L520,262" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#ah)"/>
+<text x="890" y="224" font-size="18" text-anchor="middle" font-weight="400" fill="#1A1A1A"><tspan >汇 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">η</tspan><tspan >、极化线索 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">A</tspan><tspan dy="5.4" font-size="12.2" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">q</tspan><tspan dy="-5.4">：原基周围形成消耗区，决定新原基的间距（负反馈）</tspan></text>
+<path d="M150,178 L150,262" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="1.5 6" stroke-linecap="round" marker-end="url(#ah)"/>
+<text x="162" y="230" font-size="17" text-anchor="start" font-weight="400" fill="#555555"><tspan >细胞图</tspan></text>
+<path d="M1500,178 L1500,262" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="1.5 6" stroke-linecap="round" marker-end="url(#ah)"/>
+<text x="1488" y="230" font-size="17" text-anchor="end" font-weight="400" fill="#555555"><tspan >原基外移</tspan></text>
+<rect x="30" y="768" width="600" height="150" rx="6" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.2"/>
+<path d="M31.1,812 V774 a5,5 0 0 1 5,-4.9 H624 a5,5 0 0 1 5,4.9 V812 Z" fill="#E6E6E6"/>
+<line x1="30" y1="812" x2="630" y2="812" stroke="#1A1A1A" stroke-width="1.2"/>
+<text x="46" y="798" font-size="23" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >内层（表皮之下）</tspan></text>
+<text x="616" y="797" font-size="16" text-anchor="end" font-weight="400" fill="#555555"><tspan >Bayer 2009；Deb 2015</tspan></text>
+<rect x="55.0" y="837.0" width="190" height="50" rx="25.0" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.6"/>
+<text x="150" y="869.56" font-size="21" text-anchor="middle" font-weight="700" fill="#1A1A1A"><tspan >生长素 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">A</tspan><tspan dy="6.3" font-size="14.3" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">2</tspan></text>
+<text x="268" y="848" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >横向扩散，周转 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">μ</tspan></text>
+<text x="268" y="882" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >原基下方维管排出 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">η</tspan><tspan dy="5.7" font-size="12.9" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif">2</tspan><tspan dy="-5.7">*</tspan></text>
+<path d="M232,680 L232,768" fill="none" stroke="#1A1A1A" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="244" y="717" width="218" height="24.65" fill="#FFFFFF"/>
+<text x="244" y="734" font-size="17" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >原基处转运（可饱和 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">K</tspan><tspan dy="5.1" font-size="11.6" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">e</tspan><tspan dy="-5.1">*）</tspan></text>
+<path d="M540,680 L540,768" fill="none" stroke="#1A1A1A" stroke-width="2.2" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<rect x="444" y="717" width="84" height="24.65" fill="#FFFFFF"/>
+<text x="528" y="734" font-size="17" text-anchor="end" font-weight="400" fill="#1A1A1A"><tspan >交换 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">k</tspan><tspan dy="5.1" font-size="11.6" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">v</tspan><tspan dy="-5.1">*</tspan></text>
+<rect x="700" y="768" width="870" height="150" rx="6" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.2"/>
+<path d="M701.1,812 V774 a5,5 0 0 1 5,-4.9 H1564 a5,5 0 0 1 5,4.9 V812 Z" fill="#E6E6E6"/>
+<line x1="700" y1="812" x2="1570" y2="812" stroke="#1A1A1A" stroke-width="1.2"/>
+<text x="716" y="798" font-size="23" text-anchor="start" font-weight="700" fill="#1A1A1A"><tspan >输出与评价</tspan></text>
+<text x="1556" y="797" font-size="16" text-anchor="end" font-weight="400" fill="#555555"><tspan >只与实测比较，不参与调参</tspan></text>
+<text x="720" y="848" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >原基序列（起始时间、位置）→ 发散角、叶序类型、P1–P5 相对夹角离散、</tspan></text>
+<text x="720" y="882" font-size="19" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >发生间隔变异系数、同时起始比例、径向比 </tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">G</tspan><tspan >、起始半径</tspan></text>
+<path d="M1062,576 L1062,768" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#ah)"/>
+<rect x="970" y="717" width="80" height="24.65" fill="#FFFFFF"/>
+<text x="1050" y="734" font-size="17" text-anchor="end" font-weight="400" fill="#1A1A1A"><tspan >起始事件</tspan></text>
+<line x1="30" y1="950" x2="1570" y2="950" stroke="#BDBDBD" stroke-width="1"/>
+<path d="M40,978 L100,978" fill="none" stroke="#1A1A1A" stroke-width="2.2" marker-end="url(#ah)"/>
+<text x="112" y="984" font-size="18" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >生长素物质流</tspan></text>
+<path d="M270,978 L330,978" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#ah)"/>
+<text x="342" y="984" font-size="18" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >调控 / 信号</tspan></text>
+<path d="M480,978 L540,978" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-dasharray="1.5 6" stroke-linecap="round" marker-end="url(#ah)"/>
+<text x="552" y="984" font-size="18" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >几何 / 位置</tspan></text>
+<rect x="690" y="962" width="70" height="32" rx="16" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.6"/>
+<text x="772" y="984" font-size="18" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >状态变量</tspan></text>
+<rect x="884" y="962" width="70" height="32" rx="16" fill="#FFFFFF" stroke="#8A8A8A" stroke-width="1.6"/>
+<text x="966" y="984" font-size="18" text-anchor="start" font-weight="400" fill="#1A1A1A"><tspan >被动读出，不影响动力学</tspan></text>
+<text x="40" y="1028" font-size="17" text-anchor="start" font-weight="400" fill="#555555"><tspan >* 无测量值：主线 v3 在预设范围内拉丁超立方抽样（120 组 × 2 个种子）。　† 取值范围依据文献（</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">τ</tspan><tspan dy="5.1" font-size="11.6" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">M</tspan><tspan dy="-5.1">：Galvan-Ampudia 2020；次级场：Besnard 2014），同样抽样。</tspan></text>
+<text x="40" y="1062" font-size="17" text-anchor="start" font-weight="400" fill="#555555"><tspan >本图为主线 v3（model</tspan><tspan >_</tspan><tspan >mvp/detuned</tspan><tspan >_</tspan><tspan >v3/frozen</tspan><tspan >_</tspan><tspan >v3）。主线 v2 的不同之处：</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">b</tspan><tspan > = 2；原基位置先跟随局部最大区再固定（</tspan><tspan font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">τ</tspan><tspan dy="5.1" font-size="11.6" font-family="'Times New Roman','Liberation Serif','DejaVu Serif',serif" font-style="italic">c</tspan><tspan dy="-5.1"> = 2）；次级场即时出现、覆盖全环；参数取单一值。</tspan></text>
+<text x="40" y="1096" font-size="17" text-anchor="start" font-weight="400" fill="#555555"><tspan >原基不是自发形成的，而是在判据满足时放置；没有任何发散角、发生间隔或手性写入模型。</tspan></text>
+</svg>
