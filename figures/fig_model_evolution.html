@@ -1,0 +1,189 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#fff}@page{size:1940px 1190px;margin:0}</style></head><body><svg xmlns="http://www.w3.org/2000/svg" width="1940" height="1190" viewBox="0 0 1940 1190" font-family="'Noto Sans CJK SC','Source Han Sans SC','Microsoft YaHei','PingFang SC','WenQuanYi Zen Hei',sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9"
+ orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111111"/></marker></defs>
+<rect width="1940" height="1190" fill="white"/>
+<text x="40.0" y="62.0" font-size="27" text-anchor="start" font-weight="700" fill="#111111">模型发展过程：每一步改动都针对上一步暴露的问题</text>
+<text x="470.0" y="94.0" font-size="15" text-anchor="start" font-weight="700" fill="#555555">改动</text>
+<text x="850.0" y="94.0" font-size="15" text-anchor="start" font-weight="700" fill="#555555">结果</text>
+<rect x="128" y="110" width="1144" height="124" rx="10" fill="white" stroke="#111111" stroke-width="2"/>
+<circle cx="76" cy="172.0" r="21" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="76.0" y="179.0" font-size="20" text-anchor="middle" font-weight="700" fill="white">1</text>
+<text x="148.0" y="154.0" font-size="21" text-anchor="start" font-weight="700" fill="#111111">基础模型</text>
+<text x="148.0" y="180.0" font-size="13.5" text-anchor="start" font-weight="400" fill="#9a9a9a">frozen_v1</text>
+<line x1="452" y1="124" x2="452" y2="220" stroke="#cccccc" stroke-width="1.2"/>
+<text x="470.0" y="138.0" font-size="14.5" text-anchor="start" font-weight="400" fill="#555555" font-style="italic">出发点：Smith 2006、Jönsson 2006</text>
+<text x="470.0" y="164.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">细胞层生长分裂；PIN 向高生长素极化</text>
+<text x="470.0" y="188.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">原基作汇与极化线索；时间积分越阈起始</text>
+<text x="470.0" y="212.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">另加两个唯象部件：全环次级场、跟随后定位</text>
+<line x1="832" y1="124" x2="832" y2="220" stroke="#cccccc" stroke-width="1.2"/>
+<circle cx="857" cy="160.0" r="7" fill="#111111"/>
+<line x1="853" y1="160.0" x2="861" y2="160.0" stroke="white" stroke-width="2"/>
+<line x1="857" y1="156.0" x2="857" y2="164.0" stroke="white" stroke-width="2"/>
+<text x="872.0" y="166.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">只改发生环大小，依次得二列互生、螺旋、交互对生</text>
+<circle cx="857" cy="186.0" r="7" fill="#111111"/>
+<line x1="853" y1="186.0" x2="861" y2="186.0" stroke="white" stroke-width="2"/>
+<line x1="857" y1="182.0" x2="857" y2="190.0" stroke="white" stroke-width="2"/>
+<text x="872.0" y="192.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">加唯象部件后 P1–P5 离散 5.2–5.4°（实测 6.7°）</text>
+<rect x="128" y="249" width="1144" height="124" rx="10" fill="white" stroke="#111111" stroke-width="2"/>
+<line x1="76" y1="194.0" x2="76" y2="287.0" stroke="#111111" stroke-width="2" marker-end="url(#arrow)"/>
+<circle cx="76" cy="311.0" r="21" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="76.0" y="318.0" font-size="20" text-anchor="middle" font-weight="700" fill="white">2</text>
+<text x="148.0" y="293.0" font-size="21" text-anchor="start" font-weight="700" fill="#111111">留出检验</text>
+<text x="148.0" y="319.0" font-size="13.5" text-anchor="start" font-weight="400" fill="#9a9a9a">heldout</text>
+<line x1="452" y1="263" x2="452" y2="359" stroke="#cccccc" stroke-width="1.2"/>
+<text x="470.0" y="277.0" font-size="14.5" text-anchor="start" font-weight="400" fill="#555555" font-style="italic">检验第 1 步</text>
+<text x="470.0" y="303.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">10 项文献结果，判据在运行前写定</text>
+<line x1="832" y1="263" x2="832" y2="359" stroke="#cccccc" stroke-width="1.2"/>
+<text x="850.0" y="293.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">通过 3 项，部分通过 1，无法判定 1，不通过 5</text>
+<circle cx="857" cy="313.0" r="6.5" fill="white" stroke="#111111" stroke-width="1.6"/>
+<line x1="853" y1="313.0" x2="861" y2="313.0" stroke="#111111" stroke-width="1.8"/>
+<text x="872.0" y="319.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">关掉极性运输后仍产生原基（pin1、NPA 应无器官）</text>
+<circle cx="857" cy="339.0" r="6.5" fill="white" stroke="#111111" stroke-width="1.6"/>
+<line x1="853" y1="339.0" x2="861" y2="339.0" stroke="#111111" stroke-width="1.8"/>
+<text x="872.0" y="345.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">去掉次级场叶序崩溃，远重于 ahp6</text>
+<rect x="128" y="388" width="1144" height="124" rx="10" fill="white" stroke="#111111" stroke-width="2"/>
+<line x1="76" y1="333.0" x2="76" y2="426.0" stroke="#111111" stroke-width="2" marker-end="url(#arrow)"/>
+<circle cx="76" cy="450.0" r="21" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="76.0" y="457.0" font-size="20" text-anchor="middle" font-weight="700" fill="white">3</text>
+<text x="148.0" y="432.0" font-size="21" text-anchor="start" font-weight="700" fill="#111111">生长素由运输供给</text>
+<text x="148.0" y="458.0" font-size="13.5" text-anchor="start" font-weight="400" fill="#9a9a9a">v2_supply</text>
+<line x1="452" y1="402" x2="452" y2="498" stroke="#cccccc" stroke-width="1.2"/>
+<text x="470.0" y="416.0" font-size="14.5" text-anchor="start" font-weight="400" fill="#555555" font-style="italic">针对：无运输仍有原基</text>
+<text x="470.0" y="442.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">生长素改在外围产生</text>
+<text x="470.0" y="466.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">加整体向心的 PIN 偏置 κ<tspan baseline-shift="sub" font-size="72%">c</tspan></text>
+<line x1="832" y1="402" x2="832" y2="498" stroke="#cccccc" stroke-width="1.2"/>
+<circle cx="857" cy="426.0" r="7" fill="#111111"/>
+<line x1="853" y1="426.0" x2="861" y2="426.0" stroke="white" stroke-width="2"/>
+<line x1="857" y1="422.0" x2="857" y2="430.0" stroke="white" stroke-width="2"/>
+<text x="872.0" y="432.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">24 组中 20 组：关掉运输即不再产生原基</text>
+<circle cx="857" cy="452.0" r="7" fill="#111111"/>
+<line x1="853" y1="452.0" x2="861" y2="452.0" stroke="white" stroke-width="2"/>
+<line x1="857" y1="448.0" x2="857" y2="456.0" stroke="white" stroke-width="2"/>
+<text x="872.0" y="458.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">中央区生长素为发生环的 0.98–1.76 倍</text>
+<circle cx="857" cy="478.0" r="6.5" fill="white" stroke="#111111" stroke-width="1.6"/>
+<line x1="853" y1="478.0" x2="861" y2="478.0" stroke="#111111" stroke-width="1.8"/>
+<text x="872.0" y="484.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">叶序类型变得取决于起始方式</text>
+<rect x="128" y="527" width="1144" height="124" rx="10" fill="white" stroke="#111111" stroke-width="2"/>
+<line x1="76" y1="472.0" x2="76" y2="565.0" stroke="#111111" stroke-width="2" marker-end="url(#arrow)"/>
+<circle cx="76" cy="589.0" r="21" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="76.0" y="596.0" font-size="20" text-anchor="middle" font-weight="700" fill="white">4</text>
+<text x="148.0" y="571.0" font-size="21" text-anchor="start" font-weight="700" fill="#111111">加入内层</text>
+<text x="148.0" y="597.0" font-size="13.5" text-anchor="start" font-weight="400" fill="#9a9a9a">v3_layer</text>
+<line x1="452" y1="541" x2="452" y2="637" stroke="#cccccc" stroke-width="1.2"/>
+<text x="470.0" y="555.0" font-size="14.5" text-anchor="start" font-weight="400" fill="#555555" font-style="italic">针对：原基起始后不维持高生长素</text>
+<text x="470.0" y="581.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">原基把生长素排入内层</text>
+<text x="470.0" y="605.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">内层横向扩散、与表皮交换、维管排出</text>
+<line x1="832" y1="541" x2="832" y2="637" stroke="#cccccc" stroke-width="1.2"/>
+<circle cx="857" cy="565.0" r="7" fill="#111111"/>
+<line x1="853" y1="565.0" x2="861" y2="565.0" stroke="white" stroke-width="2"/>
+<line x1="857" y1="561.0" x2="857" y2="569.0" stroke="white" stroke-width="2"/>
+<text x="872.0" y="571.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">原基起始后在阈值以上 ≥ 1 个间隔（11/16 组）</text>
+<circle cx="857" cy="591.0" r="7" fill="#111111"/>
+<line x1="853" y1="591.0" x2="861" y2="591.0" stroke="white" stroke-width="2"/>
+<line x1="857" y1="587.0" x2="857" y2="595.0" stroke="white" stroke-width="2"/>
+<text x="872.0" y="597.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">DR5 样读出滞后 1–1.5 个间隔</text>
+<circle cx="857" cy="617.0" r="6.5" fill="white" stroke="#111111" stroke-width="1.6"/>
+<line x1="853" y1="617.0" x2="861" y2="617.0" stroke="#111111" stroke-width="1.8"/>
+<text x="872.0" y="623.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">夹角 141–142°；交互对生不再出现</text>
+<rect x="128" y="666" width="1144" height="124" rx="10" fill="white" stroke="#111111" stroke-width="2"/>
+<line x1="76" y1="611.0" x2="76" y2="704.0" stroke="#111111" stroke-width="2" marker-end="url(#arrow)"/>
+<circle cx="76" cy="728.0" r="21" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="76.0" y="735.0" font-size="20" text-anchor="middle" font-weight="700" fill="white">5</text>
+<text x="148.0" y="710.0" font-size="21" text-anchor="start" font-weight="700" fill="#111111">冻结主线，标定尺度</text>
+<text x="148.0" y="736.0" font-size="13.5" text-anchor="start" font-weight="400" fill="#9a9a9a">frozen_v2 · calib_v2 · 2026-10-14</text>
+<line x1="452" y1="680" x2="452" y2="776" stroke="#cccccc" stroke-width="1.2"/>
+<text x="470.0" y="694.0" font-size="14.5" text-anchor="start" font-weight="400" fill="#555555" font-style="italic">合并前三步</text>
+<text x="470.0" y="720.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">参数写定，哈希清单冻结</text>
+<text x="470.0" y="744.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">几何取自 21 个茎尖：1 单位 = 4.91 µm</text>
+<line x1="832" y1="680" x2="832" y2="776" stroke="#cccccc" stroke-width="1.2"/>
+<circle cx="857" cy="704.0" r="7" fill="#111111"/>
+<line x1="853" y1="704.0" x2="861" y2="704.0" stroke="white" stroke-width="2"/>
+<line x1="857" y1="700.0" x2="857" y2="708.0" stroke="white" stroke-width="2"/>
+<text x="872.0" y="710.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">起始半径 26–29 µm（实测 29.0 µm）</text>
+<circle cx="857" cy="730.0" r="6.5" fill="white" stroke="#111111" stroke-width="1.6"/>
+<line x1="853" y1="730.0" x2="861" y2="730.0" stroke="#111111" stroke-width="1.8"/>
+<text x="872.0" y="736.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">过于规则：离散 3° 对实测 6.7°</text>
+<circle cx="857" cy="756.0" r="6.5" fill="white" stroke="#111111" stroke-width="1.6"/>
+<line x1="853" y1="756.0" x2="861" y2="756.0" stroke="#111111" stroke-width="1.8"/>
+<text x="872.0" y="762.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">非规范夹角 0% 对实测 15%</text>
+<rect x="128" y="805" width="1144" height="124" rx="10" fill="white" stroke="#111111" stroke-width="2"/>
+<line x1="76" y1="750.0" x2="76" y2="843.0" stroke="#111111" stroke-width="2" marker-end="url(#arrow)"/>
+<circle cx="76" cy="867.0" r="21" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="76.0" y="874.0" font-size="20" text-anchor="middle" font-weight="700" fill="white">6</text>
+<text x="148.0" y="849.0" font-size="21" text-anchor="start" font-weight="700" fill="#111111">去掉按规则性挑选的设定</text>
+<text x="148.0" y="875.0" font-size="13.5" text-anchor="start" font-weight="400" fill="#9a9a9a">detuned_v3 · 2026-10-19</text>
+<line x1="452" y1="819" x2="452" y2="915" stroke="#cccccc" stroke-width="1.2"/>
+<text x="470.0" y="833.0" font-size="14.5" text-anchor="start" font-weight="400" fill="#555555" font-style="italic">针对：有序来自挑选的设定</text>
+<text x="470.0" y="859.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">b 改用 Smith 的 3；去掉两个唯象部件</text>
+<text x="470.0" y="883.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">次级场改为 AHP6 形式（Besnard 2014）</text>
+<text x="470.0" y="907.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">15 个未测参数抽样，120 组 × 2 个种子</text>
+<line x1="832" y1="819" x2="832" y2="915" stroke="#cccccc" stroke-width="1.2"/>
+<circle cx="857" cy="843.0" r="6.5" fill="white" stroke="#111111" stroke-width="1.6"/>
+<line x1="853" y1="843.0" x2="861" y2="843.0" stroke="#111111" stroke-width="1.8"/>
+<text x="872.0" y="849.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">规则螺旋只占 11%，取决于 w、η、κ<tspan baseline-shift="sub" font-size="72%">c</tspan></text>
+<circle cx="857" cy="869.0" r="6.5" fill="white" stroke="#111111" stroke-width="1.6"/>
+<line x1="853" y1="869.0" x2="861" y2="869.0" stroke="#111111" stroke-width="1.8"/>
+<text x="872.0" y="875.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">规则螺旋中离散 21°，平均夹角 141.2°</text>
+<circle cx="857" cy="895.0" r="7" fill="#111111"/>
+<line x1="853" y1="895.0" x2="861" y2="895.0" stroke="white" stroke-width="2"/>
+<line x1="857" y1="891.0" x2="857" y2="899.0" stroke="white" stroke-width="2"/>
+<text x="872.0" y="901.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">未经调整即相符：间隔 13.8 h，同时起始 36%</text>
+<rect x="128" y="944" width="1144" height="124" rx="10" fill="white" stroke="#111111" stroke-width="2" stroke-dasharray="9 6"/>
+<line x1="76" y1="889.0" x2="76" y2="982.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<circle cx="76" cy="1006.0" r="21" fill="white" stroke="#111111" stroke-width="2" stroke-dasharray="4 3"/>
+<text x="76.0" y="1013.0" font-size="20" text-anchor="middle" font-weight="700" fill="#111111">7</text>
+<text x="148.0" y="988.0" font-size="21" text-anchor="start" font-weight="700" fill="#111111">下一步（未开始）</text>
+<line x1="452" y1="958" x2="452" y2="1054" stroke="#cccccc" stroke-width="1.2"/>
+<text x="470.0" y="972.0" font-size="14.5" text-anchor="start" font-weight="400" fill="#555555" font-style="italic">针对：w、η、κ<tspan baseline-shift="sub" font-size="72%">c</tspan> 没有测量值</text>
+<text x="470.0" y="998.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">用 PIN1 极性数据确定 κ<tspan baseline-shift="sub" font-size="72%">c</tspan></text>
+<text x="470.0" y="1022.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">用 qDII 消耗区约束 w、η（需先确认）</text>
+<line x1="832" y1="958" x2="832" y2="1054" stroke="#cccccc" stroke-width="1.2"/>
+<text x="850.0" y="1012.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">在约束后的模型上重做留出检验</text>
+<text x="1340.0" y="98.0" font-size="20" text-anchor="start" font-weight="700" fill="#111111">旁支：在冻结主线上单独试验，未并入</text>
+<line x1="1272" y1="728.0" x2="1306" y2="728.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5"/>
+<line x1="1272" y1="867.0" x2="1306" y2="867.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5"/>
+<line x1="1306" y1="728.0" x2="1306" y2="867.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5"/>
+<line x1="1306" y1="184.0" x2="1306" y2="867.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5"/>
+<rect x="1340" y="120" width="560" height="128" rx="10" fill="white" stroke="#111111" stroke-width="2" stroke-dasharray="9 6"/>
+<line x1="1306" y1="184.0" x2="1340" y2="184.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="1360.0" y="156.0" font-size="19" text-anchor="start" font-weight="700" fill="#111111">PIN 量的随机差异</text>
+<text x="1882.0" y="156.0" font-size="13.5" text-anchor="end" font-weight="400" fill="#9a9a9a">noise_v3</text>
+<text x="1360.0" y="188.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">模型需 σ = 0.32–0.48，实测 0.080</text>
+<text x="1360.0" y="214.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">→ 不是叶序不规则的来源</text>
+<rect x="1340" y="264" width="560" height="128" rx="10" fill="white" stroke="#111111" stroke-width="2" stroke-dasharray="9 6"/>
+<line x1="1306" y1="328.0" x2="1340" y2="328.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="1360.0" y="300.0" font-size="19" text-anchor="start" font-weight="700" fill="#111111">运河化</text>
+<text x="1882.0" y="300.0" font-size="13.5" text-anchor="end" font-weight="400" fill="#9a9a9a">canal_v4</text>
+<text x="1360.0" y="332.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">排出通道自己起不来</text>
+<text x="1360.0" y="358.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">→ 位于 PIN1 汇聚点的下游</text>
+<rect x="1340" y="408" width="560" height="128" rx="10" fill="white" stroke="#111111" stroke-width="2" stroke-dasharray="9 6"/>
+<line x1="1306" y1="472.0" x2="1340" y2="472.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="1360.0" y="444.0" font-size="19" text-anchor="start" font-weight="700" fill="#111111">表皮自发成峰</text>
+<text x="1882.0" y="444.0" font-size="13.5" text-anchor="end" font-weight="400" fill="#9a9a9a">canal_v4</text>
+<text x="1360.0" y="476.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">b = 2–6、κ<tspan baseline-shift="sub" font-size="72%">c</tspan> = 0–1.5 均不成峰</text>
+<text x="1360.0" y="502.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">→ 与“无运输则无器官”相矛盾</text>
+<rect x="1340" y="552" width="560" height="128" rx="10" fill="white" stroke="#111111" stroke-width="2" stroke-dasharray="9 6"/>
+<line x1="1306" y1="616.0" x2="1340" y2="616.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="1360.0" y="588.0" font-size="19" text-anchor="start" font-weight="700" fill="#111111">类 MP 响应吸引 PIN</text>
+<text x="1882.0" y="588.0" font-size="13.5" text-anchor="end" font-weight="400" fill="#9a9a9a">mp_v5</text>
+<text x="1360.0" y="620.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">原基位置可自发产生</text>
+<text x="1360.0" y="646.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">→ 但时序失序，规则 0–1/16</text>
+<rect x="1340" y="696" width="560" height="128" rx="10" fill="white" stroke="#111111" stroke-width="2" stroke-dasharray="9 6"/>
+<line x1="1306" y1="760.0" x2="1340" y2="760.0" stroke="#111111" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="1360.0" y="732.0" font-size="19" text-anchor="start" font-weight="700" fill="#111111">WUS 门控生长素响应</text>
+<text x="1882.0" y="732.0" font-size="13.5" text-anchor="end" font-weight="400" fill="#9a9a9a">wus_v6 · 2026-10-28</text>
+<text x="1360.0" y="764.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">只写了方案，未运行</text>
+<text x="1360.0" y="790.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">→ 留待学位论文后期</text>
+<rect x="40" y="1128" width="34" height="24" rx="4" fill="white" stroke="#111111" stroke-width="2"/>
+<text x="84.0" y="1146.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">已完成</text>
+<rect x="170" y="1128" width="34" height="24" rx="4" fill="white" stroke="#111111" stroke-width="2" stroke-dasharray="9 6"/>
+<text x="214.0" y="1146.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">未并入主线 / 未开始</text>
+<circle cx="427" cy="1140" r="7" fill="#111111"/>
+<line x1="423" y1="1140" x2="431" y2="1140" stroke="white" stroke-width="2"/>
+<line x1="427" y1="1136" x2="427" y2="1144" stroke="white" stroke-width="2"/>
+<text x="442.0" y="1146.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">进展</text>
+<circle cx="537" cy="1140" r="6.5" fill="white" stroke="#111111" stroke-width="1.6"/>
+<line x1="533" y1="1140" x2="541" y2="1140" stroke="#111111" stroke-width="1.8"/>
+<text x="552.0" y="1146.0" font-size="16" text-anchor="start" font-weight="400" fill="#111111">问题或代价</text>
+<text x="700.0" y="1146.0" font-size="15" text-anchor="start" font-weight="400" fill="#555555">斜体灰字：这一步针对的问题。数字取自各目录 RESULTS.md 与 2026-11-01 阶段性总结。</text>
+</svg></body></html>
