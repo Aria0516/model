@@ -1,0 +1,769 @@
+GFtbox dir: C:\Users\xczhang\Desktop\modeling\code\GrowthToolbox-20190306-v6030\GrowthToolbox
+Project parent: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work
+Project: GPT_CarnivorousTraps_3D_20191031
+Target time: 2.0000
+Started: 2026-06-27 09:54:05
+loadmesh_anyfile: Loading MAT file GPT_CarnivorousTraps_3D_20191031.mat in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031.
+[警告: Mesh has extra fields:] 
+[> 位置：validmesh (第 75 行)
+位置: upgrademesh (第 726 行)
+位置: loadmesh_anyfile (第 101 行)
+位置: leaf_loadmodel (第 115 行)
+位置: run_jonsson_gftbox_demo (第 38 行)
+位置: run (第 112 行)] 
+
+    sharpedges
+    sharpvxs
+validmesh: Checking angle quality for general FEs is not yet supported.
+loadStaticData: Loading static MAT file C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+resetInteractionHandle
+addpathif: Adding C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031 to head of command path.
+Loaded model. t=0 iter=0 nodes=19625
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Running leaf_iterate until t=2.0000...
+Starting iteration 1, time 0.000, at 2026/06/27 09:54:34.
+rewriteInteractionSkeleton
+** Error in interaction function: improper user code delimiters.
+
+userCodeStart =
+
+     []
+
+
+userCodeEnd =
+
+     []
+
+attemptInteractionFunction: Function header not found: interaction function not copied.
+resetInteractionHandle
+addpathif: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031 is at the head of the path.
+Calling interaction function.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Jonsson3D t=0.0000 nodes=4971 peaks=689 auxin_std=0.0062
+
+ERROR in run_jonsson_gftbox_demo:
+错误使用 assert
+leaf_iterate returned ok=false.
+
+出错 run_jonsson_gftbox_demo (第 49 行)
+    assert(ok, 'leaf_iterate returned ok=false.');
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+出错 run (第 112 行)
+evalin('caller', strcat(scriptStem, ';'));
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GFtbox dir: C:\Users\xczhang\Desktop\modeling\code\GrowthToolbox-20190306-v6030\GrowthToolbox
+Project parent: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work
+Project: GPT_CarnivorousTraps_3D_20191031
+Target time: 2.0000
+Started: 2026-06-27 09:58:06
+loadmesh_anyfile: Loading MAT file GPT_CarnivorousTraps_3D_20191031.mat in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031.
+[警告: Mesh has extra fields:] 
+[> 位置：validmesh (第 75 行)
+位置: upgrademesh (第 726 行)
+位置: loadmesh_anyfile (第 101 行)
+位置: leaf_loadmodel (第 115 行)
+位置: run_jonsson_gftbox_demo (第 38 行)
+位置: run (第 112 行)] 
+
+    sharpedges
+    sharpvxs
+validmesh: Checking angle quality for general FEs is not yet supported.
+loadStaticData: Loading static MAT file C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+resetInteractionHandle
+addpathif: Adding C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031 to head of command path.
+Loaded model. t=0 iter=0 nodes=19625
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Running leaf_iterate until t=2.0000...
+Starting iteration 1, time 0.000, at 2026/06/27 09:58:13.
+rewriteInteractionSkeleton
+resetInteractionHandle
+addpathif: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031 is at the head of the path.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Jonsson3D t=0.0000 nodes=4971 peaks=176 auxin_std=0.0062
+diffusegrowth: lengthscale 2.000, lengthscale^2 4.000
+Diffusing POL (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 1.753735 seconds.
+ 0.419 (0.886392/2.1137) .. 5.12e-06
+Computation time for diffusion (cgs,sparse,double) is 0.515058 seconds.
+Diffusing POL2 (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.309786 seconds.
+  5.26 (0.22236/0.0422892) ... 3.37e-06
+Computation time for diffusion (cgs,sparse,double) is 0.502355 seconds.
+Diffusing S_ADAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.072720 seconds.
+ 0.269 (0.210891/0.78268) .. 2.09e-06
+Computation time for diffusion (cgs,sparse,double) is 0.426464 seconds.
+Diffusing S_ABAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.029734 seconds.
+ 0.208 (0.348877/1.67534) .. 1.17e-06
+Computation time for diffusion (cgs,sparse,double) is 0.428842 seconds.
+Growth computation beginning for iteration 0 (time 0 - 0.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using random displacement as initial guess.
+Growth:  0.931 (166.776/179.193) ........ 0.000524
+Computation time for growth (cgs,sparse,double) is 1.069145 seconds.
+Completed iteration 1 at 2026/06/27 09:59:07.
+Starting iteration 2, time 0.500, at 2026/06/27 09:59:07.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+diffusegrowth: lengthscale 2.000, lengthscale^2 4.000
+Diffusing POL (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 1.694329 seconds.
+ 0.419 (0.889793/2.12352) .. 4.38e-06
+Computation time for diffusion (cgs,sparse,double) is 0.421047 seconds.
+Diffusing POL2 (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.094594 seconds.
+  5.34 (0.225326/0.0421926) ... 8.99e-06
+Computation time for diffusion (cgs,sparse,double) is 0.454460 seconds.
+Diffusing S_ADAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.152908 seconds.
+  0.26 (0.213787/0.822088) .. 2.08e-06
+Computation time for diffusion (cgs,sparse,double) is 0.417347 seconds.
+Diffusing S_ABAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.102782 seconds.
+ 0.208 (0.350172/1.68093) .. 3.54e-06
+Computation time for diffusion (cgs,sparse,double) is 0.414679 seconds.
+Growth computation beginning for iteration 1 (time 0.5 - 1).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.117 (21.8264/187.334) ... 0.00141
+Computation time for growth (cgs,sparse,double) is 0.471603 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000001.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 2 at 2026/06/27 09:59:58.
+Starting iteration 3, time 1.000, at 2026/06/27 09:59:58.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+diffusegrowth: lengthscale 2.000, lengthscale^2 4.000
+Diffusing POL (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 1.734763 seconds.
+ 0.419 (0.89314/2.13315) .. 7.85e-06
+Computation time for diffusion (cgs,sparse,double) is 0.415926 seconds.
+Diffusing POL2 (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.173100 seconds.
+  5.43 (0.228537/0.0421116) ... 5.19e-06
+Computation time for diffusion (cgs,sparse,double) is 0.445943 seconds.
+Diffusing S_ADAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.176619 seconds.
+ 0.258 (0.216358/0.839742) .. 2.2e-06
+Computation time for diffusion (cgs,sparse,double) is 0.434576 seconds.
+Diffusing S_ABAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.176141 seconds.
+ 0.208 (0.351407/1.68586) .. 3.37e-06
+Computation time for diffusion (cgs,sparse,double) is 0.433625 seconds.
+Growth computation beginning for iteration 2 (time 1 - 1.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0663 (12.6302/190.42) ... 0.000592
+Computation time for growth (cgs,sparse,double) is 0.518915 seconds.
+Completed iteration 3 at 2026/06/27 10:00:45.
+Starting iteration 4, time 1.500, at 2026/06/27 10:00:45.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+diffusegrowth: lengthscale 2.000, lengthscale^2 4.000
+Diffusing POL (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 1.742637 seconds.
+ 0.418 (0.896516/2.14275) .. 5.4e-06
+Computation time for diffusion (cgs,sparse,double) is 0.453226 seconds.
+Diffusing POL2 (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.128987 seconds.
+  5.51 (0.231798/0.0420415) ... 4.96e-06
+Computation time for diffusion (cgs,sparse,double) is 0.467654 seconds.
+Diffusing S_ADAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.260972 seconds.
+ 0.257 (0.218632/0.852117) . 5.35e-06
+Computation time for diffusion (cgs,sparse,double) is 0.421146 seconds.
+Diffusing S_ABAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.041843 seconds.
+ 0.209 (0.352624/1.69053) .. 4.02e-06
+Computation time for diffusion (cgs,sparse,double) is 0.546276 seconds.
+Growth computation beginning for iteration 3 (time 1.5 - 2).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.048 (9.1597/190.9) ... 0.00121
+Computation time for growth (cgs,sparse,double) is 0.405752 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000002.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 4 at 2026/06/27 10:01:38.
+Simulation terminated on reaching time 2.000000.
+Completed. t=2 iter=4
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_demo (第 55 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_demo (第 55 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_demo (第 55 行)
+位置: run (第 112 行)] 
+gethiresimage: 3.31775 seconds, mag 2, aa F.
+Snapshot: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\outputs\jonsson_gftbox_t2.png
+Finished: 2026-06-27 10:01:43
+GFtbox dir: C:\Users\xczhang\Desktop\modeling\code\GrowthToolbox-20190306-v6030\GrowthToolbox
+Project parent: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work
+Project: GPT_CarnivorousTraps_3D_20191031
+Target time: 2.0000
+Started: 2026-06-27 10:04:16
+loadmesh_anyfile: Loading MAT file GPT_CarnivorousTraps_3D_20191031.mat in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031.
+[警告: Mesh has extra fields:] 
+[> 位置：validmesh (第 75 行)
+位置: upgrademesh (第 726 行)
+位置: loadmesh_anyfile (第 101 行)
+位置: leaf_loadmodel (第 115 行)
+位置: run_jonsson_gftbox_demo (第 38 行)
+位置: run (第 112 行)] 
+
+    sharpedges
+    sharpvxs
+validmesh: Checking angle quality for general FEs is not yet supported.
+loadStaticData: Loading static MAT file C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+resetInteractionHandle
+addpathif: Adding C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031 to head of command path.
+Loaded model. t=0 iter=0 nodes=19625
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Running leaf_iterate until t=2.0000...
+Starting iteration 1, time 0.000, at 2026/06/27 10:04:24.
+rewriteInteractionSkeleton
+resetInteractionHandle
+addpathif: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031 is at the head of the path.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Jonsson3D t=0.0000 nodes=4971 peaks=12 auxin_std=0.0062
+diffusegrowth: lengthscale 2.000, lengthscale^2 4.000
+Diffusing POL (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 1.661671 seconds.
+ 0.419 (0.886392/2.1137) .. 5.12e-06
+Computation time for diffusion (cgs,sparse,double) is 0.436572 seconds.
+Diffusing POL2 (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.019391 seconds.
+  5.26 (0.22236/0.0422892) ... 3.37e-06
+Computation time for diffusion (cgs,sparse,double) is 0.457284 seconds.
+Diffusing S_ADAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.046843 seconds.
+ 0.269 (0.210891/0.78268) .. 2.09e-06
+Computation time for diffusion (cgs,sparse,double) is 0.439063 seconds.
+Diffusing S_ABAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.176734 seconds.
+ 0.208 (0.348877/1.67534) .. 1.17e-06
+Computation time for diffusion (cgs,sparse,double) is 0.423410 seconds.
+Growth computation beginning for iteration 0 (time 0 - 0.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using random displacement as initial guess.
+Growth:   1.07 (151.672/142.339) ........ 0.000438
+Computation time for growth (cgs,sparse,double) is 1.047129 seconds.
+Completed iteration 1 at 2026/06/27 10:05:15.
+Starting iteration 2, time 0.500, at 2026/06/27 10:05:15.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+diffusegrowth: lengthscale 2.000, lengthscale^2 4.000
+Diffusing POL (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 1.696596 seconds.
+ 0.419 (0.890419/2.1245) .. 4.6e-06
+Computation time for diffusion (cgs,sparse,double) is 0.437974 seconds.
+Diffusing POL2 (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.338110 seconds.
+  5.34 (0.2249/0.0421391) ... 6.88e-06
+Computation time for diffusion (cgs,sparse,double) is 0.463086 seconds.
+Diffusing S_ADAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.329269 seconds.
+  0.26 (0.21375/0.822116) . 7.48e-06
+Computation time for diffusion (cgs,sparse,double) is 0.419847 seconds.
+Diffusing S_ABAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.229055 seconds.
+ 0.208 (0.350424/1.68179) .. 1e-06
+Computation time for diffusion (cgs,sparse,double) is 0.437025 seconds.
+Growth computation beginning for iteration 1 (time 0.5 - 1).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0448 (6.33661/141.336) . 0.00277
+Computation time for growth (cgs,sparse,double) is 0.231641 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000001.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 2 at 2026/06/27 10:06:07.
+Starting iteration 3, time 1.000, at 2026/06/27 10:06:07.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+diffusegrowth: lengthscale 2.000, lengthscale^2 4.000
+Diffusing POL (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 1.683142 seconds.
+ 0.419 (0.894508/2.13542) .. 8.74e-06
+Computation time for diffusion (cgs,sparse,double) is 0.442158 seconds.
+Diffusing POL2 (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.267124 seconds.
+  5.42 (0.227567/0.0419919) ... 4.18e-06
+Computation time for diffusion (cgs,sparse,double) is 0.478095 seconds.
+Diffusing S_ADAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.261419 seconds.
+ 0.257 (0.216244/0.839799) .. 2.49e-06
+Computation time for diffusion (cgs,sparse,double) is 0.427473 seconds.
+Diffusing S_ABAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.143254 seconds.
+ 0.209 (0.351938/1.68778) .. 5.41e-06
+Computation time for diffusion (cgs,sparse,double) is 0.433504 seconds.
+Growth computation beginning for iteration 2 (time 1 - 1.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0918 (13.0659/142.368) ... 0.000358
+Computation time for growth (cgs,sparse,double) is 0.432813 seconds.
+Completed iteration 3 at 2026/06/27 10:06:55.
+Starting iteration 4, time 1.500, at 2026/06/27 10:06:55.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+diffusegrowth: lengthscale 2.000, lengthscale^2 4.000
+Diffusing POL (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 1.734286 seconds.
+ 0.419 (0.898621/2.14641) .. 4.84e-06
+Computation time for diffusion (cgs,sparse,double) is 0.434005 seconds.
+Diffusing POL2 (diffusion 0.1 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.207227 seconds.
+   5.5 (0.230207/0.0418474) ... 6.3e-06
+Computation time for diffusion (cgs,sparse,double) is 0.468502 seconds.
+Diffusing S_ADAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.230494 seconds.
+ 0.256 (0.21843/0.852291) . 4.7e-06
+Computation time for diffusion (cgs,sparse,double) is 0.404006 seconds.
+Diffusing S_ABAXIAL (diffusion 0.05 NaN isotropic uniform, absorption 0.01):
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+New method constructs matrices in 2.144964 seconds.
+ 0.209 (0.353431/1.69364) .. 3.56e-06
+Computation time for diffusion (cgs,sparse,double) is 0.412146 seconds.
+Growth computation beginning for iteration 3 (time 1.5 - 2).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0434 (6.13975/141.344) . 0.00083
+Computation time for growth (cgs,sparse,double) is 0.255735 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000002.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 4 at 2026/06/27 10:07:47.
+Simulation terminated on reaching time 2.000000.
+Completed. t=2 iter=4
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_demo (第 55 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_demo (第 55 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_demo (第 55 行)
+位置: run (第 112 行)] 
+gethiresimage: 2.07406 seconds, mag 2, aa F.
+Snapshot: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\outputs\jonsson_gftbox_t2.png
+Finished: 2026-06-27 10:07:50

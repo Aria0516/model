@@ -1,0 +1,19 @@
+H-a (1)  lag between the two members of a pair (reference runs ending decussate): median 4.0, quartiles 3.8-4.8 (n = 443 pairs); mean interval between nodes is listed below
+H-a (2)  outcome at 650-1100 by secondary-field setting (first 8 seeds of the reference for comparability)
+  local prod.   setting      runs  spiral  lucas  decussate  distichous  other regular  irregular
+   0.0          no field      16       0      1         2          0             0        13
+   0.0          lifetime 4    16       0      0        13          0             0         3
+   0.0          lifetime 8    16       0      0         0          0             0        16
+   0.0          lifetime 16   16       0      0         0          0             0        16
+   2.0          no field      16       1      0         0          0             0        15
+   2.0          lifetime 4    16      10      0         1          0             0         5
+   2.0          lifetime 8    16       5      1         0          0             0        10
+   2.0          lifetime 16   16       4      0         0          0             0        12
+H-b  along the ramp (reference runs): first regular window that is not distichous
+  local production 0: first regular window overall {'decussate': 29, 'spiral': 3}; first non-distichous regular window {'decussate': 29, 'spiral': 3}; ring inner radius at that moment: median 4.73
+  local production 2: first regular window overall {'decussate': 26, 'spiral': 6}; first non-distichous regular window {'decussate': 26, 'spiral': 6}; ring inner radius at that moment: median 4.66
+H-c  irregular fraction in the reference runs
+  local production 0: 650-1100 irregular 9/32 (of which mixtures of regular types: 0); 1250-1700 irregular 5/32;  late outcomes ['decussate', 'decussate~']
+     1250-1700 outcome counts: {'decussate': 27, 'decussate~': 5}
+  local production 2: 650-1100 irregular 14/32 (of which mixtures of regular types: 3); 1250-1700 irregular 3/32;  late outcomes ['decussate~', 'intermediate~', 'spiral', 'spiral~']
+     1250-1700 outcome counts: {'spiral': 29, 'intermediate~': 1, 'decussate~': 1, 'spiral~': 1}

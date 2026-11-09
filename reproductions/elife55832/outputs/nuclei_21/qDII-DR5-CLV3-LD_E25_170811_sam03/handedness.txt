@@ -1,0 +1,4 @@
+score -2.67 with orientation +1; flipped to -1, score now +2.67, exit 0
+qDII-DR5-CLV3-LD_E25_170811_sam03_t00 +1.16 n=6
+qDII-DR5-CLV3-LD_E25_170811_sam03_t05 -1.32 n=11
+qDII-DR5-CLV3-LD_E25_170811_sam03_t10 -2.51 n=12

@@ -1,0 +1,450 @@
+#include <vve.h>
+
+#include <iostream>
+#include <vector>
+#include <util/parms.h>
+#include <util/palette.h>
+#include <util/watchdog.h>
+
+#include <util/key_framer.h>
+#include <util/bsurface.h>
+
+#include <algorithms/tissue.h>
+#include <geometry/area.h>
+
+#include <QMessageBox>
+
+#include <storage/storage.h>
+#include <storage/complex.h>
+
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::string;
+using std::ostringstream;
+using namespace qglviewer;
+
+#define EPSILON 0.0001
+
+define Tissue MyTissue:
+{
+cell:
+  {
+    double area;
+    Point3d pos;
+    Point3d normal;
+    Point2d uv;
+    bool bad;
+    double value;
+    bool selected;
+
+init:
+    area(0),
+      uv(-1, -1),
+      bad(false),
+      selected(false)
+      { }
+
+    bool serialize(storage::VVEStorage& store)
+    {
+      bool result = store.field("Pos", pos);
+      result &= store.field("Normal", normal);
+      result &= store.field("UV", uv);
+      result &= store.field("Selected", selected);
+      result &= store.field("Value", value);
+      return result;
+    }
+
+  }
+
+junction:
+  {
+    Point3d pos;
+    Point3d normal;
+    Point2d uv;
+
+    bool serialize(storage::VVEStorage& store)
+    {
+      bool result = store.field("Pos", pos);
+      result &= store.field("Normal", normal);
+      result &= store.field("UV", uv);
+      return result;
+    }
+  }
+
+wall:
+  {
+    double wallLength;
+
+    bool serialize(storage::VVEStorage& store)
+    {
+      bool result = store.field("Length", wallLength);
+      return result;
+    }
+  }
+
+  model = class TissueModel;
+}
+
+Model TissueModel:
+{
+  util::WatchDog rex;
+  util::KeyFramer leaf;
+  util::BSplineSurface leafs;
+  util::Palette palette;
+  MyTissue T;
+  int drawColor;
+  int cellInitWalls;
+  double dt;
+  double growthStartTime;
+  float backColor;
+  double cellMaxArea;
+  std::string keyFrameFile;
+  bool orderCellDivision;
+  bool drawNeighborhood;
+
+  double selectedShrinkRatio;
+  double selectedHalfSize;
+  int selectedColor;
+
+  double time;
+
+  void SetPos( const cell& v )
+  {
+    v->pos = leafs.EvalN(v->uv[0], v->uv[1]);
+    v->normal = leafs.NormalEvalN(v->uv[0], v->uv[1]);
+  }
+
+  void SetPos( const junction& v )
+  {
+    v->pos = leafs.EvalN(v->uv[0], v->uv[1]);
+    v->normal = leafs.NormalEvalN(v->uv[0], v->uv[1]);
+  }
+
+  void updateCellsArea()
+  {
+    forall  const cell& c in  T.C :
+    {
+      c->area = 0.0;
+      forall  const junction& n in  T.S.neighbors(c) :
+      {
+        // Find area
+        const junction& m = T.S.nextTo(c, n);
+        c->area += geometry::triangleArea(c->pos, m->pos, n->pos);
+      }
+      if(c->area <= EPSILON ) // Avoid inf
+      {
+        cout << "Bad area " << c->area << endl;
+        c->area = 0.1;
+        c->bad = .5;
+      }
+    }
+  }
+
+  /**
+   * Call that function on a cell to limit its growth.
+   *
+   * halfSize is the maximum distance from the center of the cell to any to its 
+   * junction.
+   *
+   * shrinkRatio tells how much to pull the junctions. This is to avoid string 
+   * discontinuity in the pulling.
+   *
+   * dt is the time step of the last mechanical step. It is used to render this 
+   * function independent of it. So that the smaller the dt, the smaller the 
+   * pulling.
+   *
+   * This function is to be called *after* the tissue growth (and center 
+   * re-calculation), but before cell division. If any junction is farther than 
+   * halfSize from the center, it will be pulled toward it.
+   *
+   * Warning: this function will work only for isolated cells. If you start 
+   * calling it for two neighbor cells, expect problems.
+   */
+  void limitGrowth(const cell& c, double halfSize, double shrinkRatio, double dt)
+  {
+    Point3d center = c->pos;
+    forall const junction& v in  T.S.neighbors(c):
+    {
+      Point3d l = (v->pos - center);
+      double ll = l.norm();
+      if(ll > halfSize)
+      {
+        if(shrinkRatio*dt < 1)
+        {
+          v->pos += l*shrinkRatio*(halfSize-ll)*dt/ll;
+        }
+        else
+        {
+          v->pos += l*shrinkRatio*(halfSize-ll)/ll;
+        }
+        Point2d new_uv;
+        leafs.PointInversionN(new_uv, v->uv, v->pos);
+        v->uv = new_uv;
+        v->pos = leafs.EvalN(new_uv[0], new_uv[1]);
+        v->normal = leafs.NormalEvalN( new_uv[0], new_uv[1] );
+      }
+    }
+  }
+
+
+  void reread()
+  {
+    util::Parms parms("view.v");
+    std::string newKeyFrameFile;
+
+    parms("Main", "dt", dt);
+    parms("Main", "KeyFrameFile", newKeyFrameFile);
+    parms("Main", "GrowthStartTime", growthStartTime);
+    parms("Main", "CellInitWalls", cellInitWalls);
+
+    if(newKeyFrameFile != keyFrameFile)
+    {
+      keyFrameFile = newKeyFrameFile;
+      leaf.setFilename(keyFrameFile);
+      leaf.reread();
+    }
+
+    T.readViewParms(parms, "View");
+    parms("View", "BackColor", backColor);
+    parms("View", "DrawNeighborhood", drawNeighborhood);
+
+    T.readParms(parms, "Tissue");
+    parms("Tissue", "CellMaxArea", cellMaxArea);
+    parms("Tissue", "OrderCellDivision", orderCellDivision);
+
+    parms("Pulling", "HalfSize", selectedHalfSize);
+    parms("Pulling", "ShrinkRatio", selectedShrinkRatio);
+    parms("Pulling", "Color", selectedColor);
+  }
+
+  bool serialize(storage::VVEStorage& store)
+  {
+    bool result = store.field("T", T);
+    result &= store.field("Time", time);
+    if(result and store.reader())
+    {
+      updateCellsArea();
+    }
+    return result;
+  }
+
+  void modifiedFiles( const std::set<std::string>& filenames )
+  {
+    rex.watch(filenames);
+  }
+
+init:
+  rex(this),
+    palette("pal.map"),
+    T(palette, this),
+    time(0)
+  {
+    reread();
+    setFilename("view.v");
+    rex.addObject(this);
+    rex.addObject(palette);
+    time = growthStartTime;
+    leaf.SetTime(time);
+    leafs = leaf.GetSurfaceTime();
+
+    // Find center and set cell area and length of cell walls
+    cell c;
+    c->uv[0] = c->uv[1] = .5;
+    c->value = 0.5;
+    SetPos(c);
+
+    std::vector<junction> junctions(cellInitWalls, junction(0));
+    for(int i = 0 ; i < cellInitWalls ; i++)
+    {
+      double s = (double)(cellInitWalls-i)/(double)cellInitWalls;
+      //double s = (double)i/(double)cellInitWalls;
+      junction v;
+      v->uv = leafs.ContourInverse(s);
+      SetPos(v);
+      junctions[i] = v;
+    }
+
+    T.addCell(c, junctions);
+
+    updateCellsArea();
+  }
+
+  struct CompareSize : public std::binary_function<cell, cell, bool>
+  {
+    bool operator()(const cell& v1, const cell& v2) const
+    {
+      return v1->area < v2->area;
+    }
+  };
+
+  void step()
+  {
+    std::set<cell,CompareSize> ordered_divide;
+    time += dt;
+    leaf.SetTime(time);
+    leafs = leaf.GetSurfaceTime();
+    forall const cell& v in  T.C:
+      SetPos(v);
+    forall const junction& v in  T.W:
+      SetPos(v);
+    updateCellsArea();
+    forall const cell& c in  T.C:
+    {
+      if(c->selected)
+      {
+        limitGrowth(c, selectedHalfSize, selectedShrinkRatio, dt);
+      }
+    }
+    forall const cell& c in  T.C:
+    {
+      tissue::FindCenter(c, T);
+      if(!c->selected && c->area > cellMaxArea)
+      {
+        ordered_divide.insert(c);
+      }
+    }
+    forall const cell& c in  ordered_divide:
+    {
+      T.divideCell(c);
+    }
+  }
+
+  void initDraw()
+  {
+    //glEnable(GL_NICEST);
+    //glDisable(GL_CULL_FACE);
+  }
+
+  void preDraw()
+  {
+    T.preDraw();
+    glClearColor(backColor, backColor, backColor, 1.0);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+  }
+
+  void postDraw()
+  {
+    //glDisable(GL_BLEND);
+    T.postDraw();
+  }
+
+  void draw(Viewer *viewer)
+  {
+    forall const cell& c in  T.C:
+    {
+      int cnt = 3;
+      double ds = 0.1 / (3+T.C.valence(c));
+      if(c->selected)
+      {
+        util::Palette::Color col = palette.getColor(selectedColor);
+        T.drawCell(c, col, col);
+      }
+      else
+      {
+        T.drawCell(c, c->value);
+      }
+      if(drawNeighborhood)
+      {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glColor3f(1.0, 0, 0);
+        Vec from(c->pos);
+        //    Vec norm(c->normal/4);
+        //    norm += from;
+        //    viewer->drawArrow(from, norm, -1, 6);
+        /*forall const vertex& n in  T.cellGraph().neighbors(c):
+        {
+          glColor3f(1.0, 1.0, 1.0);
+          Vec to(n->pos);
+          Vec u = to-from;
+          u.normalize();
+          to = from + cnt*ds*u;
+          cnt++;
+          viewer->drawArrow(from, to, -1, 6);
+          //        glBegin(GL_LINE);
+          //        glVertex3fv(from);
+          //        glVertex3fv(to);
+          //        glEnd();
+        }*/
+      }
+    }
+    double vmin[3], vmax[3];
+    leafs.BoundingBox(vmin[0], vmin[1], vmin[2], vmax[0], vmax[1], vmax[2]);
+    Vec pmin(vmin), pmax(vmax);
+    viewer->setSceneBoundingBox(pmin, pmax);
+  }
+
+  void drawWithNames()
+  {
+    bool db = T.drawBorders;
+    T.drawBorders = false;
+    GLuint i = 0;
+    forall const cell& c in  T.C:
+    {
+      glPushName(i++);
+      T.drawCell(c, c->value);
+      glPopName();
+    }
+    T.drawBorders = db;
+  }
+
+  // Methods required by the tissue library
+  Point3d position( const cell& v) const
+  {
+    return v->pos;
+  }
+  Point3d position( const junction& v) const
+  {
+    return v->pos;
+  }
+
+  void setPosition( const cell& v, const Point3d& pos)
+  {
+    leafs.PointInversionN(v->uv, v->uv, pos);
+    SetPos(v);
+  }
+
+  void setPosition( const junction& v, const Point3d& pos)
+  {
+    leafs.PointInversionN(v->uv, v->uv, pos);
+    SetPos(v);
+  }
+
+  void setPositionHint( const junction& v, const junction& n1, const junction& n2, double r)
+  {
+    v->uv = (1-r)*n1->uv + r*n2->uv;
+  }
+
+  Point3d normal( const cell& v) const
+  {
+    return v->normal;
+  }
+
+  Point3d normal( const junction& v) const
+  {
+    return v->normal;
+  }
+
+  void updateFromOld( const cell& cl, const cell& cr, const cell& c,
+                      const MyTissue::division_data&, MyTissue&)
+  {
+    cl->value = c->value - 0.05;
+    cr->value = c->value + 0.05;
+    if(cl->value < 0)
+      cl->value = 0;
+    if(cr->value > 1)
+      cr->value = 1;
+  }
+
+  void postSelection(const QPoint&, Viewer* viewer)
+  {
+    int idx = viewer->selectedName();
+    if(idx != -1)
+    {
+      const cell& v = T.C[idx];
+      v->selected ^= true;
+    }
+  }
+
+}

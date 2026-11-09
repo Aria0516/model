@@ -1,0 +1,14 @@
+primordium,extremum_type,label
+-3,minimum,20
+-2,minimum,38
+-1,minimum,27
+0,minimum,33
+1,minimum,47
+1,maximum,41
+2,minimum,2
+2,maximum,21
+3,saddle,27
+4,minimum,24
+4,saddle,14
+5,minimum,16
+5,saddle,11

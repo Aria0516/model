@@ -1,0 +1,22 @@
+FROM continuumio/miniconda3:4.8.2
+
+SHELL ["/bin/bash", "-lc"]
+
+RUN conda install --name base --yes \
+      conda=4.12.0 \
+      conda-build=3.21.9
+
+COPY dependencies/timagetk-2.1.0 /src/timagetk
+COPY docker/timagetk-meta-py37.yaml /src/timagetk/conda/recipe/meta.yaml
+COPY docker/timagetk-conda-build-config-py37.yaml /src/timagetk/conda/recipe/conda_build_config.yaml
+
+ENV GIT_DESCRIBE_TAG=2.1.0
+ENV GIT_DESCRIBE_NUMBER=0
+
+RUN --mount=type=cache,target=/opt/conda/pkgs,sharing=locked \
+    conda build \
+      /src/timagetk/conda/recipe \
+      --output-folder /opt/timagetk-channel \
+    && find /opt/timagetk-channel -maxdepth 2 -type f -print
+
+CMD ["/bin/bash"]

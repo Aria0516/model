@@ -1,0 +1,73 @@
+# syntax=docker/dockerfile:1.7
+FROM elife55832-timagetk:2.1.0 AS timagetk_builder
+
+FROM continuumio/miniconda3:4.8.2
+
+SHELL ["/bin/bash", "-lc"]
+
+COPY docker/debian-buster-archive.list /etc/apt/sources.list
+RUN apt-get -o Acquire::Check-Valid-Until=false update \
+    && apt-get install --yes --no-install-recommends \
+      libgl1 \
+      libxext6 \
+      libxrender1 \
+      libsm6 \
+      libxt6
+
+COPY --from=timagetk_builder \
+  /opt/timagetk-channel/linux-64/timagetk-2.1.0-py37h03888b9_0.tar.bz2 \
+  /opt/localpkgs/
+COPY dependencies/conda-packages/*.tar.bz2 /opt/localpkgs/
+COPY sam_spaghetti /opt/sam_spaghetti
+COPY docker/validate_historic_runtime.py /opt/reproducibility/validate_historic_runtime.py
+
+RUN --mount=type=cache,target=/opt/conda/pkgs,sharing=locked \
+    conda create --name sam_spaghetti --yes \
+      python=3.7.6 \
+      numpy=1.18.1 \
+      scipy=1.4.1 \
+      pandas=1.0.1 \
+      scikit-image=0.16.2 \
+      scikit-learn=0.22.1 \
+      matplotlib=3.1.3 \
+      vtk=8.2.0 \
+      tbb=2020.0 \
+      jsoncpp=1.8.4 \
+      imageio=2.6.1 \
+      pillow=7.0.0 \
+      networkx=2.4 \
+      joblib=0.14.1 \
+      notebook=6.0.3 \
+      nbconvert=5.6.1 \
+      nbformat=5.0.4 \
+      ipykernel=5.1.4 \
+      ipython=7.12.0 \
+      jupyter_client=5.3.4 \
+      jupyter_core=4.6.1 \
+      traitlets=4.3.3 \
+      tornado=6.0.3 \
+      pyzmq=18.1.1 \
+      jinja2=2.11.3 \
+      markupsafe=1.1.1 \
+      nose=1.3.7 \
+      coverage=5.0.3 \
+      setuptools=45.2.0
+
+RUN conda install --name sam_spaghetti --yes --offline --no-deps \
+      /opt/localpkgs/*.tar.bz2
+
+WORKDIR /opt/sam_spaghetti
+# Match the repository's own CI/developer installation procedure.  The source
+# tree contains runtime LUT/CSV assets under share/data that setup.py omits from
+# a regular egg, while ``develop`` preserves the expected relative layout.
+RUN /opt/conda/envs/sam_spaghetti/bin/python setup.py develop
+
+ENV PATH=/opt/conda/envs/sam_spaghetti/bin:${PATH}
+ENV MPLBACKEND=Agg
+ENV PYTHONUNBUFFERED=1
+
+RUN /opt/conda/envs/sam_spaghetti/bin/python \
+      /opt/reproducibility/validate_historic_runtime.py
+
+WORKDIR /work
+CMD ["/bin/bash"]

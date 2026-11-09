@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "appendix2": {
+    "simulated_mean_angular_sd_deg": 6.113487562074855,
+    "paper_observed_angular_sd_deg": 6.7,
+    "separability": 0.9661111111111111
+  },
+  "e27_sam7": {
+    "best_t0_t10_rotation_deg": -140.0,
+    "best_t0_t10_correlation": 0.7888392777003099
+  },
+  "inputs": [
+    {
+      "file": "data/E27_SAM7/qDII-CLV3-DR5-E27-LD-SAM7-No-organs.tif",
+      "bytes": 377620885,
+      "sha256": "259d5fed95dfd88108e2717191ac08a638a3a73bc7d2575a4e93af2639c63566"
+    },
+    {
+      "file": "data/E27_SAM7/qDII-CLV3-DR5-E27-LD-SAM7-T10-No-organs.tif",
+      "bytes": 377622355,
+      "sha256": "b3c72e3301316b3f7d9eb356c9fef522de946966afead469e8686a236752aad2"
+    },
+    {
+      "file": "data/E27_SAM7/qDII-CLV3-DR5-E27-LD-SAM7-T5-No-organs.tif",
+      "bytes": 377622023,
+      "sha256": "dfb42f593eb8b6d34947e6d38cde67efe8ce1d2f5be9ee14dc108d225f42e7bd"
+    }
+  ]
+}

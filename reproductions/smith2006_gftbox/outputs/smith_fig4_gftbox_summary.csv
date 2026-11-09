@@ -1,0 +1,10 @@
+letter,slug,title,primordia_count,field_max,field_min,node_count,png_path
+A,distichous,A distichous,6,1,0,910,C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\outputs\smith_fig4_A_distichous.png
+B,decussate,B decussate,6,1,0,910,C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\outputs\smith_fig4_B_decussate.png
+C,tricussate,C tricussate,9,1,0,910,C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\outputs\smith_fig4_C_tricussate.png
+D,spiral,D spiral,9,1,0,910,C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\outputs\smith_fig4_D_spiral.png
+E,pin1,E simulated pin1,0,1,0,910,C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\outputs\smith_fig4_E_pin1.png
+F,pin1_auxin_side,F pin1 + side auxin,1,1,0,910,C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\outputs\smith_fig4_F_pin1_auxin_side.png
+G,pin1_auxin_tip,G pin1 + tip auxin,12,1,0,910,C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\outputs\smith_fig4_G_pin1_auxin_tip.png
+H,control,H control,6,1,0,910,C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\outputs\smith_fig4_H_control.png
+I,ablation,I ablation shifted,6,1,0,910,C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\outputs\smith_fig4_I_ablation.png

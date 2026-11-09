@@ -1,0 +1,30 @@
+﻿
+=== ring5   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant                        0.37   169.2      40%     2%     0.56      2/8      1     20.1     35.9   {'spiral~': 1, 'decussate~': 3, 'distichous~': 2, 'spiral': 2}
+track tau_c=2                  0.25   125.2      60%    14%     1.51      2/8      0       --       --   {'tricussate~': 1, 'decussate': 2, 'whorl4~': 1, 'multijugate9~': 1, 'other~': 2, 'decussate~': 1}
+track tau_c=4                  0.13    65.2      73%    29%     2.67      0/8      0       --       --   {'whorl5~': 2, 'tricussate~': 1, 'multijugate4~': 1, 'whorl6~': 2, 'whorl4~': 1, 'whorl8~': 1}
+
+=== ring6   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant                        0.29   165.9      56%     7%     0.74      4/8      0       --       --   {'decussate': 4, 'decussate~': 2, 'distichous~': 1, 'spiral~': 1}
+track tau_c=2                  0.14    95.7      71%    22%     2.45      0/8      0       --       --   {'whorl4~': 1, 'whorl6~': 1, 'multijugate2~': 5, 'decussate~': 1}
+track tau_c=4                  0.10    74.3      79%    28%     3.08      0/8      0       --       --   {'whorl6~': 4, 'whorl5~': 1, 'multijugate3~': 1, 'whorl4~': 1, 'multijugate2~': 1}
+
+=== ring7   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant                        0.24   141.2      35%    18%     0.63      3/8      1     10.8      9.4   {'multijugate2~': 2, 'spiral~': 2, 'decussate~': 1, 'decussate': 1, 'spiral': 2}
+track tau_c=2                  0.09    55.7      74%    31%     3.05      0/8      0       --       --   {'multijugate2~': 7, 'tricussate~': 1}
+track tau_c=4                  0.08    39.1      79%    30%     3.32      0/8      0       --       --   {'multijugate2~': 2, 'whorl5~': 1, 'whorl4~': 2, 'whorl6~': 2, 'multijugate4~': 1}
+
+=== ring8   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant                        0.21   135.7      43%    29%     0.65      0/8      0       --       --   {'multijugate2~': 3, 'spiral~': 3, 'lucas~': 2}
+track tau_c=2                  0.07    55.5      78%    30%     3.34      0/8      0       --       --   {'multijugate2~': 7, 'multijugate6~': 1}
+track tau_c=4                  0.07    37.8      78%    31%     3.46      0/8      0       --       --   {'multijugate2~': 5, 'multijugate4~': 2, 'whorl4~': 1}
+
+=== ring9   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant                        0.18   133.1      54%    32%     0.76      0/8      0       --       --   {'decussate~': 1, 'multijugate2~': 5, 'spiral~': 2}
+track tau_c=2                  0.06    34.3      79%    28%     3.60      0/8      0       --       --   {'multijugate2~': 8}
+track tau_c=4                  0.06    35.3      78%    28%     3.57      0/8      0       --       --   {'multijugate2~': 7, 'whorl5~': 1}

@@ -1,0 +1,17 @@
+﻿
+=== lowG+field   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+current: ring 5.5-7.5, w 2.0   0.27   139.9       2%     1%     0.14     10/10     9      5.8      5.0   {'spiral': 10}
+ring 4.5-6.5, w 1.75           0.31   138.8      18%     2%     0.30      6/10     5     12.4      9.3   {'spiral~': 1, 'spiral': 6, 'other~': 1, 'distichous~': 2}
+ring 4.0-6.0, w 1.5            0.31   137.8       5%     0%     0.21      8/10     7      9.3      7.4   {'spiral': 7, 'spiral~': 1, 'other~': 1, 'lucas': 1}
+ring 4.0-6.0, w 1.5, r_ex 2    0.28   140.1      37%     9%     0.34      1/10     0       --       --   {'intermediate~': 1, 'spiral~': 6, 'distichous~': 2, 'spiral': 1}
+ring 3.5-5.5, w 1.4            0.29   154.3      51%     8%     0.33      1/10     0       --       --   {'distichous~': 1, 'intermediate~': 5, 'other~': 1, 'spiral~': 2, 'spiral': 1}
+ring 4.0-5.5 (narrow), w 1.5   0.45   133.7       8%     0%     0.17      8/10     1      9.6     10.8   {'spiral~': 2, 'spiral': 8}
+
+initiation radius (cells -> um at 6 um per cell)
+  current: ring 5.5-7.5, w 2.0      7.0 cells ->   42 um
+  ring 4.5-6.5, w 1.75              5.8 cells ->   35 um
+  ring 4.0-6.0, w 1.5               5.2 cells ->   31 um
+  ring 4.0-6.0, w 1.5, r_ex 2       5.6 cells ->   33 um
+  ring 3.5-5.5, w 1.4               5.0 cells ->   30 um
+  ring 4.0-5.5 (narrow), w 1.5      5.1 cells ->   30 um

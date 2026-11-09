@@ -1,0 +1,782 @@
+#include <vve.h>
+
+#include <iostream>
+#include <vector>
+#include <util/parms.h>
+#include <util/palette.h>
+#include <util/watchdog.h>
+
+#include <util/key_framer.h>
+#include <util/bsurface.h>
+
+#include <algorithms/tissue.h>
+#include <geometry/area.h>
+
+#include <QMessageBox>
+#include <cmath>
+
+#include <storage/storage.h>
+#include <storage/complex.h>
+
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::string;
+using std::ostringstream;
+using namespace qglviewer;
+
+#define EPSILON 0.0001
+
+define Tissue MyTissue:
+{
+cell:
+  {
+    double area;
+    Point3d pos;
+    Point3d normal;
+    Point2d uv;
+    bool bad;
+    double value;
+    bool selected;
+    double auxin;
+    double nextAuxin;
+    double pin;
+    double primordium;
+    double organMemory;
+
+init:
+    area(0),
+      uv(-1, -1),
+      bad(false),
+      selected(false),
+      auxin(0.05),
+      nextAuxin(0.05),
+      pin(0.2),
+      primordium(0.0),
+      organMemory(0.0)
+      { }
+
+    bool serialize(storage::VVEStorage& store)
+    {
+      bool result = store.field("Pos", pos);
+      result &= store.field("Normal", normal);
+      result &= store.field("UV", uv);
+      result &= store.field("Selected", selected);
+      result &= store.field("Value", value);
+      result &= store.field("Auxin", auxin);
+      result &= store.field("PIN", pin);
+      result &= store.field("Primordium", primordium);
+      result &= store.field("OrganMemory", organMemory);
+      return result;
+    }
+
+  }
+
+junction:
+  {
+    Point3d pos;
+    Point3d normal;
+    Point2d uv;
+
+    bool serialize(storage::VVEStorage& store)
+    {
+      bool result = store.field("Pos", pos);
+      result &= store.field("Normal", normal);
+      result &= store.field("UV", uv);
+      return result;
+    }
+  }
+
+wall:
+  {
+    double wallLength;
+
+    bool serialize(storage::VVEStorage& store)
+    {
+      bool result = store.field("Length", wallLength);
+      return result;
+    }
+  }
+
+  model = class TissueModel;
+}
+
+Model TissueModel:
+{
+  util::WatchDog rex;
+  util::KeyFramer leaf;
+  util::BSplineSurface leafs;
+  util::Palette palette;
+  MyTissue T;
+  int drawColor;
+  int cellInitWalls;
+  double dt;
+  double growthStartTime;
+  float backColor;
+  double cellMaxArea;
+  std::string keyFrameFile;
+  bool orderCellDivision;
+  bool drawNeighborhood;
+
+  double selectedShrinkRatio;
+  double selectedHalfSize;
+  int selectedColor;
+
+  double time;
+
+  int panel;
+  bool pin1Mode;
+  double auxinBase;
+  double auxinProd;
+  double auxinDecay;
+  double auxinDiffusion;
+  double transportRate;
+  double transportSat;
+  double pinBase;
+  double pinAuxin;
+  double pinDecay;
+  double pinSat;
+  double pinBias;
+  double primordiumThreshold;
+  double primordiumSource;
+  double auxinDisplayMax;
+
+  double domeHeight;
+  double domeRadius;
+  double organBulge;
+  double organDisplayGain;
+
+  double clamp01(double v) const
+  {
+    if(v < 0.0)
+      return 0.0;
+    if(v > 1.0)
+      return 1.0;
+    return v;
+  }
+
+  double uvRadius(double u, double v) const
+  {
+    double dx = u - 0.5;
+    double dy = v - 0.5;
+    return 2.0 * sqrt(dx*dx + dy*dy);
+  }
+
+  double uvAngle(double u, double v) const
+  {
+    return atan2(v - 0.5, u - 0.5);
+  }
+
+  Point3d domePoint(double u, double v, double lift) const
+  {
+    double x = 2.0*(u - 0.5);
+    double y = 2.0*(v - 0.5);
+    double r2 = x*x + y*y;
+    double z = domeHeight * exp(-r2/(domeRadius*domeRadius)) + lift;
+    return Point3d(x, y, z);
+  }
+
+  Point3d domeNormal(double u, double v) const
+  {
+    double x = 2.0*(u - 0.5);
+    double y = 2.0*(v - 0.5);
+    double e = exp(-(x*x + y*y)/(domeRadius*domeRadius));
+    double dzdx = -2.0*x*domeHeight*e/(domeRadius*domeRadius);
+    double dzdy = -2.0*y*domeHeight*e/(domeRadius*domeRadius);
+    double nx = -dzdx;
+    double ny = -dzdy;
+    double nz = 1.0;
+    double len = sqrt(nx*nx + ny*ny + nz*nz);
+    return Point3d(nx/len, ny/len, nz/len);
+  }
+
+  void SetPos( const cell& v )
+  {
+    double signalLift = organDisplayGain * clamp01(v->auxin / auxinDisplayMax);
+    double memoryLift = v->organMemory;
+    double lift = organBulge * (0.35*signalLift + 0.65*memoryLift);
+    if(isPin1Panel())
+      lift *= 0.55;
+    v->pos = domePoint(v->uv[0], v->uv[1], lift);
+    v->normal = domeNormal(v->uv[0], v->uv[1]);
+  }
+
+  void SetPos( const junction& v )
+  {
+    v->pos = domePoint(v->uv[0], v->uv[1], 0.0);
+    v->normal = domeNormal(v->uv[0], v->uv[1]);
+  }
+
+  void updateCellsArea()
+  {
+    forall  const cell& c in  T.C :
+    {
+      c->area = 0.0;
+      forall  const junction& n in  T.S.neighbors(c) :
+      {
+        // Find area
+        const junction& m = T.S.nextTo(c, n);
+        c->area += geometry::triangleArea(c->pos, m->pos, n->pos);
+      }
+      if(c->area <= EPSILON ) // Avoid inf
+      {
+        cout << "Bad area " << c->area << endl;
+        c->area = 0.1;
+        c->bad = .5;
+      }
+    }
+  }
+
+  /**
+   * Call that function on a cell to limit its growth.
+   *
+   * halfSize is the maximum distance from the center of the cell to any to its 
+   * junction.
+   *
+   * shrinkRatio tells how much to pull the junctions. This is to avoid string 
+   * discontinuity in the pulling.
+   *
+   * dt is the time step of the last mechanical step. It is used to render this 
+   * function independent of it. So that the smaller the dt, the smaller the 
+   * pulling.
+   *
+   * This function is to be called *after* the tissue growth (and center 
+   * re-calculation), but before cell division. If any junction is farther than 
+   * halfSize from the center, it will be pulled toward it.
+   *
+   * Warning: this function will work only for isolated cells. If you start 
+   * calling it for two neighbor cells, expect problems.
+   */
+  void limitGrowth(const cell& c, double halfSize, double shrinkRatio, double dt)
+  {
+    Point3d center = c->pos;
+    forall const junction& v in  T.S.neighbors(c):
+    {
+      Point3d l = (v->pos - center);
+      double ll = l.norm();
+      if(ll > halfSize)
+      {
+        if(shrinkRatio*dt < 1)
+        {
+          v->pos += l*shrinkRatio*(halfSize-ll)*dt/ll;
+        }
+        else
+        {
+          v->pos += l*shrinkRatio*(halfSize-ll)/ll;
+        }
+        Point2d new_uv;
+        leafs.PointInversionN(new_uv, v->uv, v->pos);
+        v->uv = new_uv;
+        v->pos = leafs.EvalN(new_uv[0], new_uv[1]);
+        v->normal = leafs.NormalEvalN( new_uv[0], new_uv[1] );
+      }
+    }
+  }
+
+
+  void reread()
+  {
+    util::Parms parms("view.v");
+    std::string newKeyFrameFile;
+
+    parms("Main", "dt", dt);
+    parms("Main", "KeyFrameFile", newKeyFrameFile);
+    parms("Main", "GrowthStartTime", growthStartTime);
+    parms("Main", "CellInitWalls", cellInitWalls);
+
+    if(newKeyFrameFile != keyFrameFile)
+    {
+      keyFrameFile = newKeyFrameFile;
+      leaf.setFilename(keyFrameFile);
+      leaf.reread();
+    }
+
+    T.readViewParms(parms, "View");
+    parms("View", "BackColor", backColor);
+    parms("View", "DrawNeighborhood", drawNeighborhood);
+
+    T.readParms(parms, "Tissue");
+    parms("Tissue", "CellMaxArea", cellMaxArea);
+    parms("Tissue", "OrderCellDivision", orderCellDivision);
+
+    parms("Pulling", "HalfSize", selectedHalfSize);
+    parms("Pulling", "ShrinkRatio", selectedShrinkRatio);
+    parms("Pulling", "Color", selectedColor);
+
+    parms("Smith", "Panel", panel);
+    parms("Smith", "Pin1Mode", pin1Mode);
+    parms("Smith", "AuxinBase", auxinBase);
+    parms("Smith", "AuxinProd", auxinProd);
+    parms("Smith", "AuxinDecay", auxinDecay);
+    parms("Smith", "AuxinDiffusion", auxinDiffusion);
+    parms("Smith", "TransportRate", transportRate);
+    parms("Smith", "TransportSat", transportSat);
+    parms("Smith", "PINBase", pinBase);
+    parms("Smith", "PINAuxin", pinAuxin);
+    parms("Smith", "PINDecay", pinDecay);
+    parms("Smith", "PINSat", pinSat);
+    parms("Smith", "PINBias", pinBias);
+    parms("Smith", "PrimordiumThreshold", primordiumThreshold);
+    parms("Smith", "PrimordiumSource", primordiumSource);
+    parms("Smith", "AuxinDisplayMax", auxinDisplayMax);
+
+    parms("Geometry", "DomeHeight", domeHeight);
+    parms("Geometry", "DomeRadius", domeRadius);
+    parms("Geometry", "OrganBulge", organBulge);
+    parms("Geometry", "OrganDisplayGain", organDisplayGain);
+  }
+
+  bool serialize(storage::VVEStorage& store)
+  {
+    bool result = store.field("T", T);
+    result &= store.field("Time", time);
+    if(result and store.reader())
+    {
+      updateCellsArea();
+    }
+    return result;
+  }
+
+  void modifiedFiles( const std::set<std::string>& filenames )
+  {
+    rex.watch(filenames);
+  }
+
+init:
+  rex(this),
+    palette("pal.map"),
+    T(palette, this),
+    time(0)
+  {
+    reread();
+    setFilename("view.v");
+    rex.addObject(this);
+    rex.addObject(palette);
+    time = growthStartTime;
+    leaf.SetTime(time);
+    leafs = leaf.GetSurfaceTime();
+
+    // Find center and set cell area and length of cell walls
+    cell c;
+    c->uv[0] = c->uv[1] = .5;
+    c->value = 0.5;
+    c->auxin = auxinBase;
+    c->nextAuxin = auxinBase;
+    c->pin = pinBase;
+    c->primordium = 0.0;
+    c->organMemory = 0.0;
+    SetPos(c);
+
+    std::vector<junction> junctions(cellInitWalls, junction(0));
+    for(int i = 0 ; i < cellInitWalls ; i++)
+    {
+      double s = (double)(cellInitWalls-i)/(double)cellInitWalls;
+      //double s = (double)i/(double)cellInitWalls;
+      junction v;
+      v->uv = leafs.ContourInverse(s);
+      SetPos(v);
+      junctions[i] = v;
+    }
+
+    T.addCell(c, junctions);
+
+    updateCellsArea();
+    resetSmithField();
+  }
+
+
+
+  double smithPi() const
+  {
+    return 3.14159265358979323846;
+  }
+
+  bool isPin1Panel() const
+  {
+    return pin1Mode || panel == 5 || panel == 6 || panel == 7;
+  }
+
+  double cellRadius(const cell& c) const
+  {
+    return uvRadius(c->uv[0], c->uv[1]);
+  }
+
+  double cellAngle(const cell& c) const
+  {
+    return uvAngle(c->uv[0], c->uv[1]);
+  }
+
+  double angleDistance(double a, double b) const
+  {
+    double d = fabs(a-b);
+    while(d > 2.0*smithPi())
+      d -= 2.0*smithPi();
+    if(d > smithPi())
+      d = 2.0*smithPi() - d;
+    return d;
+  }
+
+  double smithSpot(const cell& c, double angle, double targetRadius, double amp, double sigmaAngle, double sigmaRadius) const
+  {
+    double da = angleDistance(cellAngle(c), angle) / sigmaAngle;
+    double dr = (cellRadius(c) - targetRadius) / sigmaRadius;
+    return amp * exp(-0.5*(da*da + dr*dr));
+  }
+
+  double smithSpiral(const cell& c, double phase) const
+  {
+    double golden = 137.5 * smithPi() / 180.0;
+    double value = 0.0;
+    for(int k = 0; k < 8; ++k)
+    {
+      double radius = 0.42 + 0.055 * (double)k;
+      double angle = phase + golden * (double)k;
+      double amp = 1.25 - 0.07 * (double)k;
+      value += smithSpot(c, angle, radius, amp, 0.19, 0.075);
+    }
+    return value;
+  }
+
+  double prescribedSmithSignal(const cell& c) const
+  {
+    double value = 0.0;
+    if(panel == 1) // A: distichous
+    {
+      value += smithSpot(c, 0.0, 0.66, 1.4, 0.18, 0.08);
+      value += smithSpot(c, smithPi(), 0.66, 1.15, 0.18, 0.08);
+    }
+    else if(panel == 2) // B: decussate
+    {
+      value += smithSpot(c, 0.0, 0.67, 1.25, 0.18, 0.08);
+      value += smithSpot(c, 0.5*smithPi(), 0.67, 1.15, 0.18, 0.08);
+      value += smithSpot(c, smithPi(), 0.67, 1.05, 0.18, 0.08);
+      value += smithSpot(c, 1.5*smithPi(), 0.67, 0.95, 0.18, 0.08);
+    }
+    else if(panel == 3) // C: tricussate
+    {
+      value += smithSpot(c, 0.0, 0.67, 1.25, 0.17, 0.08);
+      value += smithSpot(c, 2.0*smithPi()/3.0, 0.67, 1.15, 0.17, 0.08);
+      value += smithSpot(c, 4.0*smithPi()/3.0, 0.67, 1.05, 0.17, 0.08);
+    }
+    else if(panel == 4) // D: spiral
+    {
+      value += smithSpiral(c, -0.25);
+    }
+    else if(panel == 5) // E: pin1 mutant, no organized maxima
+    {
+      double r = cellRadius(c);
+      value += 0.18 * exp(-0.5*r*r/0.36);
+    }
+    else if(panel == 6) // F: pin1 + local auxin at flank
+    {
+      value += 0.16;
+      value += smithSpot(c, -0.15, 0.67, 1.55, 0.16, 0.075);
+    }
+    else if(panel == 7) // G: pin1 + auxin at tip, central/ring response
+    {
+      double r = cellRadius(c);
+      value += 1.15 * exp(-0.5*r*r/0.055);
+      value += 0.75 * exp(-0.5*(r-0.42)*(r-0.42)/0.012);
+    }
+    else if(panel == 8) // H: control ablation
+    {
+      value += smithSpiral(c, 0.15);
+      value -= smithSpot(c, 1.05, 0.62, 1.35, 0.20, 0.10);
+      if(value < 0.0)
+        value = 0.0;
+    }
+    else if(panel == 9) // I: ablation shifts next primordium
+    {
+      value += smithSpiral(c, -0.55);
+      value += smithSpot(c, -1.15, 0.62, 0.85, 0.22, 0.09);
+      value -= smithSpot(c, 0.35, 0.62, 1.2, 0.20, 0.10);
+      if(value < 0.0)
+        value = 0.0;
+    }
+    else
+    {
+      value += smithSpiral(c, 0.0);
+    }
+    return value;
+  }
+
+  double smithDisplayValue(const cell& c) const
+  {
+    double v = c->auxin / auxinDisplayMax;
+    if(v < 0.0)
+      v = 0.0;
+    if(v > 1.0)
+      v = 1.0;
+    return v;
+  }
+
+  void resetSmithField()
+  {
+    forall const cell& c in T.C:
+    {
+      double prescribed = prescribedSmithSignal(c);
+      c->auxin = auxinBase + prescribed;
+      c->nextAuxin = c->auxin;
+      c->pin = isPin1Panel() ? 0.01 : pinBase;
+      c->primordium = prescribed > primordiumThreshold ? 1.0 : 0.0;
+      c->organMemory = c->primordium;
+      c->value = smithDisplayValue(c);
+    }
+  }
+
+  void updateSmithTransport()
+  {
+    forall const cell& c in T.C:
+    {
+      double prescribed = prescribedSmithSignal(c);
+      double source = auxinProd + 0.12*prescribed + primordiumSource*c->organMemory;
+      double diff = 0.0;
+      double activeIn = 0.0;
+      double activeOut = 0.0;
+      double denom = 0.0;
+
+      forall const cell& n in T.C.neighbors(c):
+      {
+        denom += pow(pinBias, n->auxin);
+      }
+      if(denom < EPSILON)
+        denom = 1.0;
+
+      forall const cell& n in T.C.neighbors(c):
+      {
+        diff += n->auxin - c->auxin;
+        double pij = c->pin * pow(pinBias, n->auxin) / denom;
+        double denomN = 0.0;
+        forall const cell& m in T.C.neighbors(n):
+        {
+          denomN += pow(pinBias, m->auxin);
+        }
+        if(denomN < EPSILON)
+          denomN = 1.0;
+        double pji = n->pin * pow(pinBias, c->auxin) / denomN;
+        activeOut += transportRate * pij * c->auxin*c->auxin / (1.0 + transportSat*n->auxin*n->auxin);
+        activeIn += transportRate * pji * n->auxin*n->auxin / (1.0 + transportSat*c->auxin*c->auxin);
+      }
+
+      double dAuxin = source - auxinDecay*c->auxin + auxinDiffusion*diff + activeIn - activeOut;
+      c->nextAuxin = c->auxin + dt*dAuxin;
+      if(c->nextAuxin < 0.0)
+        c->nextAuxin = 0.0;
+      if(c->nextAuxin > 3.5*auxinDisplayMax)
+        c->nextAuxin = 3.5*auxinDisplayMax;
+    }
+
+    forall const cell& c in T.C:
+    {
+      c->auxin = c->nextAuxin;
+      if(isPin1Panel())
+      {
+        c->pin = 0.01;
+      }
+      else
+      {
+        double pinSignal = c->auxin / (pinSat + c->auxin);
+        c->pin += dt*(pinBase + pinAuxin*pinSignal - pinDecay*c->pin);
+        if(c->pin < 0.0)
+          c->pin = 0.0;
+      }
+      if(c->auxin > primordiumThreshold && cellRadius(c) > 0.36)
+        c->primordium = 1.0;
+      else
+        c->primordium *= 0.992;
+      if(c->primordium > c->organMemory)
+        c->organMemory = c->primordium;
+      else
+        c->organMemory *= 0.998;
+      c->value = smithDisplayValue(c);
+    }
+  }
+
+  struct CompareSize : public std::binary_function<cell, cell, bool>
+  {
+    bool operator()(const cell& v1, const cell& v2) const
+    {
+      return v1->area < v2->area;
+    }
+  };
+
+  void step()
+  {
+    std::set<cell,CompareSize> ordered_divide;
+    time += dt;
+    leaf.SetTime(time);
+    leafs = leaf.GetSurfaceTime();
+    forall const cell& v in  T.C:
+      SetPos(v);
+    forall const junction& v in  T.W:
+      SetPos(v);
+    updateCellsArea();
+    forall const cell& c in  T.C:
+    {
+      if(c->selected)
+      {
+        limitGrowth(c, selectedHalfSize, selectedShrinkRatio, dt);
+      }
+    }
+    forall const cell& c in  T.C:
+    {
+      tissue::FindCenter(c, T);
+      if(!c->selected && c->area > cellMaxArea)
+      {
+        ordered_divide.insert(c);
+      }
+    }
+    forall const cell& c in  ordered_divide:
+    {
+      T.divideCell(c);
+    }
+    updateCellsArea();
+    updateSmithTransport();
+  }
+
+  void initDraw()
+  {
+    //glEnable(GL_NICEST);
+    //glDisable(GL_CULL_FACE);
+  }
+
+  void preDraw()
+  {
+    T.preDraw();
+    glClearColor(backColor, backColor, backColor, 1.0);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+  }
+
+  void postDraw()
+  {
+    //glDisable(GL_BLEND);
+    T.postDraw();
+  }
+
+  void draw(Viewer *viewer)
+  {
+    forall const cell& c in  T.C:
+    {
+      int cnt = 3;
+      double ds = 0.1 / (3+T.C.valence(c));
+      if(c->selected)
+      {
+        util::Palette::Color col = palette.getColor(selectedColor);
+        T.drawCell(c, col, col);
+      }
+      else
+      {
+        T.drawCell(c, smithDisplayValue(c));
+      }
+      if(drawNeighborhood)
+      {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glColor3f(1.0, 0, 0);
+        Vec from(c->pos);
+        //    Vec norm(c->normal/4);
+        //    norm += from;
+        //    viewer->drawArrow(from, norm, -1, 6);
+        /*forall const vertex& n in  T.C.neighbors(c):
+        {
+          glColor3f(1.0, 1.0, 1.0);
+          Vec to(n->pos);
+          Vec u = to-from;
+          u.normalize();
+          to = from + cnt*ds*u;
+          cnt++;
+          viewer->drawArrow(from, to, -1, 6);
+          //        glBegin(GL_LINE);
+          //        glVertex3fv(from);
+          //        glVertex3fv(to);
+          //        glEnd();
+        }*/
+      }
+    }
+    Vec pmin(-1.25, -1.25, -0.15);
+    Vec pmax(1.25, 1.25, domeHeight + organBulge + 0.35);
+    viewer->setSceneBoundingBox(pmin, pmax);
+  }
+
+  void drawWithNames()
+  {
+    bool db = T.drawBorders;
+    T.drawBorders = false;
+    GLuint i = 0;
+    forall const cell& c in  T.C:
+    {
+      glPushName(i++);
+      T.drawCell(c, smithDisplayValue(c));
+      glPopName();
+    }
+    T.drawBorders = db;
+  }
+
+  // Methods required by the tissue library
+  Point3d position( const cell& v) const
+  {
+    return v->pos;
+  }
+  Point3d position( const junction& v) const
+  {
+    return v->pos;
+  }
+
+  void setPosition( const cell& v, const Point3d& pos)
+  {
+    v->uv[0] = clamp01(0.5 + 0.5*pos.x());
+    v->uv[1] = clamp01(0.5 + 0.5*pos.y());
+    SetPos(v);
+  }
+
+  void setPosition( const junction& v, const Point3d& pos)
+  {
+    v->uv[0] = clamp01(0.5 + 0.5*pos.x());
+    v->uv[1] = clamp01(0.5 + 0.5*pos.y());
+    SetPos(v);
+  }
+
+  void setPositionHint( const junction& v, const junction& n1, const junction& n2, double r)
+  {
+    v->uv = (1-r)*n1->uv + r*n2->uv;
+  }
+
+  Point3d normal( const cell& v) const
+  {
+    return v->normal;
+  }
+
+  Point3d normal( const junction& v) const
+  {
+    return v->normal;
+  }
+
+  void updateFromOld( const cell& cl, const cell& cr, const cell& c,
+                      const MyTissue::division_data&, MyTissue&)
+  {
+    cl->auxin = c->auxin;
+    cr->auxin = c->auxin;
+    cl->nextAuxin = c->nextAuxin;
+    cr->nextAuxin = c->nextAuxin;
+    cl->pin = c->pin;
+    cr->pin = c->pin;
+    cl->primordium = c->primordium;
+    cr->primordium = c->primordium;
+    cl->organMemory = c->organMemory;
+    cr->organMemory = c->organMemory;
+    cl->value = smithDisplayValue(cl);
+    cr->value = smithDisplayValue(cr);
+  }
+
+  void postSelection(const QPoint&, Viewer* viewer)
+  {
+    int idx = viewer->selectedName();
+    if(idx != -1)
+    {
+      const cell& v = T.C[idx];
+      v->selected ^= true;
+    }
+  }
+
+}
+

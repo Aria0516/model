@@ -1,0 +1,11 @@
+﻿
+=== lowG+field   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+track tau_c=2                  0.27   140.1       1%     1%     0.15      8/8      7      5.9      5.2   {'spiral': 8}
+time step / 2                  0.27   140.1       1%     1%     0.15      8/8      7      5.8      5.1   {'spiral': 8}
+geometry update x2.5 finer     0.27   139.9       8%     2%     0.17      7/8      6      6.2      5.4   {'spiral': 7, 'intermediate~': 1}
+exclusion radius 2             0.27   140.1       2%     2%     0.15      8/8      6      5.5      5.0   {'spiral': 8}
+exclusion radius 4.5           0.27   140.1       1%     1%     0.15      8/8      7      5.9      5.2   {'spiral': 8}
+tracking radius 2.0            0.27   140.0      11%     6%     0.20      7/8      5      7.8      7.1   {'spiral': 7, 'intermediate~': 1}
+tracking radius 3.0            0.27   139.9       2%     1%     0.14      8/8      7      4.8      4.2   {'spiral': 8}
+no memory (tau_M=0)            0.23   140.7       6%     3%     0.20      7/8      6      6.8      6.3   {'spiral': 7, 'spiral~': 1}

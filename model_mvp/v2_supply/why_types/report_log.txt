@@ -1,0 +1,34 @@
+﻿outcome in the analysed period, by start (counts)
+config               start       runs  spiral  lucas  decussate  distichous  intermediate  other-regular  irregular
+src=+2 rho_in=0      direct       16      2      8         3          0            0             0          3
+src=+2 rho_in=0      ramp         16      0      0        10          0            0             0          6
+src=+2 rho_in=0      spiral        8      7      0         0          0            0             0          1
+src=+2 rho_in=0      lucas         8      0      8         0          0            0             0          0
+src=+2 rho_in=0      decussate     8      0      0         6          0            0             0          2
+src=+2 rho_in=2      direct       16      9      3         0          0            0             0          4
+src=+2 rho_in=2      ramp         16      7      0         0          0            0             0          9
+src=+2 rho_in=2      spiral        8      8      0         0          0            0             0          0
+src=+2 rho_in=2      lucas         8      2      3         0          0            0             0          3
+src=+2 rho_in=2      decussate     8      5      0         0          0            0             0          3
+src=+4 rho_in=0      direct       16      3      3         9          0            0             0          1
+src=+4 rho_in=0      ramp         16      0      0        13          0            0             0          3
+src=+4 rho_in=0      spiral        8      7      0         0          0            0             0          1
+src=+4 rho_in=0      lucas         8      0      8         0          0            0             0          0
+src=+4 rho_in=0      decussate     8      0      0         5          0            0             0          3
+src=+4 rho_in=2      direct       16     10      3         0          0            0             0          3
+src=+4 rho_in=2      ramp         16     10      0         1          0            0             0          5
+src=+4 rho_in=2      spiral        8      8      0         0          0            0             0          0
+src=+4 rho_in=2      lucas         8      3      3         0          0            0             0          2
+src=+4 rho_in=2      decussate     8      5      0         0          0            0             0          3
+all four             direct       64     24     17        12          0            0             0         11
+all four             ramp         64     17      0        24          0            0             0         23
+all four             spiral       32     30      0         0          0            0             0          2
+all four             lucas        32      5     22         0          0            0             0          5
+all four             decussate    32     10      0        11          0            0             0         11
+T2a  direct start: regular runs 53/64; of these, runs whose windows show more than one regular type: 0
+     irregular runs 11: 10 contain at least one regular window; 3 contain regular windows of more than one type
+T2b  seeded starts keeping their own type:
+     spiral     30/32   (end patterns: {'spiral': 30, 'lucas': 0, 'decussate': 0, 'distichous': 0, 'intermediate': 0, 'other regular': 0, 'irregular': 2})
+     lucas      22/32   (end patterns: {'spiral': 5, 'lucas': 22, 'decussate': 0, 'distichous': 0, 'intermediate': 0, 'other regular': 0, 'irregular': 5})
+     decussate  11/32   (end patterns: {'spiral': 10, 'lucas': 0, 'decussate': 11, 'distichous': 0, 'intermediate': 0, 'other regular': 0, 'irregular': 11})
+T3   ordinary spiral: direct 24/64 = 38%, ramp 17/64 = 27%;  Lucas: direct 27%, ramp 0%

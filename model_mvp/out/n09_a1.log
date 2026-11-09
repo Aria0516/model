@@ -1,0 +1,6 @@
+﻿
+=== lowG+field   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant                        0.26   141.4      17%    11%     0.21     12/16     6      9.1      9.0   {'lucas': 1, 'spiral': 11, 'spiral~': 4}
+track tau_c=1                  0.26   140.2       4%     2%     0.14     14/16    14      5.9      5.2   {'spiral': 14, 'spiral~': 2}
+track tau_c=2                  0.27   139.9       1%     0%     0.15     16/16    14      6.0      5.4   {'spiral': 15, 'lucas': 1}

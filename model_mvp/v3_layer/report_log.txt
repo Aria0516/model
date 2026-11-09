@@ -1,0 +1,24 @@
+﻿main period 1250-1700; durations in units of the mean interval between primordia
+model                          rho_in  runs  patterns                                   above-threshold median   read-out on   onset median   no transport: primordia
+single layer                     0.0     8   decussate 6, decussate~ 2                     0.07                  0/222         nan         [0, 0, 0]
+single layer                     2.0     8   spiral 7, intermediate~ 1                     0.07                  0/249         nan         [0, 0, 0]
+k_v=0.3 K_e=inf eta2=1           0.0     8   spiral 8                                      0.15                291/291        1.57         [0, 0, 0]
+k_v=0.3 K_e=inf eta2=3           0.0     8   spiral 8                                      0.11                279/279        1.67         [0, 0, 0]
+k_v=0.3 K_e=3.0 eta2=1           0.0     8   spiral 8                                      4.27                296/296        1.19         [0, 0, 0]
+k_v=0.3 K_e=3.0 eta2=3           0.0     8   spiral 8                                      3.87                286/286        1.15         [0, 0, 0]
+k_v=1 K_e=inf eta2=1             0.0     8   spiral 8                                      4.59                322/322        1.18         [0, 0, 0]
+k_v=1 K_e=inf eta2=3             0.0     8   spiral 8                                      3.19                301/301        1.16         [0, 0, 0]
+k_v=1 K_e=3.0 eta2=1             0.0     8   spiral 8                                      4.72                320/320        1.03         [0, 0, 0]
+k_v=1 K_e=3.0 eta2=3             0.0     8   spiral 8                                      4.23                303/303        0.94         [0, 0, 0]
+k_v=0.3 K_e=inf eta2=1           2.0     8   spiral 8                                      0.12                294/294        2.09         [0, 0, 0]
+k_v=0.3 K_e=inf eta2=3           2.0     8   spiral 8                                      0.09                286/289        2.39         [0, 0, 0]
+k_v=0.3 K_e=3.0 eta2=1           2.0     8   spiral 8                                      3.90                302/302        1.57         [0, 0, 0]
+k_v=0.3 K_e=3.0 eta2=3           2.0     8   spiral 8                                      3.62                292/292        1.50         [0, 0, 0]
+k_v=1 K_e=inf eta2=1             2.0     8   spiral 8                                      3.91                316/316        1.55         [0, 0, 0]
+k_v=1 K_e=inf eta2=3             2.0     8   spiral 8                                      0.25                299/299        1.62         [0, 0, 0]
+k_v=1 K_e=3.0 eta2=1             2.0     8   spiral 8                                      4.90                325/325        1.37         [0, 0, 0]
+k_v=1 K_e=3.0 eta2=3             2.0     8   spiral 8                                      3.81                302/302        1.25         [0, 0, 0]
+
+PL1 every group longer than single layer: True | groups with median >= 1 interval: [('layer', 0.0, 0.3, 3.0, 1.0), ('layer', 0.0, 0.3, 3.0, 3.0), ('layer', 0.0, 1.0, 0.0, 1.0), ('layer', 0.0, 1.0, 0.0, 3.0), ('layer', 0.0, 1.0, 3.0, 1.0), ('layer', 0.0, 1.0, 3.0, 3.0), ('layer', 2.0, 0.3, 3.0, 1.0), ('layer', 2.0, 0.3, 3.0, 3.0), ('layer', 2.0, 1.0, 0.0, 1.0), ('layer', 2.0, 1.0, 3.0, 1.0), ('layer', 2.0, 1.0, 3.0, 3.0)] -> pass
+PL2 groups with >50% opening and onset 0.5-1.5 intervals: [('layer', 0.0, 0.3, 3.0, 1.0), ('layer', 0.0, 0.3, 3.0, 3.0), ('layer', 0.0, 1.0, 0.0, 1.0), ('layer', 0.0, 1.0, 0.0, 3.0), ('layer', 0.0, 1.0, 3.0, 1.0), ('layer', 0.0, 1.0, 3.0, 3.0), ('layer', 2.0, 0.3, 3.0, 3.0), ('layer', 2.0, 1.0, 3.0, 1.0), ('layer', 2.0, 1.0, 3.0, 3.0)] -> pass
+PL3 groups producing primordia without polar transport: none -> pass

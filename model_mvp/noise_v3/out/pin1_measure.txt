@@ -1,0 +1,5 @@
+qDII-CLV3-PIN1-PI-LD_E35_171110_sam04_t00     walls  1268  L1 cells  691  in band  358  used  325  neighbours 4.1 | s_X 0.088  s_PI 0.060  (s_lnPIN1 uncorrected for PI 0.080)  sigma_PIN 0.064
+qDII-CLV3-PIN1-PI-LD_E35_171110_sam06_t00     walls   836  L1 cells  535  in band  389  used  278  neighbours 4.3 | s_X 0.183  s_PI 0.164  (s_lnPIN1 uncorrected for PI 0.197)  sigma_PIN 0.081
+qDII-CLV3-PIN1-PI-LD_E37_171113_sam05_t00     walls  1347  L1 cells  683  in band  381  used  366  neighbours 4.4 | s_X 0.104  s_PI 0.067  (s_lnPIN1 uncorrected for PI 0.106)  sigma_PIN 0.080
+qDII-CLV3-PIN1-PI-LD_E37_171113_sam07_t00     walls  1127  L1 cells  748  in band  393  used  315  neighbours 4.3 | s_X 0.133  s_PI 0.080  (s_lnPIN1 uncorrected for PI 0.146)  sigma_PIN 0.107
+sigma_PIN median 0.080 over 4 meristems (range 0.064-0.107); s_X (upper bound) median 0.119

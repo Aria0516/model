@@ -1,0 +1,3 @@
+[submodule "reproductions/elife55832/sam_spaghetti"]
+	path = reproductions/elife55832/sam_spaghetti
+	url = https://github.com/elifesciences-publications/sam_spaghetti.git

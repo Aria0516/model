@@ -1,0 +1,56 @@
+anim.a
+arab1.patch
+arabs2_1.patch
+arabs2_2.patch
+description.html
+g_prog1.patch
+g_prog2.patch
+g_prog3.patch
+g_prog4.patch
+g_prog5.patch
+g_prog6.patch
+grow_at_top.anim
+leaf1.patch
+leaf2.anim
+leaf3.anim
+leaf.anim
+leaf_final.patch
+LSspecifications
+Makefile
+model.vvl
+model.expmap
+model.moc
+model.o
+model.vve
+pal.map
+rectangle.anim
+rectangle.patch
+square1.anim
+square.anim
+square.patch
+view.v
+ignore:
+.*.swp
+*
+VVE:
+	run:
+		make run
+	build:
+		make model.vve
+	clean:
+		make clean
+Files:
+	program:
+		EDIT model.vvl
+	parameters:
+		EDIT view.v
+	Description:
+		EDIT description.html
+	Makefile:
+		EDIT Makefile
+
+Colormap:
+	PALETTE pal.map
+
+
+

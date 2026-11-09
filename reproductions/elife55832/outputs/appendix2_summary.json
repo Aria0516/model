@@ -1,0 +1,17 @@
+{
+  "paper": "Galvan-Ampudia et al., eLife 2020, e55832",
+  "seed": 55832,
+  "n_systems": 600,
+  "parameters": {
+    "R_um": 30.0,
+    "alpha_deg": 137.51,
+    "beta": 0.23,
+    "sigma_alpha_deg": 3.6,
+    "sigma_tau": 0.22
+  },
+  "mean_angular_sd_ranks_1_to_5_deg": 6.113487562074855,
+  "paper_observed_angular_sd_deg": 6.7,
+  "separability_at_inferred_noise": 0.9661111111111111,
+  "equation_30_interpretation": "multiplicative radial recurrence consistent with equations 26-29",
+  "feature_scaling": "wrapped theta/alpha and log(r/R)/beta; released package lacks Appendix 2 code"
+}

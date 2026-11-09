@@ -1,0 +1,20 @@
+﻿depth = fractional auxin deficit on the ring at the primordium's azimuth (0-15 deg); centre = auxin at the primordium / before it
+model                          rho_in   depth 0-15   45-60   165-180   centre
+single layer                     0.0      0.611      0.227    0.012     1.08
+single layer                     2.0      0.536      0.183    0.008     1.16
+k_v=0.3 K_e=inf eta2=1           0.0      0.530      0.135    0.005     1.11
+k_v=0.3 K_e=inf eta2=3           0.0      0.560      0.153    0.006     1.05
+k_v=0.3 K_e=3.0 eta2=1           0.0      0.463      0.127    0.005     1.65
+k_v=0.3 K_e=3.0 eta2=3           0.0      0.491      0.141    0.005     1.57
+k_v=1 K_e=inf eta2=1             0.0      0.447      0.099    0.005     1.13
+k_v=1 K_e=inf eta2=3             0.0      0.521      0.128    0.006     1.00
+k_v=1 K_e=3.0 eta2=1             0.0      0.411      0.102    0.005     1.56
+k_v=1 K_e=3.0 eta2=3             0.0      0.481      0.126    0.006     1.38
+k_v=0.3 K_e=inf eta2=1           2.0      0.477      0.117    0.003     1.20
+k_v=0.3 K_e=inf eta2=3           2.0      0.505      0.132    0.004     1.13
+k_v=0.3 K_e=3.0 eta2=1           2.0      0.410      0.110    0.003     1.73
+k_v=0.3 K_e=3.0 eta2=3           2.0      0.436      0.122    0.004     1.63
+k_v=1 K_e=inf eta2=1             2.0      0.411      0.089    0.003     1.22
+k_v=1 K_e=inf eta2=3             2.0      0.477      0.113    0.004     1.08
+k_v=1 K_e=3.0 eta2=1             2.0      0.373      0.090    0.003     1.65
+k_v=1 K_e=3.0 eta2=3             2.0      0.436      0.111    0.004     1.45

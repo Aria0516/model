@@ -1,0 +1,8 @@
+data/
+outputs/
+third_party/
+__pycache__/
+*.pyc
+sam_spaghetti/.git/
+dependencies/timagetk-2.1.0/.git/
+

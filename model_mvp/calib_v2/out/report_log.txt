@@ -1,0 +1,7 @@
+data: P0 radius at 0 h median 29.0 um (IQR 26.0-33.3, n=20); P0 azimuthal width median 44.4 um (IQR 38.2-52.0, n=20)
+paper: angle 137.5, P1-P5 spread 6.7 deg, interval CV 0.22, non-canonical 15% (Besnard WT)
+model            rho_in  patterns                         angle   non-can  spread  gap CV   G     r at commit (um)  P0 width (um)
+main line           0    spiral 16                         141.5      0%    3.0   0.13   0.25     28.6            39.8 (n=571)
+main line           2    spiral 16                         141.2      0%    3.2   0.13   0.25     26.2            34.6 (n=587)
+calibrated          0    spiral 16                         141.5      0%    3.1   0.14   0.25     29.0            40.4 (n=575)
+calibrated          2    spiral 16                         141.3      0%    3.4   0.15   0.24     26.6            35.4 (n=590)

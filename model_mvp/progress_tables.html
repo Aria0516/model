@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>模型进展表格</title>
+<style>
+  body { font-family: "SimSun", "宋体", serif; font-size: 10.5pt; color: #000; background: #fff; margin: 24px; }
+  h3 { font-family: "SimHei", "黑体", sans-serif; font-size: 12pt; margin: 18px 0 8px; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 18px; }
+  th, td { border: 1px solid #000; padding: 4px 6px; vertical-align: top; text-align: left; line-height: 1.5; }
+  th { font-family: "SimHei", "黑体", sans-serif; font-weight: bold; background: #f2f2f2; text-align: center; }
+  td.c { text-align: center; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<h3>表 1　模型各版本及主要结论</h3>
+<table>
+  <tr><th style="width:8%">版本</th><th style="width:40%">主要内容</th><th style="width:52%">主要结论</th></tr>
+  <tr>
+    <td class="c">v1</td>
+    <td>细胞水平的生长素–PIN1 模型：PIN1 沿生长素梯度上行极化，每个细胞的 PIN 总量有限，原基作为生长素的汇；为降低噪声加入次级抑制场与“跟随后定位”。</td>
+    <td>只改变发生环大小与抑制范围之比，即可依次得到二列互生、螺旋、交互对生；但叶序的有序性来自按规则性挑选的参数。</td>
+  </tr>
+  <tr>
+    <td class="c">v2</td>
+    <td>在 v1 基础上：生长素在外围合成、经极性运输供给发生环；原基把生长素排入内层。用 21 个茎尖的实测细胞间距与中央区半径标定几何。</td>
+    <td>关掉极性运输后不再产生原基（与 pin1 突变体和 NPA 处理一致）；原基起始后保持高生长素，慢读出滞后约一个原基间隔；起始半径 26–29 µm（实测 29 µm）。仍明显过于规则（P1–P5 相对夹角离散 3°，实测 6.7°；非规范夹角 0%，实测 15%），平均夹角约 141°（实测 137.5°）。</td>
+  </tr>
+  <tr>
+    <td class="c">v3</td>
+    <td>去掉按规则性挑选的设定：极化增益改用文献值，去掉“跟随后定位”，次级抑制场改为 AHP6 的文献形式（延迟出现、局部作用），时间积分按实测暴露时长设定；15 个没有测量值的参数在合理范围内抽样 120 组，只报告结果分布。</td>
+    <td>规则螺旋只占 11%，且只出现在“原基起始受运输限制”的参数下；有序与否主要取决于未测量的原基抑制范围、向心运输强度和汇强度；AHP6 形式的抑制场几乎不起作用；规则螺旋的平均夹角仍约 141°。未经调整即与实测大体相符的：原基间隔（约 13.8 h，实测 12 ± 2 h）、同时起始比例（约 36%，实测约 28%）。</td>
+  </tr>
+</table>
+
+<h3>表 2　主要检验及结论</h3>
+<table>
+  <tr><th style="width:24%">检验</th><th style="width:38%">结果</th><th style="width:38%">结论</th></tr>
+  <tr>
+    <td>尺度标定（21 个茎尖）</td>
+    <td>L1 细胞间距 4.53 µm，中央区半径 27.3 µm；模型 1 个单位约 4.9 µm。</td>
+    <td>早先“发生环约 40 µm、实测约 30 µm”的不符来自对细胞大小的假设，模型几何与实测相符。</td>
+  </tr>
+  <tr>
+    <td>细胞间 PIN 量的随机差异</td>
+    <td>实测细胞间 PIN1 差异约 8%（4 个 PIN1 茎尖）；模型要达到实测的不规则程度需要 32–48%。</td>
+    <td>PIN 量的随机差异不足以解释叶序的不规则。</td>
+  </tr>
+  <tr>
+    <td>由流量自我增强的排出通道（运河化）</td>
+    <td>开始排出的细胞先耗尽自身生长素，通道无法自行起始。</td>
+    <td>排出通道位于 PIN1 汇聚点的下游，不能决定原基何时何处起始。</td>
+  </tr>
+  <tr>
+    <td>表皮自发形成 PIN1 汇聚点</td>
+    <td>在运输供给结构下，任何极化增益与向心偏置下都不自发成峰。</td>
+    <td>“无运输则无器官”与“汇聚点自发形成”在现有模型中相互矛盾。</td>
+  </tr>
+  <tr>
+    <td>细胞的生长素响应（类 MONOPTEROS）产生极化线索</td>
+    <td>不放置原基也能自发形成分立、持续的原基，且无运输时不形成；但起始时序失序，叶序成为不规则的多轮排列。</td>
+    <td>原基的位置与起始时序由不同机制决定；保证依次起始的机制尚缺。</td>
+  </tr>
+</table>
+
+</body>
+</html>

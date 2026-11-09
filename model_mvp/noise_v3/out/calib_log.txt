@@ -1,0 +1,4 @@
+﻿rho_in 0: s_model(0) = 0.062  (s_data 0.224)
+  even sigma 2.0 gives s 0.141 < target
+rho_in 2: s_model(0) = 0.064  (s_data 0.224)
+  even sigma 2.0 gives s 0.116 < target

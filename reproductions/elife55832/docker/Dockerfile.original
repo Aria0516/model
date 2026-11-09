@@ -1,0 +1,22 @@
+FROM continuumio/miniconda3:4.8.2
+
+SHELL ["/bin/bash", "-lc"]
+
+COPY conda/env.yaml /tmp/sam_spaghetti_env.yaml
+RUN conda env create \
+      -n sam_spaghetti-dev \
+      -f /tmp/sam_spaghetti_env.yaml \
+    && conda clean --all --yes
+
+COPY . /opt/sam_spaghetti
+WORKDIR /opt/sam_spaghetti
+
+RUN source /opt/conda/etc/profile.d/conda.sh \
+    && conda activate sam_spaghetti-dev \
+    && python setup.py develop \
+    && python -c "import sam_spaghetti; print(sam_spaghetti.__version__)"
+
+ENV PATH=/opt/conda/envs/sam_spaghetti-dev/bin:${PATH}
+
+CMD ["/bin/bash"]
+

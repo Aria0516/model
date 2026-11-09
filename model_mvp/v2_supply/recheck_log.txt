@@ -1,0 +1,3 @@
+﻿handedness over 9 configurations x 8 seeds: 33 counter-clockwise, 39 clockwise; two-sided binomial p = 0.56
+opposite-pair start, 36 runs: regular 25/36; of these spiral or Lucas 12; patterns {'distichous~': 4, 'decussate~': 4, 'intermediate~': 1, 'decussate': 13, 'spiral': 12, 'spiral~': 1, 'lucas~': 1}
+initiation radius spread: mean 0.15 cells (max 0.45)

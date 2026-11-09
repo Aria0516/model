@@ -1,0 +1,4 @@
+﻿07:04:22 qDII-CLV3-PIN1-PI-LD_E35_171110_sam04_t00 already done
+07:04:22 qDII-CLV3-PIN1-PI-LD_E35_171110_sam06_t00 exit 0; wall tables 1
+10:03:56 qDII-CLV3-PIN1-PI-LD_E37_171113_sam05_t00 exit 0; wall tables 1
+14:47:18 qDII-CLV3-PIN1-PI-LD_E37_171113_sam07_t00 exit 0; wall tables 1

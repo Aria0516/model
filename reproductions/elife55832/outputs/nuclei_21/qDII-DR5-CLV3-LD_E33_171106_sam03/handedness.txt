@@ -1,0 +1,4 @@
+score +1.44 with orientation +1
+qDII-DR5-CLV3-LD_E33_171106_sam03_t00 +1.74 n=12
+qDII-DR5-CLV3-LD_E33_171106_sam03_t05 -2.21 n=9
+qDII-DR5-CLV3-LD_E33_171106_sam03_t10 +1.91 n=15

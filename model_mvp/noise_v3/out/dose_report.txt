@@ -1,0 +1,12 @@
+data: non-canonical 15%, P1-P5 spread 6.7 deg, interval CV 0.22, angle 137.5, G 0.23, P0 radius 29.0 um
+rho_in  sigma  patterns                                        regular  angle   non-can  spread  gap CV   G     r commit   T=0 primordia
+   0    0.00  spiral 16                                        16/16   141.5      0%    3.1   0.14   0.25    29.0    []
+   0    0.25  spiral 15, spiral~ 1                             15/16   141.4      0%    6.1   0.23   0.25    29.1    []
+   0    0.50  spiral~ 9, lucas~ 3, distichous~ 1, intermediate~ 1, spiral 1, other~ 1    1/16   142.1     49%   78.8   0.39   0.26    29.2    []
+   0    1.00  other~ 5, lucas~ 4, intermediate~ 4, spiral~ 2, distichous~ 1    0/16   119.6     67%   86.5   0.45   0.30    31.8    [0, 0, 0]
+rho_in 0: N1 monotone {'nc': True, 'spread': True, 'cv': True}; sigma reaching non-canonical 15%: 0.31; spread 6.7 deg: 0.25; sigma_need = 0.31
+   2    0.00  spiral 16                                        16/16   141.3      0%    3.4   0.15   0.24    26.6    []
+   2    0.25  spiral 16                                        16/16   141.1      0%    5.3   0.19   0.24    26.8    []
+   2    0.50  spiral~ 9, spiral 6, other~ 1                     6/16   141.6     22%   63.2   0.34   0.25    27.1    []
+   2    1.00  other~ 5, spiral~ 4, distichous~ 3, lucas~ 2, intermediate~ 2    0/16   138.8     69%   85.6   0.39   0.26    28.3    [0, 0, 0]
+rho_in 2: N1 monotone {'nc': True, 'spread': True, 'cv': True}; sigma reaching non-canonical 15%: 0.40; spread 6.7 deg: 0.25; sigma_need = 0.40

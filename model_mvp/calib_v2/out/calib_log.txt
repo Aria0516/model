@@ -1,0 +1,6 @@
+meristems 21; d median 4.53 um (IQR 4.48-4.57); CZ radius median 27.3 um (IQR 27.0-27.9)
+model cell spacing 0.922 units -> 4.908 um per unit; ring inner radius 5.57 units (main line 5.50)
+ring 2.00  rho_in 0  rho_far 1.700  free ring 4.00  ring(T=0)/ring 0.13 ok
+ring 2.00  rho_in 2  rho_far 1.125  free ring 4.00  ring(T=0)/ring 0.35 ok
+ring 5.57  rho_in 0  rho_far 10.902  free ring 4.00  ring(T=0)/ring 0.31 ok
+ring 5.57  rho_in 2  rho_far 6.795  free ring 4.00  ring(T=0)/ring 0.47 ok

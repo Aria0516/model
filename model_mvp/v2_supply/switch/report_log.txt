@@ -1,0 +1,47 @@
+﻿
+=== period 1250-1700 (main)
+start    kc    rho_in  R0 (both ends)  depth@ring+4  runs  spiral  lucas  decussate  distichous  other-regular  irregular
+ramp      1.0    0.0   yes             0.61        16       0      0        14          0             0         2
+ramp      1.0    0.5   yes             0.59        16       6      0         8          0             0         2
+ramp      1.0    1.0   yes             0.57        16      11      0         1          0             0         4
+ramp      1.0    1.5   yes             0.55        16      14      1         0          0             0         1
+ramp      1.0    2.0   yes             0.54        16      14      0         0          0             0         2
+ramp      1.0    3.0   yes             0.50        16      15      0         0          0             0         1
+ramp      1.5    0.0   yes             0.54        16      13      0         1          0             0         2
+ramp      1.5    0.5   yes             0.52        16      15      0         0          0             0         1
+ramp      1.5    1.0   yes             0.50        16      15      0         0          0             0         1
+ramp      1.5    1.5   yes             0.48        16      16      0         0          0             0         0
+ramp      1.5    2.0   yes             0.46        16      16      0         0          0             0         0
+ramp      1.5    3.0   yes             0.43        16      14      0         0          0             0         2
+direct    1.0    0.0   yes             0.61         8       1      4         2          0             0         1
+direct    1.0    0.5   yes             0.59         8       5      3         0          0             0         0
+direct    1.0    1.0   yes             0.57         8       6      2         0          0             0         0
+direct    1.0    1.5   yes             0.55         8       7      0         0          0             0         1
+direct    1.0    2.0   yes             0.54         8       7      0         0          0             0         1
+direct    1.0    3.0   yes             0.50         8       7      1         0          0             0         0
+
+=== period 650-1100
+start    kc    rho_in  R0 (both ends)  depth@ring+4  runs  spiral  lucas  decussate  distichous  other-regular  irregular
+ramp      1.0    0.0   yes             0.61        16       0      0        10          0             0         6
+ramp      1.0    0.5   yes             0.59        16       0      0         8          0             0         8
+ramp      1.0    1.0   yes             0.57        16       4      0         3          0             0         9
+ramp      1.0    1.5   yes             0.55        16       3      0         2          0             0        11
+ramp      1.0    2.0   yes             0.54        16       7      0         0          0             0         9
+ramp      1.0    3.0   yes             0.50        16       7      1         0          0             0         8
+ramp      1.5    0.0   yes             0.54        16       2      0         5          0             0         9
+ramp      1.5    0.5   yes             0.52        16       8      1         2          0             0         5
+ramp      1.5    1.0   yes             0.50        16       8      1         2          0             0         5
+ramp      1.5    1.5   yes             0.48        16      12      0         1          0             0         3
+ramp      1.5    2.0   yes             0.46        16      13      0         0          0             0         3
+ramp      1.5    3.0   yes             0.43        16       9      0         0          0             0         7
+direct    1.0    0.0   yes             0.61         8       1      4         3          0             0         0
+direct    1.0    0.5   yes             0.59         8       4      3         0          0             0         1
+direct    1.0    1.0   yes             0.57         8       5      2         0          0             0         1
+direct    1.0    1.5   yes             0.55         8       7      1         0          0             0         0
+direct    1.0    2.0   yes             0.54         8       7      0         0          0             0         1
+direct    1.0    3.0   yes             0.50         8       5      1         0          0             0         2
+
+=== verdict, ramp start, 1250-1700
+kc=1.0: decussate at rho_in=0 >= 50%: True; decussate <= 10% at rho_in >= 2: True; spiral [0, 6, 11, 14, 14, 15] roughly rising: True
+kc=1.5: decussate at rho_in=0 >= 50%: False; decussate <= 10% at rho_in >= 2: True; spiral [13, 15, 15, 16, 16, 14] roughly rising: True
+verdict: partial

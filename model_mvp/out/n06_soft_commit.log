@@ -1,0 +1,22 @@
+﻿
+=== spiral   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant (ref)                  0.59   138.8       6%     1%     0.14      8/10     6     10.0     13.0   {'spiral': 8, 'spiral~': 2}
+patch n=3                      0.62   141.7       3%     1%     0.11      9/10     8      9.4     11.8   {'spiral': 9, 'spiral~': 1}
+patch n=5                      0.65   145.8       3%     3%     0.06      9/10     9      7.8     10.8   {'spiral': 9, 'intermediate~': 1}
+patch n=7                      0.68   152.5      11%     8%     0.08      6/10     4      9.0     12.2   {'distichous~': 1, 'intermediate': 4, 'spiral': 2, 'intermediate~': 2, 'spiral~': 1}
+track tau_c=1                  0.55   144.2      30%    10%     0.45      4/10     1      7.5      7.4   {'spiral~': 4, 'spiral': 4, 'decussate~': 2}
+track tau_c=2                  0.36   158.1      68%    21%     1.04      0/10     0       --       --   {'decussate~': 10}
+track tau_c=4                  0.29     6.0      52%     9%     1.39      0/10     0       --       --   {'tricussate~': 4, 'whorl4~': 4, 'multijugate3~': 2}
+track tau_c=2 r=4              0.31     2.6      44%     1%     1.23      1/10     0       --       --   {'tricussate~': 3, 'multijugate3~': 3, 'decussate~': 2, 'multijugate4~': 1, 'decussate': 1}
+
+=== lowG+field   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant (ref)                  0.26   140.7       8%     5%     0.20      9/10     6      9.1      9.0   {'lucas': 1, 'spiral': 8, 'spiral~': 1}
+patch n=3                      0.27   140.1       9%     3%     0.20      8/10     8      9.6      8.2   {'spiral': 8, 'spiral~': 1, 'intermediate~': 1}
+patch n=5                      0.29   139.3      10%     5%     0.20      7/10     5      8.7      7.5   {'spiral': 7, 'spiral~': 3}
+patch n=7                      0.31   138.3      13%     8%     0.19      8/10     5     11.8     10.3   {'spiral': 8, 'spiral~': 2}
+track tau_c=1                  0.26   140.1       2%     1%     0.14      9/10     9      5.9      5.2   {'spiral': 9, 'spiral~': 1}
+track tau_c=2                  0.27   140.0       1%     1%     0.15     10/10     9      5.9      5.3   {'spiral': 10}
+track tau_c=4                  0.28   139.5       6%     1%     0.17      9/10     9      6.4      5.6   {'spiral': 7, 'distichous~': 1, 'lucas': 2}
+track tau_c=2 r=4              0.28   139.3      21%     1%     0.24      6/10     6      5.7      4.4   {'distichous~': 4, 'spiral': 5, 'lucas': 1}

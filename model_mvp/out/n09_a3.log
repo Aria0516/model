@@ -1,0 +1,10 @@
+﻿
+=== spiral+field   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant                        0.59   140.2       7%     0%     0.12      8/10     5     10.8     14.3   {'spiral': 8, 'other~': 1, 'spiral~': 1}
+track tau_c=2                  0.65   144.4       4%     4%     0.06      9/10     9      5.9      8.0   {'spiral': 9, 'spiral~': 1}
+
+=== lowerG+field   (paper: angle 137.5, spread 6.7, interval CV 0.22; Besnard WT non-canonical 15%)
+variant                         G    angle  non-canon  perm  intervalCV  regular  clean  spread r1  mean1-5
+instant                        0.21   141.8      22%    18%     0.19      5/10     0       --       --   {'spiral': 5, 'lucas~': 1, 'spiral~': 4}
+track tau_c=2                  0.21   141.2       1%     1%     0.13     10/10     8      7.4      6.8   {'spiral': 10}

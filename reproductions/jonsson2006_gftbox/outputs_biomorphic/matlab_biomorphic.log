@@ -1,0 +1,815 @@
+GFtbox dir: C:\Users\xczhang\Desktop\modeling\code\GrowthToolbox-20190306-v6030\GrowthToolbox
+Project parent: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work
+Project: GPT_CarnivorousTraps_3D_20191031
+Targets: [0.5 1 2 4 6 8 10 12]
+Started: 2026-06-29 10:25:23
+loadmesh_anyfile: Loading MAT file GPT_CarnivorousTraps_3D_20191031.mat in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031.
+[警告: Mesh has extra fields:] 
+[> 位置：validmesh (第 75 行)
+位置: upgrademesh (第 726 行)
+位置: loadmesh_anyfile (第 101 行)
+位置: leaf_loadmodel (第 115 行)
+位置: run_jonsson_gftbox_biomorphic (第 34 行)
+位置: run (第 112 行)] 
+
+    sharpedges
+    sharpvxs
+validmesh: Checking angle quality for general FEs is not yet supported.
+loadStaticData: Loading static MAT file C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+resetInteractionHandle
+addpathif: Adding C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031 to head of command path.
+Loaded model. t=0 iter=0 nodes=19625
+Running leaf_iterate until t=0.5000...
+Starting iteration 1, time 0.000, at 2026/06/29 10:25:52.
+rewriteInteractionSkeleton
+resetInteractionHandle
+addpathif: C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031 is at the head of the path.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+Jonsson3D biomorphic t=0.0000 nodes=4971 auxin_peaks=24 primordia=0 auxin_std=0.0062 organ_max=0.0000
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 0 (time 0 - 0.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using random displacement as initial guess.
+Growth:  0.891 (49.5217/55.593) ........ 0.000236
+Computation time for growth (cgs,sparse,double) is 1.741972 seconds.
+Completed iteration 1 at 2026/06/29 10:26:36.
+Simulation terminated on reaching time 0.500000.
+Reached t=0.5 iter=1
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+gethiresimage: 4.84887 seconds, mag 2, aa F.
+Running leaf_iterate until t=1.0000...
+Starting iteration 2, time 0.500, at 2026/06/29 10:26:43.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 1 (time 0.5 - 1).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0345 (1.91455/55.4405)  0.000428
+Computation time for growth (cgs,sparse,double) is 0.113689 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000001.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 2 at 2026/06/29 10:27:24.
+Simulation terminated on reaching time 1.000000.
+Reached t=1 iter=2
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+gethiresimage: 1.78562 seconds, mag 2, aa F.
+Running leaf_iterate until t=2.0000...
+Starting iteration 3, time 1.000, at 2026/06/29 10:27:26.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 2 (time 1 - 1.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.722 (555.62/769.445) ....... 0.000154
+Computation time for growth (cgs,sparse,double) is 1.021955 seconds.
+Completed iteration 3 at 2026/06/29 10:28:04.
+Starting iteration 4, time 1.500, at 2026/06/29 10:28:04.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 3 (time 1.5 - 2).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0471 (34.8886/740.34) .... 0.000628
+Computation time for growth (cgs,sparse,double) is 0.918873 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000002.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 4 at 2026/06/29 10:28:50.
+Simulation terminated on reaching time 2.000000.
+Reached t=2 iter=4
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+gethiresimage: 1.89151 seconds, mag 2, aa F.
+Running leaf_iterate until t=4.0000...
+Starting iteration 5, time 2.000, at 2026/06/29 10:28:53.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 4 (time 2 - 2.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.052 (37.4557/720.177) ..... 0.00054
+Computation time for growth (cgs,sparse,double) is 1.095846 seconds.
+Completed iteration 5 at 2026/06/29 10:29:35.
+Starting iteration 6, time 2.500, at 2026/06/29 10:29:35.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 5 (time 2.5 - 3).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:   0.06 (42.2468/703.683) ..... 0.00119
+Computation time for growth (cgs,sparse,double) is 0.707558 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000003.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 6 at 2026/06/29 10:30:21.
+Starting iteration 7, time 3.000, at 2026/06/29 10:30:21.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 6 (time 3 - 3.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0627 (43.4876/693.187) ..... 0.000281
+Computation time for growth (cgs,sparse,double) is 0.753270 seconds.
+Completed iteration 7 at 2026/06/29 10:30:51.
+Starting iteration 8, time 3.500, at 2026/06/29 10:30:51.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 7 (time 3.5 - 4).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0644 (43.6731/678.305) ..... 0.0133
+Computation time for growth (cgs,sparse,double) is 0.779756 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000004.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 8 at 2026/06/29 10:31:32.
+Simulation terminated on reaching time 4.000000.
+Reached t=4 iter=8
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+gethiresimage: 1.06076 seconds, mag 2, aa F.
+Running leaf_iterate until t=6.0000...
+Starting iteration 9, time 4.000, at 2026/06/29 10:31:33.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 8 (time 4 - 4.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0741 (49.5117/668.298) ...... 0.00239
+Computation time for growth (cgs,sparse,double) is 0.954359 seconds.
+Completed iteration 9 at 2026/06/29 10:32:09.
+Starting iteration 10, time 4.500, at 2026/06/29 10:32:09.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 9 (time 4.5 - 5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0633 (41.4202/654.109) ...... 0.000411
+Computation time for growth (cgs,sparse,double) is 0.937104 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000005.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 10 at 2026/06/29 10:32:45.
+Starting iteration 11, time 5.000, at 2026/06/29 10:32:45.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 10 (time 5 - 5.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0665 (42.7321/642.521) ....... 0.000492
+Computation time for growth (cgs,sparse,double) is 1.046001 seconds.
+Completed iteration 11 at 2026/06/29 10:33:16.
+Starting iteration 12, time 5.500, at 2026/06/29 10:33:16.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 11 (time 5.5 - 6).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.107 (67.2912/627.69) ...... 0.000377
+Computation time for growth (cgs,sparse,double) is 0.955473 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000006.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 12 at 2026/06/29 10:33:54.
+Simulation terminated on reaching time 6.000000.
+Reached t=6 iter=12
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+gethiresimage: 1.09559 seconds, mag 2, aa F.
+Running leaf_iterate until t=8.0000...
+Starting iteration 13, time 6.000, at 2026/06/29 10:33:56.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 12 (time 6 - 6.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.152 (93.2196/615.179) ....... 0.00235
+Computation time for growth (cgs,sparse,double) is 1.345144 seconds.
+Completed iteration 13 at 2026/06/29 10:34:35.
+Starting iteration 14, time 6.500, at 2026/06/29 10:34:35.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 13 (time 6.5 - 7).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth: 0.0783 (46.9697/600.065) ....... 0.000231
+Computation time for growth (cgs,sparse,double) is 1.043666 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000007.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 14 at 2026/06/29 10:35:16.
+Starting iteration 15, time 7.000, at 2026/06/29 10:35:16.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 14 (time 7 - 7.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.172 (100.389/585.055) ....... 0.000274
+Computation time for growth (cgs,sparse,double) is 1.403050 seconds.
+Completed iteration 15 at 2026/06/29 10:36:03.
+Starting iteration 16, time 7.500, at 2026/06/29 10:36:03.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 15 (time 7.5 - 8).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:   0.11 (62.2475/566.731) ...... 0.000386
+Computation time for growth (cgs,sparse,double) is 1.305466 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000008.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 16 at 2026/06/29 10:36:55.
+Simulation terminated on reaching time 8.000000.
+Reached t=8 iter=16
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+gethiresimage: 1.39535 seconds, mag 2, aa F.
+Running leaf_iterate until t=10.0000...
+Starting iteration 17, time 8.000, at 2026/06/29 10:36:57.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 16 (time 8 - 8.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.476 (261.276/548.482) ....... 0.000967
+Computation time for growth (cgs,sparse,double) is 1.370812 seconds.
+Completed iteration 17 at 2026/06/29 10:37:38.
+Starting iteration 18, time 8.500, at 2026/06/29 10:37:38.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 17 (time 8.5 - 9).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.283 (150.172/530.803) ......... 0.000142
+Computation time for growth (cgs,sparse,double) is 1.557808 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000009.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 18 at 2026/06/29 10:38:23.
+Starting iteration 19, time 9.000, at 2026/06/29 10:38:23.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 18 (time 9 - 9.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.428 (219.635/513.133) ........ 0.0014
+Computation time for growth (cgs,sparse,double) is 1.200765 seconds.
+Completed iteration 19 at 2026/06/29 10:39:05.
+Starting iteration 20, time 9.500, at 2026/06/29 10:39:05.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 19 (time 9.5 - 10).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.263 (130.705/496.051) ......... 0.00131
+Computation time for growth (cgs,sparse,double) is 1.409890 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000010.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 20 at 2026/06/29 10:39:43.
+Simulation terminated on reaching time 10.000000.
+Reached t=10 iter=20
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+gethiresimage: 0.965784 seconds, mag 2, aa F.
+Running leaf_iterate until t=12.0000...
+Starting iteration 21, time 10.000, at 2026/06/29 10:39:45.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+Jonsson3D biomorphic t=10.0000 nodes=4971 auxin_peaks=24 primordia=6 auxin_std=0.0667 organ_max=1.0000
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 20 (time 10 - 10.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.326 (155.939/479.023) .......... 0.000228
+Computation time for growth (cgs,sparse,double) is 1.489549 seconds.
+Completed iteration 21 at 2026/06/29 10:40:18.
+Starting iteration 22, time 10.500, at 2026/06/29 10:40:18.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 21 (time 10.5 - 11).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.487 (224.999/462.186) ......... 0.000257
+Computation time for growth (cgs,sparse,double) is 1.412289 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000011.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 22 at 2026/06/29 10:40:55.
+Starting iteration 23, time 11.000, at 2026/06/29 10:40:55.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 22 (time 11 - 11.5).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.528 (235.777/446.127) .......... 0.000229
+Computation time for growth (cgs,sparse,double) is 2.141718 seconds.
+Completed iteration 23 at 2026/06/29 10:41:43.
+Starting iteration 24, time 11.500, at 2026/06/29 10:41:43.
+Calling interaction function.
+gpt_carnivoroustraps_3d_20191031 found in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\gpt_carnivoroustraps_3d_20191031.m
+No diffusion, production, absorption, or transport.
+Growth computation beginning for iteration 23 (time 11.5 - 12).
+Building matrix, processed 10000 of 92096 elements.
+Building matrix, processed 20000 of 92096 elements.
+Building matrix, processed 30000 of 92096 elements.
+Building matrix, processed 40000 of 92096 elements.
+Building matrix, processed 50000 of 92096 elements.
+Building matrix, processed 60000 of 92096 elements.
+Building matrix, processed 70000 of 92096 elements.
+Building matrix, processed 80000 of 92096 elements.
+Building matrix, processed 90000 of 92096 elements.
+Using previous displacement as initial guess.
+Growth:  0.805 (346.565/430.701) ........... 0.000545
+Computation time for growth (cgs,sparse,double) is 2.411098 seconds.
+savemodelfile: Saving current state to GPT_CarnivorousTraps_3D_20191031 in C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_s000012.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+** Warning: getframe() failed: "指定矩形未完全包含在此图窗中。MATLAB 不再支持此功能。"
+Completed iteration 24 at 2026/06/29 10:42:38.
+Simulation terminated on reaching time 12.000000.
+Reached t=12 iter=24
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\jonsson2006_gftbox\work\GPT_CarnivorousTraps_3D_20191031\GPT_CarnivorousTraps_3D_20191031_static.mat.
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig (第 434 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 441 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+[警告: 在以后的版本中，UI 组件将不包含在输出中。要包含 UI 组件，请使用 exportapp 函数。] 
+[> 位置：print (第 86 行)
+位置: print2array (第 183 行)
+位置: export_fig/captureImage (第 844 行)
+位置: export_fig (第 444 行)
+位置: gethiresimage>get1image (第 50 行)
+位置: gethiresimage (第 29 行)
+位置: getGFtboxImage (第 44 行)
+位置: leaf_snapshot (第 209 行)
+位置: run_jonsson_gftbox_biomorphic (第 61 行)
+位置: run (第 112 行)] 
+gethiresimage: 0.975714 seconds, mag 2, aa F.
+Finished: 2026-06-29 10:42:39

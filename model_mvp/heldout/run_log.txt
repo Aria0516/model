@@ -1,0 +1,23 @@
+﻿===== H1
+H1  sink of one young primordium switched off (16 paired runs)
+  a. auxin at that primordium over the next interval, treated/control: median 1.90 (range 1.77-2.05); > 1.2 in 16/16
+  b. |treated - control| of the k-th angle after the treated primordium, mean over runs (deg):
+     k=1..8: 135.8 131.5   8.6  10.7   9.1  18.6  10.3  17.6   (n=16)
+  c. mean deviation from the dominant angle at k=4..8: treated 11.0, control 5.6 (ratio 1.95); treated runs ending as a regular pattern: 14/16; control: 16/16
+  criteria met: a=True b=True c=False  ->  FAIL
+===== H4
+H4  handedness: 23 counter-clockwise, 25 clockwise of 48; two-sided binomial p = 0.89  ->  PASS
+  reference              angle  140.0  interval  8.97  non-canonical    4%  intervalCV 0.16  short 0.00  Rb_sd 0.08  regular 45/48  primordia/run 67  {'spiral': 41, 'lucas': 4, 'spiral~': 3}
+===== H5
+  opposite-pair start    angle  139.9  interval  8.95  non-canonical    1%  intervalCV 0.15  short 0.00  Rb_sd 0.08  regular 16/16  primordia/run 69  {'spiral': 13, 'lucas': 3}
+H5  regular spiral in 16/16; first six angles (folded, mean over runs): 180 84 80 131 98 114; primordia needed before angles stay within 20 deg: median 10 (n=16)  ->  PASS
+===== H6
+  with field             angle  139.9  interval  8.96  non-canonical    1%  intervalCV 0.15  short 0.00  Rb_sd 0.08  regular 16/16  primordia/run 67  {'spiral': 15, 'lucas': 1}
+  field off              angle  154.9  interval  5.65  non-canonical   59%  intervalCV 1.52  short 0.53  Rb_sd 0.12  regular 2/16  primordia/run 128  {'whorl6~': 1, 'multijugate2~': 2, 'tricussate~': 4, 'multijugate9~': 1, 'whorl4~': 2, 'whorl5~': 2, 'spiral': 2, 'multijugate3~': 2}
+H6  a. angle change 14.9 deg (False)  b. interval change 37% (False)  c. non-canonical 1% -> 59%, canonical majority kept: False (False)  d. radius sd < 1 cell (True)  ->  FAIL
+===== H7
+  no polar transport     angle  141.5  interval  6.56  non-canonical   36%  intervalCV 0.12  short 0.00  Rb_sd 0.08  regular 3/8  primordia/run 92  {'lucas~': 2, 'spiral~': 1, 'distichous~': 1, 'spiral': 3, 'intermediate~': 1}
+H7  primordia per run without polar transport: [92, 92, 93, 91, 92, 92, 92, 92]  ->  FAIL
+===== H9
+H9  mean auxin: central zone 2.06, competent ring 2.75 (ratio 0.75); PIN inward index: ring +0.01, next 4 cells outward +0.08  ->  FAIL
+ALL DONE

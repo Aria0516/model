@@ -1,0 +1,24 @@
+<!DOCTYPE QGLVIEWER>
+<QGLViewer version="2.3.6">
+  <State stereo="false" cameraMode="revolve">
+    <foregroundColor red="180" blue="180" green="180"/>
+    <backgroundColor red="51" blue="51" green="51"/>
+  </State>
+  <Display axisIsDrawn="false" gridIsDrawn="false" FPSIsDisplayed="false" cameraIsEdited="false"/>
+  <Geometry fullScreen="false" width="877" posX="513" height="901" posY="66"/>
+  <Camera>
+    <Parameters fieldOfView="0.785398" sceneRadius="6.91263" Type="ORTHOGRAPHIC" zNearCoefficient="0.005" orthoCoef="0.415099" zClippingCoefficient="1.73205">
+      <SceneCenter x="-0.310444" y="-3.64835" z="0.0150786"/>
+    </Parameters>
+    <Stereo distToScreen="0.5" focusDistance="16.6886" physScreenWidth="0.4" IODist="0.062"/>
+    <ManipulatedCameraFrame>
+      <position x="0.950063" y="-4.02301" z="18.9643"/>
+      <orientation q0="0" q1="0" q2="0" q3="1"/>
+      <ManipulatedParameters transSens="1" rotSens="1" wheelSens="1" spinSens="0.3"/>
+      <ManipulatedCameraParameters flySpeed="0.0691263">
+        <flyUpVector x="0" y="1" z="0"/>
+      </ManipulatedCameraParameters>
+    </ManipulatedCameraFrame>
+  </Camera>
+  <GLFormat accum="no" rgba="yes" sampleBuffers="no" stereo="no" alpha="no" doubleBuffer="yes" stencil="yes" hasOverlay="no" depth="yes" directRendering="yes"/>
+</QGLViewer>

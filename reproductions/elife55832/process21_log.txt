@@ -1,0 +1,22 @@
+﻿16:47:42 qDII-DR5-CLV3-LD_E25_170811_sam03 score -2.67 with orientation +1; flipped to -1, score now +2.67, exit 0
+16:48:42 qDII-DR5-CLV3-LD_E25_170811_sam01 score -1.82 with orientation +1; flipped to -1, score now +1.82, exit 0
+16:48:42 qDII-DR5-CLV3-LD_E25_170811_sam04 score -1.24 with orientation +1; flipped to -1, score now +1.24, exit 0
+17:16:42 qDII-DR5-CLV3-LD_E25_170811_sam05 score -1.69 with orientation +1; flipped to -1, score now +1.69, exit 0
+17:17:42 qDII-DR5-CLV3-LD_E25_170811_sam07 score -7.31 with orientation +1; flipped to -1, score now +7.31, exit 0
+17:17:42 qDII-DR5-CLV3-LD_E25_170811_sam09 score -14.90 with orientation +1; flipped to -1, score now +14.90, exit 0
+17:46:42 qDII-DR5-CLV3-LD_E27_170817_sam01 score -9.11 with orientation +1; flipped to -1, score now +9.11, exit 0
+17:46:42 qDII-DR5-CLV3-LD_E27_170817_sam03 score -8.08 with orientation +1; flipped to -1, score now +8.08, exit 0
+17:46:42 qDII-DR5-CLV3-LD_E27_170817_sam04 score -3.09 with orientation +1; flipped to -1, score now +3.09, exit 0
+18:06:42 qDII-DR5-CLV3-LD_E27_170817_sam09 score +1.95 with orientation +1
+18:06:42 qDII-DR5-CLV3-LD_E27_170817_sam11 score +8.99 with orientation +1
+18:12:42 qDII-DR5-CLV3-LD_E31_171102_sam01 score -6.63 with orientation +1; flipped to -1, score now +6.63, exit 0
+20:16:54 qDII-DR5-CLV3-LD_E31_171102_sam11 score -6.32 with orientation +1; flipped to -1, score now +6.32, exit 0
+20:16:54 qDII-DR5-CLV3-LD_E33_171106_sam02 score -0.62 with orientation +1; flipped to -1, score now +0.62, exit 0
+20:17:54 qDII-DR5-CLV3-LD_E33_171106_sam01 score -3.27 with orientation +1; flipped to -1, score now +3.27, exit 0
+20:35:55 qDII-DR5-CLV3-LD_DR5-TEST_170226_sam06 score +1.05 with orientation +1
+20:36:55 qDII-DR5-CLV3-LD_DR5-TEST_170226_sam08 score +0.03 with orientation +1
+20:43:55 qDII-DR5-CLV3-LD_DR5-TEST_170226_sam04 score -3.23 with orientation +1; flipped to -1, score now +3.23, exit 0
+20:55:55 qDII-DR5-CLV3-LD_E33_171106_sam03 score +1.44 with orientation +1
+21:01:55 qDII-DR5-CLV3-LD_E33_171106_sam04 score -6.13 with orientation +1; flipped to -1, score now +6.13, exit 0
+21:01:55 qDII-DR5-CLV3-LD_E33_171106_sam07 score +1.60 with orientation +1
+finished: 21 of 21 meristems processed

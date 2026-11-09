@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="360" viewBox="0 0 840 360">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,sans-serif;fill:#222}.axis{stroke:#333;stroke-width:1}.grid{stroke:#ddd;stroke-width:1}</style>
+<text x="24" y="24" font-size="18" font-weight="700">Auxin range over GFtbox time</text>
+<polygon points="72.0,196.0 121.3,180.6 220.0,154.0 417.3,112.9 614.7,82.8 812.0,60.2 812.0,279.8 614.7,268.8 417.3,256.1 220.0,239.3 121.3,228.4 72.0,222.2" fill="#f4b6a8" opacity="0.45"/>
+<polyline points="72.0,196.0 121.3,180.6 220.0,154.0 417.3,112.9 614.7,82.8 812.0,60.2" fill="none" stroke="#b2182b" stroke-width="3"/>
+<polyline points="72.0,222.2 121.3,228.4 220.0,239.3 417.3,256.1 614.7,268.8 812.0,279.8" fill="none" stroke="#2166ac" stroke-width="3"/>
+<line class="axis" x1="72" y1="304" x2="812" y2="304"/>
+<line class="axis" x1="72" y1="36" x2="72" y2="304"/>
+<text x="718" y="63" font-size="12" fill="#b2182b">max auxin</text>
+<text x="718" y="83" font-size="12" fill="#2166ac">min auxin</text>
+<line class="grid" x1="72.0" y1="36" x2="72.0" y2="304"/>
+<text x="62.0" y="328" font-size="11">0.5</text>
+<line class="grid" x1="121.3" y1="36" x2="121.3" y2="304"/>
+<text x="111.3" y="328" font-size="11">1</text>
+<line class="grid" x1="220.0" y1="36" x2="220.0" y2="304"/>
+<text x="210.0" y="328" font-size="11">2</text>
+<line class="grid" x1="417.3" y1="36" x2="417.3" y2="304"/>
+<text x="407.3" y="328" font-size="11">4</text>
+<line class="grid" x1="614.7" y1="36" x2="614.7" y2="304"/>
+<text x="604.7" y="328" font-size="11">6</text>
+<line class="grid" x1="812.0" y1="36" x2="812.0" y2="304"/>
+<text x="802.0" y="328" font-size="11">8</text>
+<line class="grid" x1="72" y1="294.9" x2="812" y2="294.9"/>
+<text x="30" y="298.9" font-size="11">0.9</text>
+<line class="grid" x1="72" y1="214.1" x2="812" y2="214.1"/>
+<text x="30" y="218.1" font-size="11">1.0</text>
+<line class="grid" x1="72" y1="133.3" x2="812" y2="133.3"/>
+<text x="30" y="137.3" font-size="11">1.1</text>
+<line class="grid" x1="72" y1="52.5" x2="812" y2="52.5"/>
+<text x="30" y="56.5" font-size="11">1.2</text>
+<text x="400.0" y="346" font-size="12">GFtbox time</text>
+<text x="8" y="178" font-size="12" transform="rotate(-90 8,178)">auxin</text>
+</svg>

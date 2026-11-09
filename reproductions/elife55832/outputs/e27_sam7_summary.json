@@ -1,0 +1,131 @@
+{
+  "paper": "Galvan-Ampudia et al., eLife 2020, e55832",
+  "scope": "single-sequence projected-nucleus proxy check; not the full population/3D-nucleus pipeline",
+  "channel_order": [
+    "DIIV",
+    "DR5",
+    "TagBFP",
+    "CLV3"
+  ],
+  "radial_analysis_um": [
+    18.0,
+    96.0
+  ],
+  "angle_bin_deg": 2.0,
+  "best_rotation_deg": {
+    "5": 4.0,
+    "10": -140.0
+  },
+  "best_correlation": {
+    "5": 0.7833173193065064,
+    "10": 0.7888392777003099
+  },
+  "best_rotation_abs_ge_90_deg": {
+    "5": -138.0,
+    "10": -140.0
+  },
+  "best_correlation_abs_ge_90_deg": {
+    "5": 0.6820840671838004,
+    "10": 0.7888392777003099
+  },
+  "correlation_at_paper_divergence_angle": {
+    "5": {
+      "+137.5_deg": 0.09952213520109283,
+      "-137.5_deg": 0.6820840671838004
+    },
+    "10": {
+      "+137.5_deg": -0.11610549686214167,
+      "-137.5_deg": 0.7804923524139391
+    }
+  },
+  "paper_reference": {
+    "divergence_angle_deg": 137.5,
+    "plastochron_h": "12 +/- 2"
+  },
+  "metadata": {
+    "0": {
+      "file": "qDII-CLV3-DR5-E27-LD-SAM7-No-organs.tif",
+      "bytes": 377620885,
+      "pixel_um": 0.20756646174321788,
+      "center_xy_pixels": [
+        457.2794249080081,
+        518.8241416283865
+      ],
+      "imagej": {
+        "ImageJ": "1.51p",
+        "images": "180",
+        "channels": "4",
+        "slices": "45",
+        "hyperstack": "true",
+        "mode": "composite",
+        "unit": "micron",
+        "spacing": "1.1712524251243286",
+        "loop": "false",
+        "min": "0.0",
+        "max": "65535.0"
+      },
+      "projected_nuclei": 701,
+      "valid_polar_bins": 4525,
+      "continuous_map_kernel": {
+        "radius_um": 7.5,
+        "density_k_per_um": 0.55
+      }
+    },
+    "5": {
+      "file": "qDII-CLV3-DR5-E27-LD-SAM7-T5-No-organs.tif",
+      "bytes": 377622023,
+      "pixel_um": 0.20756646174321788,
+      "center_xy_pixels": [
+        478.13217086644147,
+        505.8963641349901
+      ],
+      "imagej": {
+        "ImageJ": "1.51p",
+        "images": "180",
+        "channels": "4",
+        "slices": "45",
+        "hyperstack": "true",
+        "mode": "composite",
+        "unit": "micron",
+        "spacing": "1.1712524251243286",
+        "loop": "false",
+        "min": "0.0",
+        "max": "65535.0"
+      },
+      "projected_nuclei": 755,
+      "valid_polar_bins": 4621,
+      "continuous_map_kernel": {
+        "radius_um": 7.5,
+        "density_k_per_um": 0.55
+      }
+    },
+    "10": {
+      "file": "qDII-CLV3-DR5-E27-LD-SAM7-T10-No-organs.tif",
+      "bytes": 377622355,
+      "pixel_um": 0.20756646174321788,
+      "center_xy_pixels": [
+        506.16305736686604,
+        562.9970441545458
+      ],
+      "imagej": {
+        "ImageJ": "1.51p",
+        "images": "180",
+        "channels": "4",
+        "slices": "45",
+        "hyperstack": "true",
+        "mode": "composite",
+        "unit": "micron",
+        "spacing": "1.1712524251243286",
+        "loop": "false",
+        "min": "0.0",
+        "max": "65535.0"
+      },
+      "projected_nuclei": 822,
+      "valid_polar_bins": 4727,
+      "continuous_map_kernel": {
+        "radius_um": 7.5,
+        "density_k_per_um": 0.55
+      }
+    }
+  }
+}

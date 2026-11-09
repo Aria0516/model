@@ -1,0 +1,2 @@
+﻿authors ('qDII-DR5-CLV3-LD_E27_170817_sam07', 'score +6.55 with orientation -1')
+auto ('qDII-DR5-CLV3-LD_E27_170817_sam07', 'score -1.46 with orientation +1; flipped to -1, score now +1.46, exit 0')

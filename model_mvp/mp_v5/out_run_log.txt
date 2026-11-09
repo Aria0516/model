@@ -1,0 +1,10 @@
+﻿combinations passing C1-C3: [(4.0, 1.0), (4.0, 3.0), (8.0, 1.0), (8.0, 3.0), (8.0, 8.0)]
+C:\Users\xczhang\software\Conda\Lib\site-packages\numpy\_core\fromnumeric.py:3860: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\xczhang\software\Conda\Lib\site-packages\numpy\_core\_methods.py:144: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+C:\Users\xczhang\software\Conda\Lib\site-packages\numpy\_core\fromnumeric.py:3860: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\xczhang\software\Conda\Lib\site-packages\numpy\_core\_methods.py:144: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+done 160

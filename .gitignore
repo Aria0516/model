@@ -1,0 +1,42 @@
+# Local caches and temporary review files
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.mplconfig/
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+/tmp/
+/.ppt_audit_v04/
+/.ppt_review_v04/
+/presentation_20260921/build/
+
+# Local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Downloaded tools, dependencies, and raw datasets (kept locally)
+/tools/vlab/
+/reproductions/elife55832/data/
+/reproductions/elife55832/dependencies/
+/reproductions/elife55832/third_party/
+/reproductions/elife55832/work_batch/
+/reproductions/elife55832/work_pin1/
+/reproductions/jonsson2006_gftbox/work/
+/reproductions/smith2006_gftbox/work/
+
+# Large microscopy volumes and intermediate images
+*.czi
+*.tif
+*.tiff
+*.inr
+*.inr.gz
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini

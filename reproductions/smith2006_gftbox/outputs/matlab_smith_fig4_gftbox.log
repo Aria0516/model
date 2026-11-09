@@ -1,0 +1,47 @@
+Started Smith Fig4 GFtbox run: 2026-06-29 11:16:52
+GFtbox dir: C:\Users\xczhang\Desktop\modeling\code\GrowthToolbox-20190306-v6030\GrowthToolbox
+GFtbox hemisphere mesh: nodes=910 triangles=1722
+
+ERROR in run_smith_fig4_gftbox:
+SWITCH 表达式必须为标量或字符向量。
+
+出错 run_smith_fig4_gftbox>buildPanel (第 230 行)
+    switch panel.arrows
+           ^^^^^^^^^^^^
+出错 run_smith_fig4_gftbox (第 42 行)
+        [nodes, field, auxinCenters, ablationPts, arrows] = buildPanel(baseNodes, panel);
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+出错 run (第 112 行)
+evalin('caller', strcat(scriptStem, ';'));
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Started Smith Fig4 GFtbox run: 2026-06-29 11:17:48
+GFtbox dir: C:\Users\xczhang\Desktop\modeling\code\GrowthToolbox-20190306-v6030\GrowthToolbox
+GFtbox hemisphere mesh: nodes=910 triangles=1722
+Rendered smith_fig4_A_distichous: primordia=24 field=[0.0000 1.0000]
+Rendered smith_fig4_B_decussate: primordia=24 field=[0.0000 1.0000]
+Rendered smith_fig4_C_tricussate: primordia=36 field=[0.0000 1.0000]
+Rendered smith_fig4_D_spiral: primordia=36 field=[0.0000 1.0000]
+Rendered smith_fig4_E_pin1: primordia=0 field=[0.0000 1.0000]
+Rendered smith_fig4_F_pin1_auxin_side: primordia=4 field=[0.0000 1.0000]
+Rendered smith_fig4_G_pin1_auxin_tip: primordia=48 field=[0.0000 1.0000]
+Rendered smith_fig4_H_control: primordia=24 field=[0.0000 1.0000]
+Rendered smith_fig4_I_ablation: primordia=24 field=[0.0000 1.0000]
+savemodelfile: Saving current state to GPT_SmithFig4_3D_SAM in C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\work\GPT_SmithFig4_3D_SAM
+Saving to C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\work\GPT_SmithFig4_3D_SAM\GPT_SmithFig4_3D_SAM.mat.
+Saving static part to C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\work\GPT_SmithFig4_3D_SAM\GPT_SmithFig4_3D_SAM_static.mat.
+Saved GFtbox base project ok=1: C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\work\GPT_SmithFig4_3D_SAM
+Finished Smith Fig4 GFtbox run: 2026-06-29 11:18:11
+Started Smith Fig4 GFtbox run: 2026-06-29 11:19:05
+GFtbox dir: C:\Users\xczhang\Desktop\modeling\code\GrowthToolbox-20190306-v6030\GrowthToolbox
+GFtbox hemisphere mesh: nodes=910 triangles=1722
+Rendered smith_fig4_A_distichous: primordia=6 field=[0.0000 1.0000]
+Rendered smith_fig4_B_decussate: primordia=6 field=[0.0000 1.0000]
+Rendered smith_fig4_C_tricussate: primordia=9 field=[0.0000 1.0000]
+Rendered smith_fig4_D_spiral: primordia=9 field=[0.0000 1.0000]
+Rendered smith_fig4_E_pin1: primordia=0 field=[0.0000 1.0000]
+Rendered smith_fig4_F_pin1_auxin_side: primordia=1 field=[0.0000 1.0000]
+Rendered smith_fig4_G_pin1_auxin_tip: primordia=12 field=[0.0000 1.0000]
+Rendered smith_fig4_H_control: primordia=6 field=[0.0000 1.0000]
+Rendered smith_fig4_I_ablation: primordia=6 field=[0.0000 1.0000]
+GFtbox base project already exists: C:\Users\xczhang\Desktop\papers\reproductions\smith2006_gftbox\work\GPT_SmithFig4_3D_SAM
+Finished Smith Fig4 GFtbox run: 2026-06-29 11:19:26

@@ -1,0 +1,18 @@
+C:\Users\xczhang\Desktop\papers\model_mvp\mp_v5\mrun.py:80: RuntimeWarning: All-NaN slice encountered
+  g = lambda k: float(np.nanmedian([r[k] if r.get(k) is not None else np.nan for r in rs]))
+data: angle 137.5, non-canonical 15%, P1-P5 spread 6.7 deg, interval CV 0.22, G 0.23, P0 radius 29.0 um
+model                      rho_in  regular  patterns                                   angle  non-can  spread  gap CV  clustered  G     r (um)
+main line v2 (calibrated)     0     16/16  spiral 16                                   141.5      0%    3.1   0.14     nan%   0.25   29.0
+main line v2 (calibrated)     2     16/16  spiral 16                                   141.3      0%    3.4   0.15     nan%   0.24   26.6
+response n 4 tau_m 1          0      1/16  multijugate2~ 7, tricussate~ 3, multijugat   97.7     59%   87.1   0.87    26.2%   0.91   34.9
+response n 4 tau_m 1          2      0/16  multijugate2~ 8, tricussate~ 3, multijugat   87.0     69%   87.7   0.97    23.2%   1.20   34.2
+response n 4 tau_m 3          0      0/16  multijugate2~ 14, multijugate3~ 1, decussa  116.7     75%   94.3   0.97    21.0%   1.01   36.0
+response n 4 tau_m 3          2      0/16  multijugate2~ 15, decussate~ 1              118.9     77%   95.1   0.90    19.2%   0.69   35.7
+response n 8 tau_m 1          0      0/16  multijugate2~ 7, lucas~ 3, multijugate3~ 2  100.5     65%   89.0   0.88    23.2%   0.83   32.7
+response n 8 tau_m 1          2      1/16  multijugate2~ 7, multijugate3~ 6, decussat   92.4     70%   89.8   1.00    25.3%   1.21   31.8
+response n 8 tau_m 3          0      0/16  tricussate~ 4, multijugate3~ 4, multijugat   61.7     73%   90.9   1.13    32.4%   1.92   34.3
+response n 8 tau_m 3          2      1/16  multijugate2~ 9, tricussate~ 4, decussate~  105.9     63%   91.2   0.95    25.1%   0.88   34.0
+response n 8 tau_m 8          0      0/16  multijugate3~ 5, whorl4~ 3, whorl5~ 3, mul   33.6     78%   96.7   2.67    66.0%   2.45   35.9
+response n 8 tau_m 8          2      0/16  multijugate2~ 13, tricussate~ 1, multijuga   88.8     78%   93.8   0.96    24.8%   1.13   36.1
+
+Q1: fail | combinations meeting both: []
