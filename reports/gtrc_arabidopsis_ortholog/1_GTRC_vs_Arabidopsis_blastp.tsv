@@ -1,0 +1,31 @@
+gene	transcript	sum_bits	best_hsp_identity	best_evalue	query_cov	subject_len	has_CH_region	hsps	annotation
+AT3G44730	AT3G44730.2	762	65.2	0.0	45	1132	True	61-224(47%);564-1020(65%)	kinesin-like protein 1
+AT2G47500	AT2G47500.1	741	60.7	0.0	48	983	True	59-225(49%);527-1017(61%)	P-loop nucleoside triphosphate hydrolases superfamily protein with CH (Calponin Homology) domain-containing protein
+AT1G09170	AT1G09170.5	722	49.6	0.0	57	1046	True	98-239(51%);357-989(50%)	P-loop nucleoside triphosphate hydrolases superfamily protein with CH (Calponin Homology) domain-containing protein
+AT5G27000	AT5G27000.1	704	60.3	5.8e-176	59	987	True	70-413(35%);540-1003(60%)	kinesin 4
+AT1G73860	AT1G73860.1	662	52.4	0.0	53	1025	False	276-517(31%);451-1003(52%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT1G63640	AT1G63640.1	660	42.8	0.0	66	1071	True	100-998(43%)	P-loop nucleoside triphosphate hydrolases superfamily protein with CH (Calponin Homology) domain-containing protein
+AT1G18410	AT1G18410.3	658	52.0	0.0	50	1010	False	319-523(32%);448-999(52%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT3G10310	AT3G10310.2	649	49.8	3.47e-167	53	969	True	101-215(50%);554-1167(50%)	P-loop nucleoside triphosphate hydrolases superfamily protein with CH (Calponin Homology) domain-containing protein
+AT5G41310	AT5G41310.1	634	49.5	0.0	54	961	True	100-184(38%);355-1004(50%)	P-loop nucleoside triphosphate hydrolases superfamily protein with CH (Calponin Homology) domain-containing protein
+AT2G22610	AT2G22610.3	367	48.5	1.93e-107	28	1084	False	607-995(48%)	Di-glucose binding protein with Kinesin motor domain-containing protein
+AT1G72250	AT1G72250.2	363	41.5	2.97e-105	41	1204	False	454-1019(41%)	Di-glucose binding protein with Kinesin motor domain-containing protein
+AT5G27550	AT5G27550.2	352	50.3	4.87e-105	27	765	False	612-981(50%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT4G27180	AT4G27180.1	320	40.1	7.86e-94	37	745	False	462-961(40%)	kinesin 2
+AT5G54670	AT5G54670.3	313	47.1	6e-92	25	694	False	617-962(47%)	kinesin 3
+AT4G05190	AT4G05190.2	309	46.7	9.68e-90	25	777	False	617-962(47%)	kinesin 5
+AT4G21270	AT4G21270.1	304	38.3	8.5e-88	40	793	False	411-962(38%)	kinesin 1
+AT5G65930	AT5G65930.2	293	35.2	2.72e-81	43	1260	False	407-990(35%)	kinesin-like calmodulin-binding protein (ZWICHEL)
+AT1G55550	AT1G55550.1	269	37.4	2.8e-75	32	859	False	593-1035(37%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT5G27950	AT5G27950.1	241	40.7	1.76e-67	26	625	False	617-976(41%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT3G17360	AT3G17360.1	229	39.5	1.97e-60	26	2066	False	627-981(40%)	phragmoplast orienting kinesin 1
+AT2G28620	AT2G28620.3	225	35.1	7.22e-60	30	1042	False	627-1033(35%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT3G44050	AT3G44050.1	222	39.8	1.7e-58	26	1263	False	627-981(40%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT3G19050	AT3G19050.1	216	41.1	3.83e-56	22	2771	False	674-977(41%)	phragmoplast orienting kinesin 2
+AT2G37420	AT2G37420.1	215	35.9	1.12e-56	30	1039	False	627-1033(36%)	ATP binding microtubule motor family protein
+AT2G36200	AT2G36200.1	214	36.3	1.28e-56	28	1009	False	627-1010(36%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT4G14150	AT4G14150.1	208	40.7	2.9e-54	22	1292	False	652-957(41%)	phragmoplast-associated kinesin-related protein 1
+AT3G23670	AT3G23670.2	206	37.8	5.76e-54	24	971	False	652-982(38%)	phragmoplast-associated kinesin-related protein
+AT3G45850	AT3G45850.2	206	37.0	1.09e-53	24	1065	False	627-956(37%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT5G60930	AT5G60930.3	203	33.2	1.16e-52	26	1300	False	628-981(33%)	P-loop containing nucleoside triphosphate hydrolases superfamily protein
+AT5G10470	AT5G10470.1	203	32.7	1.31e-52	32	1273	False	559-989(33%)	kinesin like protein for actin based chloroplast movement 1
