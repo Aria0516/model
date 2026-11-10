@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Figures for the "已有工作积累" section of the thesis proposal (labels in English).
 
-    python run_types.py            # once: three model runs for Fig. 2A-C (types.npz)
+    python run_mech.py             # once: main-line run for the 3D view in Fig. 2A (mech.npz)
+    python run_types.py            # once: three model runs for Fig. 2C-E (types.npz)
     python gen_prior_work_figs.py  # fig1_data.png, fig2_model.png, fig3_tests.png (+ .pdf)
 
 Every number drawn here is read from files already in the repository:
@@ -9,7 +10,8 @@ Every number drawn here is read from files already in the repository:
           model_mvp/calib_v2/out/measure_nuclei_21.json (cell spacing, CLV3 radius, P0 radius)
           model_mvp/noise_v3/out/pin1_measure.json       (cell-to-cell PIN1 spread, 4 meristems)
           model_mvp/noise_v3/RESULTS.md                  (sigma needed by the model: 0.32 / 0.48)
-  Fig. 2  types.npz (run_types.py), model_mvp/out/e11_grid.jsonl, model_mvp/out/e11_tau.jsonl
+  Fig. 2  mech.npz (run_mech.py, frozen main line), types.npz (run_types.py),
+          model_mvp/out/e11_grid.jsonl, model_mvp/out/e11_tau.jsonl
   Fig. 3  model_mvp/detuned_v3/out/{samples,calib,runs}.json (classification as in dv3_report.py)
 """
 import csv
@@ -208,70 +210,314 @@ def model_map(ax, z, name):
     return pc
 
 
+# ---------------------------------------------------------------- Fig. 2A: shoot apex seen obliquely, narrow wedge cut away
+HD, BUMP, T1, T2, Z0, ELEV, WEDGE = 7.0, 4.2, 0.8, 2.0, -3.0, 48, 75   # dome, bulge, layers, base, view, cut angle
+
+
+def ccw(poly):
+    """Counter-clockwise vertex order, so that every face normal points up (consistent shading)."""
+    x, y = poly[:, 0], poly[:, 1]
+    return poly if np.dot(x, np.roll(y, -1)) - np.dot(y, np.roll(x, -1)) > 0 else poly[::-1]
+
+
+def clip_half(poly, n):
+    """Part of a polygon with dot(p, n) <= 0 (half-plane through the origin)."""
+    if poly is None:
+        return None
+    out = []
+    for k in range(len(poly)):
+        P, Q = poly[k], poly[(k + 1) % len(poly)]
+        dp, dq = P @ n, Q @ n
+        if dp <= 0:
+            out.append(P)
+        if (dp <= 0) != (dq <= 0):
+            out.append(P + dp / (dp - dq) * (Q - P))
+    return np.array(out) if len(out) >= 3 else None
+
+
+def mech_3d(ax, m):
+    """Dome-shaped apex: surface colour and PIN1 arrows from one main-line run (run_mech.py); shape is schematic."""
+    from matplotlib.colors import LightSource, Normalize
+    from mpl_toolkits.mplot3d import proj3d
+    from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+    from scipy.spatial import cKDTree
+
+    par = json.loads(str(m["par"]))
+    R, w = par["R_out"], par["w"]
+    pts, A, A2, pin, prim = m["pts"], m["A"], m["A2"], m["pin"], m["prim"]
+    inside = [p for p in prim if np.hypot(p[0], p[1]) < R - 0.5]
+
+    def surf(x, y):
+        x, y = np.asarray(x, float), np.asarray(y, float)
+        z = HD * (1.0 - np.clip(np.hypot(x, y) / R, 0, 1) ** 2)
+        for (px, py, _, age) in inside:                     # older primordia bulge more (schematic outgrowth)
+            wb = w * (0.85 + age / 40.0)
+            z = z + BUMP * (1 - np.exp(-age / 14.0)) * np.exp(-((x - px) ** 2 + (y - py) ** 2) / (2 * wb ** 2))
+        return z
+
+    # a narrow wedge cut away between d1 (through a young primordium) and d2; the viewer looks down into it
+    sec = min([p for p in inside if p[3] >= 6], key=lambda p: p[3])
+    d1 = sec[:2] / np.hypot(sec[0], sec[1])
+    perp = lambda d: np.array([-d[1], d[0]])
+    rot = lambda d, a: np.array([d[0] * np.cos(a) - d[1] * np.sin(a), d[0] * np.sin(a) + d[1] * np.cos(a)])
+    best = None
+    for sgn in (1, -1):
+        d2 = rot(d1, sgn * np.radians(WEDGE))
+        n1, n2 = perp(d1) * np.sign(perp(d1) @ d2), perp(d2) * np.sign(perp(d2) @ d1)   # normals into the wedge
+        score = sum(p[3] for p in inside if not (p[:2] @ n1 > 0 and p[:2] @ n2 > 0))
+        if best is None or score > best[0]:
+            best = (score, d2, n1, n2)
+    _, d2, n1, n2 = best
+    vb = (d1 + d2) / np.hypot(*(d1 + d2))
+    az = np.degrees(np.arctan2(vb[1], vb[0]))
+    in_wedge = lambda P: (P @ n1 > 0) & (P @ n2 > 0)
+
+    ax.computed_zorder = False
+    light = LightSource(azdeg=az + 50, altdeg=55)
+    nt = Normalize(0, np.percentile(A, 99.5))
+    nb = Normalize(np.percentile(A2, 1), np.percentile(A2, 99))
+    viridis, greys = plt.get_cmap("viridis"), plt.get_cmap("Greys")
+
+    faces, cols = [], []
+    for poly, a in zip(voronoi_cells(pts[:, 0], pts[:, 1], R), A):
+        poly = ccw(poly)
+        for piece in (clip_half(poly, n1), clip_half(clip_half(poly, -n1), n2)):   # polygon minus the wedge
+            if piece is not None:
+                faces.append(np.c_[piece, surf(piece[:, 0], piece[:, 1])]); cols.append(viridis(nt(a)))
+    ps = Poly3DCollection(faces, facecolors=cols, edgecolors=(0, 0, 0, 0.14), linewidths=0.1, shade=True,
+                          lightsource=light)
+    ps.set_zorder(2); ax.add_collection3d(ps)
+
+    rng = np.random.default_rng(3)
+    mag = np.hypot(pin[:, 0], pin[:, 1])
+    keep = (mag > 0.25) & (np.hypot(pts[:, 0], pts[:, 1]) < R - 1.0) & (rng.random(len(mag)) < 0.4)
+    keep &= ~((pts @ n1 > -1.2) & (pts @ n2 > -1.2))         # stay clear of the cut
+    x, y = pts[keep, 0], pts[keep, 1]
+    du, dv = 1.1 * pin[keep, 0] / mag[keep], 1.1 * pin[keep, 1] / mag[keep]
+    z0 = surf(x, y) + 0.1
+    ax.quiver(x, y, z0, du, dv, surf(x + du, y + dv) + 0.1 - z0, color="white", lw=0.45, arrow_length_ratio=0.45,
+              zorder=3)
+    ang = np.linspace(0, 2 * np.pi, 361)
+    for r, col, ls in ((par["R_c"], RED, (0, (3, 2))), (par["R_p"], RED, (0, (3, 2))), (par["R_src"], "white", (0, (1, 2)))):
+        cx, cy = r * np.cos(ang), r * np.sin(ang)
+        cut = in_wedge(np.c_[cx, cy])
+        cx, cy = np.where(cut, np.nan, cx), np.where(cut, np.nan, cy)
+        ax.plot(cx, cy, surf(np.nan_to_num(cx), np.nan_to_num(cy)) + 0.12, color=col, lw=0.9, ls=ls, zorder=3)
+
+    # the two cut faces: L1 (auxin), inner layer (inner-layer auxin), deeper tissue
+    tree = cKDTree(pts)
+    s = np.linspace(0, R, 151)
+    for d in (d1, d2):
+        X, Y = s * d[0], s * d[1]
+        Zs = surf(X, Y)
+        _, idx = tree.query(np.c_[X, Y] + 0.3 * vb)
+        quads, qc = [], []
+        for k in range(len(s) - 1):
+            a, b = k, k + 1
+            for top, bot, col in ((0.0, T1, viridis(nt(A[idx[k]]))), (T1, T1 + T2, greys(0.12 + 0.5 * nb(A2[idx[k]]))),
+                                  (T1 + T2, None, (0.95, 0.94, 0.91, 1.0))):
+                zb_a = Z0 if bot is None else Zs[a] - bot
+                zb_b = Z0 if bot is None else Zs[b] - bot
+                quads.append([(X[a], Y[a], Zs[a] - top), (X[b], Y[b], Zs[b] - top), (X[b], Y[b], zb_b), (X[a], Y[a], zb_a)])
+                qc.append(col)
+        pc = Poly3DCollection(quads, facecolors=qc, edgecolors=qc, linewidths=0.3)
+        pc.set_zorder(5); ax.add_collection3d(pc)
+        for off in (0.0, T1, T1 + T2):
+            ax.plot(X, Y, Zs - off, color=INK, lw=0.9 if off == 0 else 0.5, zorder=6)
+        ax.plot([X[-1]] * 2, [Y[-1]] * 2, [Zs[-1], Z0], color=INK, lw=0.5, zorder=6)
+        ax.plot([0, X[-1]], [0, Y[-1]], [Z0, Z0], color=INK, lw=0.5, zorder=6)
+    ax.plot([0, 0], [0, 0], [float(surf(0, 0)), Z0], color=INK, lw=0.7, zorder=6)
+
+    sp = float(np.hypot(sec[0], sec[1]))                     # vascular strand and drainage under the cut primordium
+    half = 0.8
+    zt = float(surf(sp * d1[0], sp * d1[1]))
+    strand = [(sp - half, zt - T1 - T2), (sp + half, zt - T1 - T2), (sp + half, Z0), (sp - half, Z0)]
+    vq = Poly3DCollection([[(q * d1[0], q * d1[1], zq) for q, zq in strand]], facecolors="#9C9C9C", edgecolors=INK,
+                          linewidths=0.5)
+    vq.set_zorder(7); ax.add_collection3d(vq)
+    ax.plot([sp * d1[0]] * 2, [sp * d1[1]] * 2, [zt - 0.25, zt - T1 - T2 + 0.3], color=INK, lw=0.9,
+            ls=(0, (2.5, 1.5)), zorder=8)
+    ax.quiver(sp * d1[0], sp * d1[1], zt - T1 - T2 + 1.2, 0, 0, -1.1, color=INK, lw=0.9, arrow_length_ratio=0.8, zorder=8)
+    ax.quiver(sp * d1[0], sp * d1[1], Z0 + 1.6, 0, 0, -1.1, color="white", lw=0.9, arrow_length_ratio=0.8, zorder=8)
+
+    lim = R + 0.3
+    ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim); ax.set_zlim(Z0, HD + BUMP)
+    ax.set_box_aspect((2 * lim, 2 * lim, HD + BUMP - Z0), zoom=1.15)
+    ax.view_init(elev=ELEV, azim=az)
+    ax.set_axis_off()
+
+    def p2(xyz):
+        a_, b_, _ = proj3d.proj_transform(*xyz, ax.get_proj())
+        return a_, b_
+
+    def on_cut(d, q, depth):
+        return (q * d[0], q * d[1], float(surf(q * d[0], q * d[1])) - depth)
+
+    def on_surf(P):
+        return (P[0], P[1], float(surf(P[0], P[1])))
+
+    behind = [p for p in inside if not in_wedge(p[:2]) and p is not sec]
+    older = max(behind, key=lambda p: p[3]) if behind else sec
+    rr, rs = 0.5 * (par["R_c"] + par["R_p"]), 0.5 * (par["R_src"] + R)
+    items = [("Central zone", on_surf((0.0, 0.0))),
+             ("Competent ring", on_surf(-rr * vb)),
+             ("L1 epidermis", on_cut(d2, 0.55 * R, T1 / 2)),
+             ("Inner layer*", on_cut(d2, 0.35 * R, T1 + T2 / 2)),
+             ("Peripheral\nsynthesis*", on_surf(-rs * d1 * 0.98)),
+             ("Primordium", on_surf(older[:2])),
+             ("Drainage*", on_cut(d1, sp, T1 + 0.5)),
+             ("Vascular\nstrand*", (sp * d1[0], sp * d1[1], Z0 + 1.0))]
+    cx0 = p2((0, 0, 0))[0]
+    for side in "LR":
+        col = sorted([it for it in items if (p2(it[1])[0] < cx0) == (side == "L")], key=lambda it: -p2(it[1])[1])
+        ys = np.linspace(0.92, 0.08, len(col)) if len(col) > 1 else [0.5]
+        for (text, xyz), yt in zip(col, ys):
+            ax.annotate(text, xy=p2(xyz), xycoords="data", xytext=(0.0 if side == "L" else 1.0, yt),
+                        textcoords="axes fraction", ha="left" if side == "L" else "right", va="center", fontsize=6.6,
+                        linespacing=1.0, arrowprops=dict(arrowstyle="-", lw=0.45, color=INK, shrinkA=1.5, shrinkB=0),
+                        zorder=10)
+
+
+def loop_panel(ax):
+    """Panel B: regulatory loop of the model (after the layout of the earlier schematic, simplified)."""
+    from matplotlib.patches import FancyBboxPatch
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
+    BW, BH = 0.235, 0.125
+    XL, XM, XR = 0.125, 0.49, 0.85
+    Y = [0.85, 0.665, 0.48, 0.295, 0.11]
+    nodes = {
+        "src": (XL, Y[0], "Peripheral\nsynthesis*", None, "solid"),
+        "A": (XM, Y[0], "Auxin $A$", "epidermis", "state"),
+        "pin": (XR, Y[0], "PIN1 polarity", "up-gradient", "solid"),
+        "dr5": (XL, Y[1], "$\\mathit{DR5}$-like $R$", "passive read-out", "grey"),
+        "M": (XM, Y[1], "Integration $M$", "leaky, $\\tau_M$", "solid"),
+        "inh": (XL, Y[2], "Secondary\ninhibition", None, "solid"),
+        "ini": (XM, Y[2], "Initiation", "$M \\geq \\theta$ in ring", "solid"),
+        "pri": (XM, Y[3], "Primordium", "placed object", "dashed"),
+        "inner": (XM, Y[4], "Inner layer*", "vascular drainage", "solid"),
+    }
+    for key, (x, y, title, sub, style) in nodes.items():
+        fc = "#E6E6E6" if style == "state" else "white"
+        ec = GREY if style == "grey" else INK
+        ls = (0, (3, 1.5)) if style == "dashed" else "solid"
+        ax.add_patch(FancyBboxPatch((x - BW / 2, y - BH / 2), BW, BH, boxstyle="round,pad=0,rounding_size=0.02",
+                                    fc=fc, ec=ec, lw=1.3 if style == "state" else 0.8, ls=ls))
+        tc = "#555555" if style == "grey" else INK
+        if sub:
+            ax.text(x, y + 0.022, title, ha="center", va="center", fontsize=7.0, color=tc)
+            ax.text(x, y - 0.03, sub, ha="center", va="center", fontsize=6.0, color=tc)
+        else:
+            ax.text(x, y, title, ha="center", va="center", fontsize=7.0, color=tc, linespacing=1.0)
+
+    L, Rt = lambda k: nodes[k][0] - BW / 2, lambda k: nodes[k][0] + BW / 2
+    T, B = lambda k: nodes[k][1] + BH / 2, lambda k: nodes[k][1] - BH / 2
+    ny = lambda k: nodes[k][1]
+    arr = dict(arrowstyle="-|>", lw=0.8, color=INK, mutation_scale=7, shrinkA=0, shrinkB=0)
+
+    def promote(pts, color=INK, ls="solid"):
+        ax.plot([p[0] for p in pts[:-1]], [p[1] for p in pts[:-1]], color=color, lw=0.8, ls=ls)
+        ax.annotate("", xy=pts[-1], xytext=pts[-2], arrowprops=dict(arr, color=color, ls=ls))
+
+    def inhibit(pts):
+        ax.plot([p[0] for p in pts], [p[1] for p in pts], color=INK, lw=0.8)
+        (x0, y0), (x1, y1) = pts[-2], pts[-1]
+        dx, dy = x1 - x0, y1 - y0
+        n = np.hypot(dx, dy); px, py = -dy / n * 0.022, dx / n * 0.022
+        ax.plot([x1 - px, x1 + px], [y1 - py * 1.0, y1 + py * 1.0], color=INK, lw=1.3)
+
+    def lab(x, y, s, **kw):
+        ax.text(x, y, s, fontsize=6.0, color="#333333", **kw)
+
+    # epidermal transport loop
+    promote([(Rt("src"), ny("src")), (L("A"), ny("A"))]); lab((Rt("src") + L("A")) / 2, ny("A") + 0.012, "inward*", ha="center", va="bottom")
+    promote([(Rt("A"), ny("A") + 0.03), (L("pin"), ny("pin") + 0.03)]); lab((Rt("A") + L("pin")) / 2, ny("A") + 0.042, "polarizes", ha="center", va="bottom")
+    promote([(L("pin"), ny("pin") - 0.03), (Rt("A"), ny("A") - 0.03)]); lab((Rt("A") + L("pin")) / 2, ny("A") - 0.042, "transport", ha="center", va="top")
+    # main chain
+    promote([(XM, B("A")), (XM, T("M"))])
+    promote([(XM, B("M")), (XM, T("ini"))])
+    promote([(XM, B("ini")), (XM, T("pri"))]); lab(XM + 0.015, 0.388, "places", ha="left", va="center")
+    promote([(XM, B("pri")), (XM, T("inner"))]); lab(XM + 0.015, 0.203, "drains", ha="left", va="center")
+    promote([(L("M"), ny("M")), (Rt("dr5"), ny("dr5"))], color=GREY, ls=(0, (1.5, 1.5)))
+    # primordium feedback
+    inhibit([(Rt("pri"), ny("pri") - 0.03), (0.99, ny("pri") - 0.03), (0.99, 0.975), (XM, 0.975), (XM, T("A") + 0.014)])
+    lab((XM + 0.99) / 2, 0.982, "sink", ha="center", va="bottom")
+    promote([(Rt("pri"), ny("pri") + 0.03), (XR, ny("pri") + 0.03), (XR, B("pin"))])
+    lab(XR + 0.012, 0.56, "polarity\ncue", ha="left", va="center", linespacing=1.0)
+    promote([(L("pri"), ny("pri")), (XL, ny("pri")), (XL, B("inh"))]); lab(XL + 0.012, 0.375, "triggers", ha="left", va="center")
+    inhibit([(Rt("inh"), ny("inh")), (L("ini") - 0.012, ny("ini"))]); lab((Rt("inh") + L("ini")) / 2, ny("ini") + 0.012, "raises θ", ha="center", va="bottom")
+
+
 def fig2():
     z = np.load(HERE / "types.npz")
-    fig = plt.figure(figsize=(6.3, 5.0))
-    gs = fig.add_gridspec(2, 1, height_ratios=[1.0, 0.95], hspace=0.38)
-    top = gs[0].subgridspec(1, 3, wspace=0.06)
-    bot = gs[1].subgridspec(1, 2, wspace=0.32)
+    m = np.load(HERE / "mech.npz")
+    W, H = 6.3, 7.85
+    fig = plt.figure(figsize=(W, H))
+    box = lambda x, y, w, h: [x / W, y / H, w / W, h / H]
 
+    # row 1: the model (A: 3D view of the two layers, B: loop that places primordia)
+    T1, H1 = 4.95, 2.85
+    ax = fig.add_axes(box(0.05, T1, 2.85, H1), projection="3d")
+    mech_3d(ax, m)
+    fig.text(0.08 / W, (T1 + H1) / H, "A", va="top", ha="left", **LETTER)
+    ax = fig.add_axes(box(2.92, T1, 3.33, H1 - 0.05))
+    loop_panel(ax)
+    fig.text(2.92 / W, (T1 + H1) / H, "B", va="top", ha="left", **LETTER)
+
+    # row 2: three patterns from the same equations
+    S2, Y2 = 1.82, 2.62
+    gap = (6.22 - 0.08 - 3 * S2) / 2
     for c, (name, en, rc) in enumerate(TYPES):
-        ax = fig.add_subplot(top[c])
+        x0 = 0.08 + c * (S2 + gap)
+        ax = fig.add_axes(box(x0, Y2, S2, S2))
         pc = model_map(ax, z, name)
         par = json.loads(str(z[f"{name}_par"]))
         st = analysis.summarize([tuple(r) for r in z[f"{name}_log"]], par["gamma"])
-        if st["jugacy"] >= 2:
-            sub = f"pairs, {st['rot_frac'] * 180:.0f}° between nodes"
-        else:
-            sub = f"dominant angle {st['alpha']:.0f}°"
-        print(name, analysis.fmt(st))
+        sub = (f"pairs, {st['rot_frac'] * 180:.0f}° between nodes" if st["jugacy"] >= 2
+               else f"dominant angle {st['alpha']:.0f}°")
         ax.set_title(f"{en} ($R_\\mathrm{{c}}$ = {rc:g})\n{sub}", pad=2, fontsize=8)
-        panel_letter(ax, "ABC"[c], dx=0.06, dy=0.90)
-    low_high_bar(fig, pc, [0.40, 0.535, 0.22, 0.01], "Auxin (model)")
+        fig.text(x0 / W, (Y2 + S2) / H, "CDE"[c], va="top", ha="left", **LETTER)
+    low_high_bar(fig, pc, box(W / 2 - 0.7, Y2 - 0.16, 1.4, 0.05), "Auxin (model)")
 
-    # D: dominant divergence angle against ring radius / sink range (e11_grid)
-    ax = fig.add_subplot(bot[0])
+    # row 3: divergence angle against ring size, and temporal integration
+    Y3, H3 = 0.45, 1.45
+    ax = fig.add_axes(box(0.55, Y3, 2.5, H3))
     res = [json.loads(l) for l in open(MM / "out" / "e11_grid.jsonl", encoding="utf-8")]
     for r in res:
         if r["pattern"] == "none" or "alpha" not in r:
             continue
         o = r["over"]; kind = r["pattern"].rstrip("~"); reg = not r["pattern"].endswith("~")
-        x = (o["R_c"] + 1.0) / o["w"]
         col = TYPE_COL.get(kind, GREY)
         yv = r["rot_frac"] * 180.0 if r.get("jugacy", 1) >= 2 else r["alpha"]     # pairs: rotation between nodes
-        ax.scatter(x, yv, s=11 if reg else 7, color=col if reg else "none", ec=col if reg else LIGHT,
-                   lw=0.4, alpha=0.95 if reg else 0.9, marker="D" if kind == "decussate" else "o", zorder=3 if reg else 2)
+        ax.scatter((o["R_c"] + 1.0) / o["w"], yv, s=11 if reg else 7, color=col if reg else "none",
+                   ec=col if reg else LIGHT, lw=0.4, marker="D" if kind == "decussate" else "o", zorder=3 if reg else 2)
     for a, lab in ((180, "180°"), (137.5, "137.5°"), (90, "90°")):
         ax.axhline(a, color=GREY, ls=(0, (3, 2)), lw=0.6, zorder=1)
         ax.text(5.08, a, lab, fontsize=6.5, color="#555555", va="center")
     ax.set_xlim(0.8, 5.0); ax.set_ylim(0, 192)
     ax.set_xlabel("Ring mid-radius / primordium range"); ax.set_ylabel("Divergence angle (°)")
-    hs = [plt.Line2D([], [], marker=m, ls="", ms=4, color=TYPE_COL[k], label=l)
-          for k, l, m in (("distichous", "Distichous", "o"), ("spiral", "Spiral", "o"), ("decussate", "Decussate", "D"))]
+    hs = [plt.Line2D([], [], marker=mk, ls="", ms=4, color=TYPE_COL[k], label=l)
+          for k, l, mk in (("distichous", "Distichous", "o"), ("spiral", "Spiral", "o"), ("decussate", "Decussate", "D"))]
     hs.append(plt.Line2D([], [], marker="o", ls="", ms=3.5, mfc="none", mec=GREY, label="Irregular"))
     ax.legend(handles=hs, frameon=False, loc="lower left", ncol=2, handletextpad=0.2, columnspacing=0.8, borderaxespad=0.2)
-    panel_letter(ax, "D", dx=-0.13)
+    fig.text(0.08 / W, (Y3 + H3 + 0.25) / H, "F", va="top", ha="left", **LETTER)
 
-    # E: leaky temporal integration in the loop (e11_tau)
-    ax = fig.add_subplot(bot[1])
+    ax = fig.add_axes(box(3.92, Y3, 2.3, H3))
     res = [json.loads(l) for l in open(MM / "out" / "e11_tau.jsonl", encoding="utf-8")]
     grp = defaultdict(list)
     for r in res:
-        key = "hot" if r["name"].startswith("hot") else "sub"
-        grp[(key, r["over"]["tau_M"])].append(r)
+        grp[("hot" if r["name"].startswith("hot") else "sub", r["over"]["tau_M"])].append(r)
     for key, lab, col, mk in (("sub", "Subcritical", GREEN, "o"), ("hot", "Supercritical", ORANGE, "s")):
         taus = sorted(t for (k, t) in grp if k == key)
         tp0 = np.mean([r["Tp"] for r in grp[(key, 0.0)] if r.get("Tp")])
-        xs = [t / tp0 for t in taus]
         ys = [np.mean([(not r["pattern"].endswith("~")) and r["pattern"] != "none" for r in grp[(key, t)]]) for t in taus]
-        ns = [len(grp[(key, t)]) for t in taus]
-        ax.plot(xs, ys, "-", color=col, lw=1.0, marker=mk, ms=3.8, label=f"{lab} (n = {ns[0]})")
+        ax.plot([t / tp0 for t in taus], ys, "-", color=col, lw=1.0, marker=mk, ms=3.8,
+                label=f"{lab} (n = {len(grp[(key, 0.0)])})")
     ax.set_xlabel("Integration time constant / plastochron"); ax.set_ylabel("Fraction of regular spirals")
     ax.set_ylim(-0.04, 1.06); ax.set_xlim(-0.05, 1.42)
     ax.legend(frameon=False, loc="upper right", bbox_to_anchor=(1.0, 1.0), handletextpad=0.4, borderaxespad=0.1)
-    panel_letter(ax, "E", dx=-0.13)
+    fig.text(3.45 / W, (Y3 + H3 + 0.25) / H, "G", va="top", ha="left", **LETTER)
 
-    save(fig, "fig2_model")
+    save(fig, "fig2_model", tight=False)
 
 
 # ---------------------------------------------------------------- Fig. 3: tests against data (sampled model)
