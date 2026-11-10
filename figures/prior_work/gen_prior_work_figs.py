@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figures for the "已有工作积累" section of the thesis proposal.
+"""Figures for the "已有工作积累" section of the thesis proposal (labels in English).
 
     python run_types.py            # once: three model runs for Fig. 2A-C (types.npz)
     python gen_prior_work_figs.py  # fig1_data.png, fig2_model.png, fig3_tests.png (+ .pdf)
@@ -14,10 +14,9 @@ Every number drawn here is read from files already in the repository:
 """
 import csv
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
-
-import sys
 
 import numpy as np
 import matplotlib
@@ -34,23 +33,24 @@ NUC = ROOT / "reproductions" / "elife55832" / "outputs" / "nuclei_21"
 sys.path.insert(0, str(MM))
 import analysis  # noqa: E402  (model_mvp/analysis.py: pattern statistics)
 
-# Song-style CJK + Times-style Latin, as in the proposal's own figure
+# Times-style serif, matching the Latin text in the proposal's own figure
+SERIF = ["Times New Roman", "Liberation Serif", "DejaVu Serif"]
 plt.rcParams.update({
-    "font.family": ["Times New Roman", "Liberation Serif", "SimSun", "Noto Serif CJK SC"],
-    "mathtext.fontset": "custom", "mathtext.rm": "Noto Serif CJK SC", "mathtext.it": "Liberation Serif:italic", "mathtext.bf": "Noto Serif CJK SC:bold", "mathtext.fallback": "stix", "font.size": 8, "axes.titlesize": 8.5, "axes.labelsize": 8,
-    "xtick.labelsize": 7, "ytick.labelsize": 7, "legend.fontsize": 7, "axes.linewidth": 0.6,
-    "xtick.major.width": 0.6, "ytick.major.width": 0.6, "axes.spines.top": False, "axes.spines.right": False,
-    "axes.unicode_minus": False, "savefig.dpi": 300,
+    "font.family": SERIF, "mathtext.fontset": "custom", "mathtext.rm": "Liberation Serif",
+    "mathtext.it": "Liberation Serif:italic", "mathtext.bf": "Liberation Serif:bold", "mathtext.fallback": "stix",
+    "font.size": 8, "axes.titlesize": 8.5, "axes.labelsize": 8, "xtick.labelsize": 7, "ytick.labelsize": 7,
+    "legend.fontsize": 7, "axes.linewidth": 0.6, "xtick.major.width": 0.6, "ytick.major.width": 0.6,
+    "axes.spines.top": False, "axes.spines.right": False, "savefig.dpi": 300,
 })
 INK, GREY, LIGHT = "#1A1A1A", "#8C8C8C", "#D0D0D0"
 BLUE, GREEN, ORANGE, RED = "#0072B2", "#009E73", "#D55E00", "#C0392B"
 TYPE_COL = {"distichous": BLUE, "intermediate": "#56B4E9", "spiral": GREEN, "decussate": ORANGE}
 OUTLINE = [pe.withStroke(linewidth=1.2, foreground="black")]
+LETTER = dict(fontsize=10, fontweight="bold", family=["Liberation Sans", "DejaVu Sans"])
 
 
 def panel_letter(ax, s, dx=-0.02, dy=1.02):
-    ax.text(dx, dy, s, transform=ax.transAxes, fontsize=10, fontweight="bold", va="bottom", ha="right",
-            family=["Liberation Sans", "DejaVu Sans"])
+    ax.text(dx, dy, s, transform=ax.transAxes, va="bottom", ha="right", **LETTER)
 
 
 def voronoi_cells(x, y, rmax):
@@ -60,12 +60,20 @@ def voronoi_cells(x, y, rmax):
     vor = Voronoi(np.vstack([np.c_[x, y], ghost]))
     polys = []
     for i in range(len(x)):
-        reg = vor.regions[vor.point_region[i]]
-        poly = vor.vertices[reg]
+        poly = vor.vertices[vor.regions[vor.point_region[i]]]
         r = np.hypot(poly[:, 0], poly[:, 1])
-        poly = poly * np.minimum(1.0, rmax / np.maximum(r, 1e-9))[:, None]
-        polys.append(poly)
+        polys.append(poly * np.minimum(1.0, rmax / np.maximum(r, 1e-9))[:, None])
     return polys
+
+
+def low_high_bar(fig, pc, rect, label=None):
+    cax = fig.add_axes(rect)
+    cb = plt.colorbar(pc, cax=cax, orientation="horizontal")
+    cb.set_ticks(pc.get_clim()); cb.set_ticklabels(["low", "high"]); cb.outline.set_linewidth(0.4)
+    cax.tick_params(length=0, pad=1.5, labelsize=6.5)
+    if label:
+        cax.set_xlabel(label, fontsize=7, labelpad=1)
+    return cax
 
 
 # ---------------------------------------------------------------- Fig. 1: data
@@ -93,22 +101,18 @@ def sam_map(ax, sig, prim, key, cmap, show=(0, 1, 2)):
     pc = PolyCollection(voronoi_cells(x, y, RMAX), array=v, cmap=cmap, edgecolors="#00000040", linewidths=0.2)
     pc.set_clim(lo, hi)
     ax.add_collection(pc)
-    ax.add_patch(plt.Circle((0, 0), sig["clv3_r"], fill=False, ec="white", ls=(0, (4, 2)), lw=0.9))
+    ax.add_patch(plt.Circle((0, 0), sig["clv3_r"], fill=False, ec="white", ls=(0, (4, 2)), lw=1.0))
     for k in show:
         if k in prim:
             px, py = prim[k]
-            ax.plot(px, py, "o", ms=9, mfc="none", mec="white", mew=0.9)
-            lab = "P0" if k == 0 else (f"P{k}" if k > 0 else f"P−{-k}")
-            ax.text(px, py + 7.5, lab, color="white", ha="center", va="bottom", fontsize=7.5, fontweight="bold",
+            ax.plot(px, py, "o", ms=11, mfc="none", mec="white", mew=1.0)
+            ax.text(px, py + 7.0, f"P{k}", color="white", ha="center", va="bottom", fontsize=8.5, fontweight="bold",
                     path_effects=OUTLINE)
-    ax.plot([-RMAX + 2, -RMAX + 22], [-RMAX + 1, -RMAX + 1], color="white", lw=1.6, solid_capstyle="butt",
-            path_effects=[pe.withStroke(linewidth=2.6, foreground="black")])
-    ax.text(-RMAX + 12, -RMAX + 4, "20 µm", color="white", ha="center", va="bottom", fontsize=6.5, path_effects=OUTLINE)
-    ax.set_xlim(-RMAX - 1, RMAX + 1); ax.set_ylim(-RMAX - 1, RMAX + 1); ax.set_aspect("equal"); ax.axis("off")
-    cax = ax.inset_axes([0.18, -0.07, 0.64, 0.035])
-    cb = plt.colorbar(pc, cax=cax, orientation="horizontal")
-    cb.set_ticks([lo, hi]); cb.set_ticklabels(["低", "高"]); cb.outline.set_linewidth(0.4)
-    cax.tick_params(length=0, pad=1.5, labelsize=6.5)
+    # scale bar in the empty lower-left corner, outside the disc
+    ax.plot([-RMAX + 1, -RMAX + 21], [-RMAX + 1.5, -RMAX + 1.5], color=INK, lw=1.6, solid_capstyle="butt")
+    ax.text(-RMAX + 11, -RMAX + 3.5, "20 µm", color=INK, ha="center", va="bottom", fontsize=7.5)
+    ax.set_xlim(-RMAX, RMAX); ax.set_ylim(-RMAX, RMAX); ax.set_aspect("equal"); ax.axis("off")
+    return pc
 
 
 def fig1():
@@ -116,15 +120,23 @@ def fig1():
     pin = json.load(open(MM / "noise_v3" / "out" / "pin1_measure.json"))
     sig, prim = load_sam(EXAMPLE)
 
-    fig = plt.figure(figsize=(6.3, 5.15))
-    gs = fig.add_gridspec(2, 1, height_ratios=[1.32, 1.0], hspace=0.42)
-    top = gs[0].subgridspec(1, 2, wspace=0.08)
-    bot = gs[1].subgridspec(1, 3, wspace=0.55, width_ratios=[0.75, 1.25, 0.95])
+    # explicit layout in inches, so that the maps span exactly the width of the bottom row
+    W, H = 6.3, 6.05
+    XL, XR, GAP = 0.08, 6.22, 0.14                 # outer left / right edge shared by both rows
+    S = (XR - XL - GAP) / 2                         # map size
+    BY, BH = 0.48, 1.5                              # bottom row: axes bottom and height
+    MY = 2.78                                       # maps: bottom edge
+    fig = plt.figure(figsize=(W, H))
+    box = lambda x, y, w, h: [x / W, y / H, w / W, h / H]
 
-    ax = fig.add_subplot(top[0]); sam_map(ax, sig, prim, "auxin", "viridis")
-    ax.set_title("生长素输入（1 − qDII）", pad=3); panel_letter(ax, "A", dx=0.04, dy=0.98)
-    ax = fig.add_subplot(top[1]); sam_map(ax, sig, prim, "dr5", "magma")
-    ax.set_title("DR5 转录输出", pad=3); panel_letter(ax, "B", dx=0.04, dy=0.98)
+    for c, (key, cmap, title) in enumerate((("auxin", "viridis", "Auxin input (1 − qDII)"),
+                                             ("dr5", "magma", "$\\mathit{DR5}$ output"))):
+        x0 = XL + c * (S + GAP)
+        ax = fig.add_axes(box(x0, MY, S, S))
+        pc = sam_map(ax, sig, prim, key, cmap)
+        ax.set_title(title, pad=2, fontsize=9)
+        low_high_bar(fig, pc, box(x0 + 0.24 * S, MY - 0.2, 0.52 * S, 0.06))
+        fig.text(x0 / W, (MY + S) / H, "AB"[c], va="top", ha="left", **LETTER)
 
     rng = np.random.default_rng(0)
     d = np.array([m["d"] for m in meas])
@@ -132,43 +144,49 @@ def fig1():
     p0 = np.array([m["p0_radius_t00"] for m in meas if m.get("p0_radius_t00") is not None])
 
     def strip(ax, xpos, vals, col):
-        ax.scatter(xpos + rng.uniform(-0.13, 0.13, len(vals)), vals, s=9, color=col, alpha=0.85, lw=0, zorder=3)
+        ax.scatter(xpos + rng.uniform(-0.13, 0.13, len(vals)), vals, s=10, color=col, alpha=0.85, lw=0, zorder=3)
         q1, med, q3 = np.percentile(vals, [25, 50, 75])
         ax.plot([xpos - 0.26, xpos + 0.26], [med, med], color=INK, lw=1.2, zorder=4)
         ax.plot([xpos, xpos], [q1, q3], color=INK, lw=0.8, zorder=4)
 
-    ax = fig.add_subplot(bot[0])
-    strip(ax, 0, d, GREY)
-    ax.set_xticks([0]); ax.set_xticklabels(["L1 细胞核\n最近邻间距"]); ax.set_xlim(-0.6, 0.6)
-    ax.set_ylabel("µm"); ax.set_ylim(4.2, 4.85)
-    ax.text(0.33, np.median(d), f"{np.median(d):.2f}", va="center", fontsize=7)
-    ax.set_title(f"{len(d)} 个茎尖", pad=3); panel_letter(ax, "C", dx=-0.42)
+    cols = [(0.62, 0.95, "C"), (2.18, 1.62, "D"), (XR - 1.6, 1.6, "E")]   # (left, width) of each bottom axes
+    letter_x = [XL, 1.72, 3.98]
 
-    ax = fig.add_subplot(bot[1])
+    ax = fig.add_axes(box(cols[0][0], BY, cols[0][1], BH))
+    strip(ax, 0, d, GREY)
+    ax.set_xticks([0]); ax.set_xticklabels(["L1 nuclear\nspacing"]); ax.set_xlim(-0.6, 0.6)
+    ax.set_ylabel("Distance (µm)"); ax.set_ylim(4.2, 4.85)
+    ax.text(0.33, np.median(d), f"{np.median(d):.2f}", va="center", fontsize=7)
+    ax.set_title(f"{len(d)} meristems", pad=3)
+
+    ax = fig.add_axes(box(cols[1][0], BY, cols[1][1], BH))
     strip(ax, 0, clv, GREEN); strip(ax, 1, p0, ORANGE)
-    ax.set_xticks([0, 1]); ax.set_xticklabels(["CLV3 区半径", "P0 距中心（0 h）"]); ax.set_xlim(-0.6, 1.6)
-    ax.set_ylabel("µm"); ax.set_ylim(10, 45)
+    ax.set_xticks([0, 1]); ax.set_xticklabels(["$\\mathit{CLV3}$ zone\nradius", "P0 radius\n(0 h)"]); ax.set_xlim(-0.6, 1.6)
+    ax.set_ylabel("Radius (µm)"); ax.set_ylim(10, 45)
     for xpos, vals in ((0, clv), (1, p0)):
         ax.text(xpos + 0.33, np.median(vals), f"{np.median(vals):.1f}", va="center", fontsize=7)
-    ax.set_title(f"{len(clv)} 个茎尖（P0：{len(p0)} 个）", pad=3); panel_letter(ax, "D", dx=-0.2)
+    ax.set_title(f"{len(clv)} meristems (P0: {len(p0)})", pad=3)
 
-    ax = fig.add_subplot(bot[2])
+    ax = fig.add_axes(box(cols[2][0], BY, cols[2][1], BH))
     sp = np.array([p["sigma_PIN"] for p in pin])
     ax.axhspan(0.32, 0.48, color=LIGHT, lw=0, zorder=0)
-    ax.text(0.5, 0.40, "模型再现实测\n不规则性所需", ha="center", va="center", fontsize=6.5, color="#444444",
-            transform=ax.get_yaxis_transform())
+    ax.text(0.5, 0.40, "Needed by the model\nto match observed\nirregularity", ha="center", va="center", fontsize=6.5,
+            color="#444444", transform=ax.get_yaxis_transform())
     ax.scatter(rng.uniform(-0.12, 0.12, len(sp)) + 0.5, sp, s=14, color=BLUE, zorder=3, lw=0)
     ax.plot([0.25, 0.75], [np.median(sp)] * 2, color=INK, lw=1.2)
     ax.text(0.8, np.median(sp), f"{np.median(sp):.2f}", va="center", fontsize=7)
-    ax.set_xlim(0, 1); ax.set_xticks([0.5]); ax.set_xticklabels(["实测（4 个茎尖）"])
-    ax.set_ylim(0, 0.55); ax.set_ylabel("细胞间 PIN1 差异（对数标准差）")
-    ax.set_title("PIN1 量的细胞间差异", pad=3); panel_letter(ax, "E", dx=-0.42)
+    ax.set_xlim(0, 1); ax.set_xticks([0.5]); ax.set_xticklabels(["Measured\n(4 meristems)"])
+    ax.set_ylim(0, 0.55); ax.set_ylabel("Cell-to-cell PIN1 variation\n(log SD)")
+    ax.set_title("PIN1 variation", pad=3)
 
-    save(fig, "fig1_data")
+    for lx, (_, _, s) in zip(letter_x, cols):
+        fig.text(lx / W, (BY + BH + 0.26) / H, s, va="top", ha="left", **LETTER)
+
+    save(fig, "fig1_data", tight=False)
 
 
 # ---------------------------------------------------------------- Fig. 2: model
-TYPES = [("distichous", "二列互生", 2.5), ("spiral", "螺旋", 3.5), ("decussate", "交互对生", 6.0)]
+TYPES = [("distichous", "Distichous", 2.5), ("spiral", "Spiral", 3.5), ("decussate", "Decussate", 6.0)]
 
 
 def model_map(ax, z, name):
@@ -190,12 +208,6 @@ def model_map(ax, z, name):
     return pc
 
 
-def divergence(log):
-    th = np.degrees(np.arctan2(log[:, 2], log[:, 1])) % 360
-    d = np.diff(th) % 360
-    return np.minimum(d, 360 - d)
-
-
 def fig2():
     z = np.load(HERE / "types.npz")
     fig = plt.figure(figsize=(6.3, 5.0))
@@ -203,23 +215,19 @@ def fig2():
     top = gs[0].subgridspec(1, 3, wspace=0.06)
     bot = gs[1].subgridspec(1, 2, wspace=0.32)
 
-    for c, (name, zh, rc) in enumerate(TYPES):
+    for c, (name, en, rc) in enumerate(TYPES):
         ax = fig.add_subplot(top[c])
         pc = model_map(ax, z, name)
         par = json.loads(str(z[f"{name}_par"]))
         st = analysis.summarize([tuple(r) for r in z[f"{name}_log"]], par["gamma"])
         if st["jugacy"] >= 2:
-            sub = f"每节 2 个原基，相邻两节转 {st['rot_frac'] * 180:.0f}°"
+            sub = f"pairs, {st['rot_frac'] * 180:.0f}° between nodes"
         else:
-            sub = f"主导夹角 {st['alpha']:.0f}°"
+            sub = f"dominant angle {st['alpha']:.0f}°"
         print(name, analysis.fmt(st))
-        ax.set_title(f"{zh}（$R_\\mathrm{{c}}$ = {rc:g}）\n{sub}", pad=2, fontsize=7.5, family="Noto Serif CJK SC")
+        ax.set_title(f"{en} ($R_\\mathrm{{c}}$ = {rc:g})\n{sub}", pad=2, fontsize=8)
         panel_letter(ax, "ABC"[c], dx=0.06, dy=0.90)
-    cax = fig.add_axes([0.40, 0.535, 0.22, 0.01])
-    cb = plt.colorbar(pc, cax=cax, orientation="horizontal")
-    cb.set_ticks(pc.get_clim()); cb.set_ticklabels(["低", "高"]); cb.outline.set_linewidth(0.4)
-    cax.tick_params(length=0, pad=1.5, labelsize=6.5)
-    cax.set_xlabel("模型生长素浓度", fontsize=7, labelpad=1)
+    low_high_bar(fig, pc, [0.40, 0.535, 0.22, 0.01], "Auxin (model)")
 
     # D: dominant divergence angle against ring radius / sink range (e11_grid)
     ax = fig.add_subplot(bot[0])
@@ -237,10 +245,10 @@ def fig2():
         ax.axhline(a, color=GREY, ls=(0, (3, 2)), lw=0.6, zorder=1)
         ax.text(5.08, a, lab, fontsize=6.5, color="#555555", va="center")
     ax.set_xlim(0.8, 5.0); ax.set_ylim(0, 192)
-    ax.set_xlabel("发生环中线半径 / 原基作用范围"); ax.set_ylabel("相邻原基夹角（°）")
+    ax.set_xlabel("Ring mid-radius / primordium range"); ax.set_ylabel("Divergence angle (°)")
     hs = [plt.Line2D([], [], marker=m, ls="", ms=4, color=TYPE_COL[k], label=l)
-          for k, l, m in (("distichous", "二列互生", "o"), ("spiral", "螺旋", "o"), ("decussate", "交互对生", "D"))]
-    hs.append(plt.Line2D([], [], marker="o", ls="", ms=3.5, mfc="none", mec=GREY, label="不规则"))
+          for k, l, m in (("distichous", "Distichous", "o"), ("spiral", "Spiral", "o"), ("decussate", "Decussate", "D"))]
+    hs.append(plt.Line2D([], [], marker="o", ls="", ms=3.5, mfc="none", mec=GREY, label="Irregular"))
     ax.legend(handles=hs, frameon=False, loc="lower left", ncol=2, handletextpad=0.2, columnspacing=0.8, borderaxespad=0.2)
     panel_letter(ax, "D", dx=-0.13)
 
@@ -251,16 +259,16 @@ def fig2():
     for r in res:
         key = "hot" if r["name"].startswith("hot") else "sub"
         grp[(key, r["over"]["tau_M"])].append(r)
-    for key, lab, col, mk in (("sub", "不自发成峰", GREEN, "o"), ("hot", "自发成峰", ORANGE, "s")):
+    for key, lab, col, mk in (("sub", "Subcritical", GREEN, "o"), ("hot", "Supercritical", ORANGE, "s")):
         taus = sorted(t for (k, t) in grp if k == key)
         tp0 = np.mean([r["Tp"] for r in grp[(key, 0.0)] if r.get("Tp")])
         xs = [t / tp0 for t in taus]
         ys = [np.mean([(not r["pattern"].endswith("~")) and r["pattern"] != "none" for r in grp[(key, t)]]) for t in taus]
         ns = [len(grp[(key, t)]) for t in taus]
-        ax.plot(xs, ys, "-", color=col, lw=1.0, marker=mk, ms=3.8, label=f"{lab}（每点 {ns[0]} 次）")
-    ax.set_xlabel("积分时间常数 / 叶间期"); ax.set_ylabel("规则螺旋所占比例")
+        ax.plot(xs, ys, "-", color=col, lw=1.0, marker=mk, ms=3.8, label=f"{lab} (n = {ns[0]})")
+    ax.set_xlabel("Integration time constant / plastochron"); ax.set_ylabel("Fraction of regular spirals")
     ax.set_ylim(-0.04, 1.06); ax.set_xlim(-0.05, 1.42)
-    ax.legend(frameon=False, loc="upper right", bbox_to_anchor=(1.0, 0.9), handletextpad=0.4, borderaxespad=0.1)
+    ax.legend(frameon=False, loc="upper right", bbox_to_anchor=(1.0, 1.0), handletextpad=0.4, borderaxespad=0.1)
     panel_letter(ax, "E", dx=-0.13)
 
     save(fig, "fig2_model")
@@ -291,22 +299,22 @@ def fig3():
             ax.scatter(x, y, s=12, facecolor="white", ec=GREY, lw=0.6, zorder=2)
         else:
             ax.scatter(x, y, s=16 if nreg[i] == 1 else 26, color=INK, lw=0, zorder=3)
-    hs = [plt.Line2D([], [], marker="o", ls="", ms=4.5, color=INK, label="出现规则螺旋"),
-          plt.Line2D([], [], marker="o", ls="", ms=3.5, mfc="white", mec=GREY, label="不规则"),
-          plt.Line2D([], [], marker="x", ls="", ms=3.5, color=LIGHT, mew=0.8, label="无运输也能起始")]
+    hs = [plt.Line2D([], [], marker="o", ls="", ms=4.5, color=INK, label="Regular spiral"),
+          plt.Line2D([], [], marker="o", ls="", ms=3.5, mfc="white", mec=GREY, label="Irregular"),
+          plt.Line2D([], [], marker="x", ls="", ms=3.5, color=LIGHT, mew=0.8, label="Initiates without transport")]
     ax.legend(handles=hs, frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.2), ncol=2, handletextpad=0.2,
               columnspacing=0.6, fontsize=6.5)
-    ax.set_xlabel("原基作用范围 $w$（细胞）", family="Noto Serif CJK SC"); ax.set_ylabel("向心运输偏置 $κ_\\mathrm{c}$", family="Noto Serif CJK SC")
+    ax.set_xlabel("Primordium range $w$ (cells)"); ax.set_ylabel("Centripetal transport bias $\\kappa_\\mathrm{c}$")
     ax.set_xlim(1.45, 3.05); ax.set_ylim(0.72, 1.53)
     panel_letter(ax, "A", dx=-0.16, dy=1.12)
 
     # B: model statistics vs measurements
     analysed = [r for r in runs if "alpha" in r]
     reg = [r for r in analysed if r["pattern"] == "spiral"]
-    stats = [("alpha", "平均发散角（°）", 1, (137.5, None), (80, 185)),
-             ("spread", "P1–P5 夹角离散（°）", 1, (6.7, None), (0, 120)),
-             ("hours", "原基间隔（h）", 1, (12, (10, 14)), (0, 30)),
-             ("co50", "同时起始比例（%）", 100, (28, None), (0, 80))]
+    stats = [("alpha", "Mean divergence (°)", 1, (137.5, None), (80, 185)),
+             ("spread", "P1–P5 spread (°)", 1, (6.7, None), (0, 120)),
+             ("hours", "Plastochron (h)", 1, (12, (10, 14)), (0, 30)),
+             ("co50", "Co-initiation (%)", 100, (28, None), (0, 80))]
     sub = gs[1].subgridspec(2, 2, wspace=0.5, hspace=0.62)
     rng = np.random.default_rng(1)
     for k, (key, lab, scale, (meas, band), ylim) in enumerate(stats):
@@ -319,9 +327,9 @@ def fig3():
         if band:
             ax.axhspan(*band, color="#F2C6C2", lw=0, zorder=0)
         ax.axhline(meas, color=RED, lw=0.9, zorder=1)
-        ax.set_xticks([0, 1]); ax.set_xticklabels(["全部运行", "规则螺旋"], fontsize=6.5)
+        ax.set_xticks([0, 1]); ax.set_xticklabels(["All runs", "Regular\nspirals"], fontsize=6.5)
         ax.set_xlim(-0.55, 1.55); ax.set_ylim(*ylim)
-        ax.set_title(lab, fontsize=7, pad=3)
+        ax.set_title(lab, fontsize=7.5, pad=3)
         if k == 0:
             panel_letter(ax, "B", dx=-0.3, dy=1.12)
 
@@ -329,9 +337,12 @@ def fig3():
     print("regular-spiral runs", len(reg), "of", len(runs), "| R0 samples", sum(r0.values()))
 
 
-def save(fig, stem):
+def save(fig, stem, tight=True):
     for ext in ("png", "pdf"):
-        fig.savefig(HERE / f"{stem}.{ext}", bbox_inches="tight", pad_inches=0.03)
+        if tight:
+            fig.savefig(HERE / f"{stem}.{ext}", bbox_inches="tight", pad_inches=0.03)
+        else:
+            fig.savefig(HERE / f"{stem}.{ext}")
     plt.close(fig)
     print("wrote", stem)
 
