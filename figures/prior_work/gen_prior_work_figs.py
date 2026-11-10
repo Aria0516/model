@@ -131,7 +131,7 @@ def fig1():
     fig = plt.figure(figsize=(W, H))
     box = lambda x, y, w, h: [x / W, y / H, w / W, h / H]
 
-    for c, (key, cmap, title) in enumerate((("auxin", "viridis", "Auxin input (1 − qDII)"),
+    for c, (key, cmap, title) in enumerate((("auxin", "viridis", "Auxin input (1 − $\\mathit{qDII}$)"),
                                              ("dr5", "magma", "$\\mathit{DR5}$ output"))):
         x0 = XL + c * (S + GAP)
         ax = fig.add_axes(box(x0, MY, S, S))
