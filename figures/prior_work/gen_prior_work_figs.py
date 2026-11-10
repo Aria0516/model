@@ -16,6 +16,8 @@ Every number drawn here is read from files already in the repository:
 """
 import csv
 import json
+import os
+import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -24,6 +26,7 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.text
 import matplotlib.patheffects as pe
 from matplotlib.collections import PolyCollection
 from scipy.spatial import Voronoi
@@ -45,6 +48,90 @@ plt.rcParams.update({
     "axes.spines.top": False, "axes.spines.right": False, "savefig.dpi": 300,
 })
 INK, GREY, LIGHT = "#1A1A1A", "#8C8C8C", "#D0D0D0"
+
+# FIG_LANG=zh python gen_prior_work_figs.py  -> Chinese labels (Song-style CJK + Times-style Latin), files *_zh.*
+ZH = os.environ.get("FIG_LANG", "en") == "zh"
+SUFFIX = "_zh" if ZH else ""
+CJK_FONT = "Noto Serif CJK SC"
+if ZH:
+    plt.rcParams.update({"font.family": ["Times New Roman", "Liberation Serif", "SimSun", CJK_FONT],
+                         "mathtext.rm": CJK_FONT})
+
+TR = {
+    "Auxin input (1 − $\\mathit{qDII}$)": "生长素输入（1 − $\\mathit{qDII}$）",
+    "$\\mathit{DR5}$ output": "$\\mathit{DR5}$转录输出",
+    "low": "低", "high": "高",
+    "L1 nuclear\nspacing": "L1层细胞核\n最近邻间距", "Distance (µm)": "距离（µm）",
+    "$\\mathit{CLV3}$ zone\nradius": "$\\mathit{CLV3}$表达区\n半径", "P0 radius\n(0 h)": "P0距中心\n（0 h）",
+    "Radius (µm)": "半径（µm）",
+    "Needed by the model\nto match observed\nirregularity": "模型再现实测\n不规则性所需",
+    "Measured\n(4 meristems)": "实测\n（4个茎尖）",
+    "Cell-to-cell PIN1 variation\n(log SD)": "细胞间PIN1差异\n（对数标准差）",
+    "PIN1 variation": "PIN1量的细胞间差异",
+    "Central zone": "中央区", "Competent\nring": "发生环", "Primordium": "原基", "L1\nepidermis": "L1层",
+    "Inner\nlayer*": "内层*", "Vascular\nstrand*": "维管束*",
+    "Peripheral\nsynthesis*": "外围\n合成*", "Auxin $A$": "生长素 $A$", "epidermis": "表皮层",
+    "PIN1 polarity": "PIN1极性", "up-gradient": "朝高浓度",
+    "$\\mathit{DR5}$-like $R$": "$\\mathit{DR5}$样读出 $R$", "passive read-out": "被动读出",
+    "Integration $M$": "时间整合 $M$", "leaky, $\\tau_M$": "泄漏积分，$\\tau_M$",
+    "Secondary\ninhibition": "次级\n抑制", "Initiation": "原基启动", "$M \\geq \\theta$ in ring": "环内 $M \\geq \\theta$",
+    "placed object": "放置的对象", "Inner layer*": "内层*", "vascular drainage": "维管排出",
+    "inward*": "向内*", "polarizes": "定极性", "transport": "运输", "places": "放置", "drains": "排出",
+    "sink": "汇", "polarity\ncue": "极化\n线索", "triggers": "触发", "raises θ": "抬高θ",
+    "Auxin (model)": "模型生长素浓度",
+    "Ring mid-radius / primordium range": "发生环中线半径 / 原基作用范围",
+    "Divergence angle (°)": "相邻原基夹角（°）",
+    "Distichous": "二列互生", "Spiral": "螺旋", "Decussate": "交互对生", "Irregular": "不规则",
+    "Integration time constant / plastochron": "积分时间常数 / 叶间期",
+    "Fraction of regular spirals": "规则螺旋所占比例",
+    "Regular spiral": "出现规则螺旋", "Initiates without transport": "无运输也能起始",
+    "Primordium range $w$ (cells)": "原基作用范围 $w$（细胞）",
+    "Centripetal transport bias $\\kappa_\\mathrm{c}$": "向心运输偏置 $\\kappa_\\mathrm{c}$",
+    "Mean divergence (°)": "平均发散角（°）", "P1–P5 spread (°)": "P1—P5夹角离散（°）",
+    "Plastochron (h)": "发生间隔（h）", "Co-initiation (%)": "同时起始比例（%）",
+    "All runs": "全部运行", "Regular\nspirals": "规则\n螺旋",
+}
+TR_RE = [
+    (r"^(\d+) meristems$", r"\1个茎尖"),
+    (r"^(\d+) meristems \(P0: (\d+)\)$", r"\1个茎尖（P0：\2个）"),
+    (r"^Subcritical \(n = (\d+)\)$", r"不能自发成峰（n = \1）"),
+    (r"^Supercritical \(n = (\d+)\)$", r"能自发成峰（n = \1）"),
+]
+TYPE_ZH = {"Distichous": "二列互生", "Spiral": "螺旋", "Decussate": "交互对生"}
+
+
+def tr(s):
+    """Chinese label for an English one (identity when FIG_LANG is not zh)."""
+    if not ZH:
+        return s
+    if s in TR:
+        return TR[s]
+    for pat, rep in TR_RE:
+        if re.match(pat, s):
+            return re.sub(pat, rep, s)
+    m = re.match(r"^(Distichous|Spiral|Decussate) (\(\$R_\\mathrm\{c\}\$ = [\d.]+\))\n(.*)$", s)
+    if m:
+        sub = re.sub(r"^dominant angle (\d+)°$", r"主导夹角\1°", m.group(3))
+        sub = re.sub(r"^pairs, (\d+)° between nodes$", r"每节2个原基，相邻两节转\1°", sub)
+        return f"{TYPE_ZH[m.group(1)]}（{m.group(2)[1:-1]}）\n{sub}"
+    return s
+
+
+def has_cjk(s):
+    return any("一" <= ch <= "鿿" or "＀" <= ch <= "￯" for ch in s)
+
+
+def localize(fig):
+    """Translate every text in the figure; texts that mix mathtext and Chinese get the CJK font."""
+    if not ZH:
+        return
+    for t in fig.findobj(matplotlib.text.Text):
+        old = t.get_text()
+        new = tr(old)
+        if new != old:
+            t.set_text(new)
+        if "$" in new and has_cjk(new):
+            t.set_fontfamily(CJK_FONT)
 BLUE, GREEN, ORANGE, RED = "#0072B2", "#009E73", "#D55E00", "#C0392B"
 TYPE_COL = {"distichous": BLUE, "intermediate": "#56B4E9", "spiral": GREEN, "decussate": ORANGE}
 OUTLINE = [pe.withStroke(linewidth=1.2, foreground="black")]
@@ -71,7 +158,7 @@ def voronoi_cells(x, y, rmax):
 def low_high_bar(fig, pc, rect, label=None):
     cax = fig.add_axes(rect)
     cb = plt.colorbar(pc, cax=cax, orientation="horizontal")
-    cb.set_ticks(pc.get_clim()); cb.set_ticklabels(["low", "high"]); cb.outline.set_linewidth(0.4)
+    cb.set_ticks(pc.get_clim()); cb.set_ticklabels([tr("low"), tr("high")]); cb.outline.set_linewidth(0.4)
     cax.tick_params(length=0, pad=1.5, labelsize=6.5)
     if label:
         cax.set_xlabel(label, fontsize=7, labelpad=1)
@@ -156,14 +243,14 @@ def fig1():
 
     ax = fig.add_axes(box(cols[0][0], BY, cols[0][1], BH))
     strip(ax, 0, d, GREY)
-    ax.set_xticks([0]); ax.set_xticklabels(["L1 nuclear\nspacing"]); ax.set_xlim(-0.6, 0.6)
+    ax.set_xticks([0]); ax.set_xticklabels([tr("L1 nuclear\nspacing")]); ax.set_xlim(-0.6, 0.6)
     ax.set_ylabel("Distance (µm)"); ax.set_ylim(4.2, 4.85)
     ax.text(0.33, np.median(d), f"{np.median(d):.2f}", va="center", fontsize=7)
     ax.set_title(f"{len(d)} meristems", pad=3)
 
     ax = fig.add_axes(box(cols[1][0], BY, cols[1][1], BH))
     strip(ax, 0, clv, GREEN); strip(ax, 1, p0, ORANGE)
-    ax.set_xticks([0, 1]); ax.set_xticklabels(["$\\mathit{CLV3}$ zone\nradius", "P0 radius\n(0 h)"]); ax.set_xlim(-0.6, 1.6)
+    ax.set_xticks([0, 1]); ax.set_xticklabels([tr("$\\mathit{CLV3}$ zone\nradius"), tr("P0 radius\n(0 h)")]); ax.set_xlim(-0.6, 1.6)
     ax.set_ylabel("Radius (µm)"); ax.set_ylim(10, 45)
     for xpos, vals in ((0, clv), (1, p0)):
         ax.text(xpos + 0.33, np.median(vals), f"{np.median(vals):.1f}", va="center", fontsize=7)
@@ -177,7 +264,7 @@ def fig1():
     ax.scatter(rng.uniform(-0.12, 0.12, len(sp)) + 0.5, sp, s=14, color=BLUE, zorder=3, lw=0)
     ax.plot([0.25, 0.75], [np.median(sp)] * 2, color=INK, lw=1.2)
     ax.text(0.8, np.median(sp), f"{np.median(sp):.2f}", va="center", fontsize=7)
-    ax.set_xlim(0, 1); ax.set_xticks([0.5]); ax.set_xticklabels(["Measured\n(4 meristems)"])
+    ax.set_xlim(0, 1); ax.set_xticks([0.5]); ax.set_xticklabels([tr("Measured\n(4 meristems)")])
     ax.set_ylim(0, 0.55); ax.set_ylabel("Cell-to-cell PIN1 variation\n(log SD)")
     ax.set_title("PIN1 variation", pad=3)
 
@@ -592,7 +679,7 @@ def fig3():
         if band:
             ax.axhspan(*band, color="#F2C6C2", lw=0, zorder=0)
         ax.axhline(meas, color=RED, lw=0.9, zorder=1)
-        ax.set_xticks([0, 1]); ax.set_xticklabels(["All runs", "Regular\nspirals"], fontsize=6.5)
+        ax.set_xticks([0, 1]); ax.set_xticklabels([tr("All runs"), tr("Regular\nspirals")], fontsize=6.5)
         ax.set_xlim(-0.55, 1.55); ax.set_ylim(*ylim)
         ax.set_title(lab, fontsize=7.5, pad=3)
         if k == 0:
@@ -603,6 +690,8 @@ def fig3():
 
 
 def save(fig, stem, tight=True):
+    localize(fig)
+    stem = stem + SUFFIX
     for ext in ("png", "pdf"):
         if tight:
             fig.savefig(HERE / f"{stem}.{ext}", bbox_inches="tight", pad_inches=0.03)
