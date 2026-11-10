@@ -211,7 +211,7 @@ def model_map(ax, z, name):
 
 
 # ---------------------------------------------------------------- Fig. 2A: shoot apex seen obliquely, narrow wedge cut away
-HD, BUMP, T1, T2, Z0, ELEV, WEDGE = 7.0, 4.2, 0.8, 2.0, -3.0, 48, 75   # dome, bulge, layers, base, view, cut angle
+HD, BUMP, T1, T2, ELEV, WEDGE = 8.0, 4.2, 0.9, 1.9, 45, 70   # dome height, bulge, L1 / inner-layer thickness, view, cut
 
 
 def ccw(poly):
@@ -236,7 +236,8 @@ def clip_half(poly, n):
 
 
 def mech_3d(ax, m):
-    """Dome-shaped apex: surface colour and PIN1 arrows from one main-line run (run_mech.py); shape is schematic."""
+    """Dome-shaped apex on a base plane: surface colour and PIN1 arrows from one main-line run (run_mech.py);
+    the dome and the primordium bulges are schematic (the model itself is flat)."""
     from matplotlib.colors import LightSource, Normalize
     from mpl_toolkits.mplot3d import proj3d
     from mpl_toolkits.mplot3d.art3d import Poly3DCollection
@@ -249,13 +250,13 @@ def mech_3d(ax, m):
 
     def surf(x, y):
         x, y = np.asarray(x, float), np.asarray(y, float)
-        z = HD * (1.0 - np.clip(np.hypot(x, y) / R, 0, 1) ** 2)
-        for (px, py, _, age) in inside:                     # older primordia bulge more (schematic outgrowth)
-            wb = w * (0.85 + age / 40.0)
+        z = HD * (1.0 - np.clip(np.hypot(x, y) / R, 0, 1) ** 2) ** 0.85
+        for (px, py, _, age) in inside:                     # older primordia bulge more
+            wb = w * (0.8 + age / 40.0)
             z = z + BUMP * (1 - np.exp(-age / 14.0)) * np.exp(-((x - px) ** 2 + (y - py) ** 2) / (2 * wb ** 2))
         return z
 
-    # a narrow wedge cut away between d1 (through a young primordium) and d2; the viewer looks down into it
+    # narrow wedge cut away between d1 (through a young primordium) and d2
     sec = min([p for p in inside if p[3] >= 6], key=lambda p: p[3])
     d1 = sec[:2] / np.hypot(sec[0], sec[1])
     perp = lambda d: np.array([-d[1], d[0]])
@@ -269,14 +270,19 @@ def mech_3d(ax, m):
             best = (score, d2, n1, n2)
     _, d2, n1, n2 = best
     vb = (d1 + d2) / np.hypot(*(d1 + d2))
-    az = np.degrees(np.arctan2(vb[1], vb[0]))
-    in_wedge = lambda P: (P @ n1 > 0) & (P @ n2 > 0)
+    look = vb + 0.35 * n1                                   # turn a little towards the face with the strand
+    az = np.degrees(np.arctan2(look[1], look[0]))
 
     ax.computed_zorder = False
-    light = LightSource(azdeg=az + 50, altdeg=55)
+    light = LightSource(azdeg=az + 60, altdeg=60)
     nt = Normalize(0, np.percentile(A, 99.5))
     nb = Normalize(np.percentile(A2, 1), np.percentile(A2, 99))
-    viridis, greys = plt.get_cmap("viridis"), plt.get_cmap("Greys")
+    viridis = plt.get_cmap("viridis")
+
+    th = np.linspace(0, 2 * np.pi, 121)                     # soft shadow on the base plane
+    sh = Poly3DCollection([np.c_[1.06 * R * np.cos(th), 1.06 * R * np.sin(th), np.full_like(th, -0.05)]],
+                          facecolors=(0, 0, 0, 0.07), edgecolors="none")
+    sh.set_zorder(0); ax.add_collection3d(sh)
 
     faces, cols = [], []
     for poly, a in zip(voronoi_cells(pts[:, 0], pts[:, 1], R), A):
@@ -284,29 +290,29 @@ def mech_3d(ax, m):
         for piece in (clip_half(poly, n1), clip_half(clip_half(poly, -n1), n2)):   # polygon minus the wedge
             if piece is not None:
                 faces.append(np.c_[piece, surf(piece[:, 0], piece[:, 1])]); cols.append(viridis(nt(a)))
-    ps = Poly3DCollection(faces, facecolors=cols, edgecolors=(0, 0, 0, 0.14), linewidths=0.1, shade=True,
+    ps = Poly3DCollection(faces, facecolors=cols, edgecolors=(0, 0, 0, 0.07), linewidths=0.1, shade=True,
                           lightsource=light)
     ps.set_zorder(2); ax.add_collection3d(ps)
 
-    rng = np.random.default_rng(3)
+    rng = np.random.default_rng(5)                          # PIN1 polarity on a quarter of the cells
     mag = np.hypot(pin[:, 0], pin[:, 1])
-    keep = (mag > 0.25) & (np.hypot(pts[:, 0], pts[:, 1]) < R - 1.0) & (rng.random(len(mag)) < 0.4)
-    keep &= ~((pts @ n1 > -1.2) & (pts @ n2 > -1.2))         # stay clear of the cut
+    keep = (mag > 0.3) & (np.hypot(pts[:, 0], pts[:, 1]) < R - 1.5) & (rng.random(len(mag)) < 0.25)
+    keep &= ~((pts @ n1 > -1.5) & (pts @ n2 > -1.5))         # stay clear of the cut
     x, y = pts[keep, 0], pts[keep, 1]
-    du, dv = 1.1 * pin[keep, 0] / mag[keep], 1.1 * pin[keep, 1] / mag[keep]
-    z0 = surf(x, y) + 0.1
-    ax.quiver(x, y, z0, du, dv, surf(x + du, y + dv) + 0.1 - z0, color="white", lw=0.45, arrow_length_ratio=0.45,
-              zorder=3)
-    ang = np.linspace(0, 2 * np.pi, 361)
-    for r, col, ls in ((par["R_c"], RED, (0, (3, 2))), (par["R_p"], RED, (0, (3, 2))), (par["R_src"], "white", (0, (1, 2)))):
-        cx, cy = r * np.cos(ang), r * np.sin(ang)
-        cut = in_wedge(np.c_[cx, cy])
+    du, dv = 1.2 * pin[keep, 0] / mag[keep], 1.2 * pin[keep, 1] / mag[keep]
+    z0 = surf(x, y) + 0.12
+    ax.quiver(x, y, z0, du, dv, surf(x + du, y + dv) + 0.12 - z0, color=(1, 1, 1, 0.9), lw=0.55,
+              arrow_length_ratio=0.45, zorder=3)
+    for r in (par["R_c"], par["R_p"]):                      # competent ring
+        cx, cy = r * np.cos(np.linspace(0, 2 * np.pi, 361)), r * np.sin(np.linspace(0, 2 * np.pi, 361))
+        cut = (np.c_[cx, cy] @ n1 > 0) & (np.c_[cx, cy] @ n2 > 0)
         cx, cy = np.where(cut, np.nan, cx), np.where(cut, np.nan, cy)
-        ax.plot(cx, cy, surf(np.nan_to_num(cx), np.nan_to_num(cy)) + 0.12, color=col, lw=0.9, ls=ls, zorder=3)
+        ax.plot(cx, cy, surf(np.nan_to_num(cx), np.nan_to_num(cy)) + 0.15, color=RED, lw=0.9, ls=(0, (3, 2)), zorder=3)
 
-    # the two cut faces: L1 (auxin), inner layer (inner-layer auxin), deeper tissue
+    # cut faces: L1 (auxin), inner layer (inner-layer auxin), deeper tissue shaded with depth
     tree = cKDTree(pts)
     s = np.linspace(0, R, 151)
+    deep = lambda f: (0.96 - 0.10 * f, 0.95 - 0.10 * f, 0.92 - 0.11 * f, 1.0)
     for d in (d1, d2):
         X, Y = s * d[0], s * d[1]
         Zs = surf(X, Y)
@@ -314,41 +320,49 @@ def mech_3d(ax, m):
         quads, qc = [], []
         for k in range(len(s) - 1):
             a, b = k, k + 1
-            for top, bot, col in ((0.0, T1, viridis(nt(A[idx[k]]))), (T1, T1 + T2, greys(0.12 + 0.5 * nb(A2[idx[k]]))),
-                                  (T1 + T2, None, (0.95, 0.94, 0.91, 1.0))):
-                zb_a = Z0 if bot is None else Zs[a] - bot
-                zb_b = Z0 if bot is None else Zs[b] - bot
-                quads.append([(X[a], Y[a], Zs[a] - top), (X[b], Y[b], Zs[b] - top), (X[b], Y[b], zb_b), (X[a], Y[a], zb_a)])
+            bands = [(0.0, T1, viridis(nt(A[idx[k]]))), (T1, T1 + T2, plt.get_cmap("Greys")(0.18 + 0.4 * nb(A2[idx[k]])))]
+            for q in range(5):                               # deeper tissue: five sub-bands, darker with depth
+                bands.append((("deep", q), None, deep(q / 4)))
+            for top, bot, col in bands:
+                if isinstance(top, tuple):
+                    q = top[1]
+                    za = [max(Zs[a] - T1 - T2, 0) * (1 - q / 5), max(Zs[a] - T1 - T2, 0) * (1 - (q + 1) / 5)]
+                    zb = [max(Zs[b] - T1 - T2, 0) * (1 - q / 5), max(Zs[b] - T1 - T2, 0) * (1 - (q + 1) / 5)]
+                else:
+                    za = [max(Zs[a] - top, 0), max(Zs[a] - bot, 0)]
+                    zb = [max(Zs[b] - top, 0), max(Zs[b] - bot, 0)]
+                quads.append([(X[a], Y[a], za[0]), (X[b], Y[b], zb[0]), (X[b], Y[b], zb[1]), (X[a], Y[a], za[1])])
                 qc.append(col)
-        pc = Poly3DCollection(quads, facecolors=qc, edgecolors=qc, linewidths=0.3)
+        pc = Poly3DCollection(quads, facecolors=qc, edgecolors=qc, linewidths=0.25)
         pc.set_zorder(5); ax.add_collection3d(pc)
-        for off in (0.0, T1, T1 + T2):
-            ax.plot(X, Y, Zs - off, color=INK, lw=0.9 if off == 0 else 0.5, zorder=6)
-        ax.plot([X[-1]] * 2, [Y[-1]] * 2, [Zs[-1], Z0], color=INK, lw=0.5, zorder=6)
-        ax.plot([0, X[-1]], [0, Y[-1]], [Z0, Z0], color=INK, lw=0.5, zorder=6)
-    ax.plot([0, 0], [0, 0], [float(surf(0, 0)), Z0], color=INK, lw=0.7, zorder=6)
+        ax.plot(X, Y, Zs, color=INK, lw=0.8, zorder=6)
+        for off in (T1, T1 + T2):
+            ax.plot(X, Y, np.maximum(Zs - off, 0), color="#444444", lw=0.4, zorder=6)
+        ax.plot([0, X[-1]], [0, Y[-1]], [0, 0], color=INK, lw=0.5, zorder=6)
+    ax.plot([0, 0], [0, 0], [float(surf(0, 0)), 0], color=INK, lw=0.6, zorder=6)
 
     sp = float(np.hypot(sec[0], sec[1]))                     # vascular strand and drainage under the cut primordium
-    half = 0.8
+    half = 0.9
     zt = float(surf(sp * d1[0], sp * d1[1]))
-    strand = [(sp - half, zt - T1 - T2), (sp + half, zt - T1 - T2), (sp + half, Z0), (sp - half, Z0)]
-    vq = Poly3DCollection([[(q * d1[0], q * d1[1], zq) for q, zq in strand]], facecolors="#9C9C9C", edgecolors=INK,
-                          linewidths=0.5)
+    strand = [(sp - half, zt - T1 - T2), (sp + half, zt - T1 - T2), (sp + half, 0), (sp - half, 0)]
+    vq = Poly3DCollection([[(q * d1[0], q * d1[1], zq) for q, zq in strand]], facecolors="#8E8E8E",
+                          edgecolors="#3A3A3A", linewidths=0.5)
     vq.set_zorder(7); ax.add_collection3d(vq)
-    ax.plot([sp * d1[0]] * 2, [sp * d1[1]] * 2, [zt - 0.25, zt - T1 - T2 + 0.3], color=INK, lw=0.9,
+    ax.plot([sp * d1[0]] * 2, [sp * d1[1]] * 2, [zt - 0.2, zt - T1 - T2 + 0.35], color=INK, lw=0.9,
             ls=(0, (2.5, 1.5)), zorder=8)
-    ax.quiver(sp * d1[0], sp * d1[1], zt - T1 - T2 + 1.2, 0, 0, -1.1, color=INK, lw=0.9, arrow_length_ratio=0.8, zorder=8)
-    ax.quiver(sp * d1[0], sp * d1[1], Z0 + 1.6, 0, 0, -1.1, color="white", lw=0.9, arrow_length_ratio=0.8, zorder=8)
+    ax.quiver(sp * d1[0], sp * d1[1], zt - T1 - T2 + 1.3, 0, 0, -1.1, color=INK, lw=0.9, arrow_length_ratio=0.8, zorder=8)
+    ax.quiver(sp * d1[0], sp * d1[1], 2.0, 0, 0, -1.3, color="white", lw=1.0, arrow_length_ratio=0.8, zorder=8)
 
-    lim = R + 0.3
-    ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim); ax.set_zlim(Z0, HD + BUMP)
-    ax.set_box_aspect((2 * lim, 2 * lim, HD + BUMP - Z0), zoom=1.15)
+    lim = R + 0.6
+    ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim); ax.set_zlim(0, HD + BUMP)
+    ax.set_box_aspect((2 * lim, 2 * lim, HD + BUMP), zoom=1.12)
     ax.view_init(elev=ELEV, azim=az)
     ax.set_axis_off()
 
+    # six labels, each placed outward from the apex with a short leader
     def p2(xyz):
         a_, b_, _ = proj3d.proj_transform(*xyz, ax.get_proj())
-        return a_, b_
+        return np.array([a_, b_])
 
     def on_cut(d, q, depth):
         return (q * d[0], q * d[1], float(surf(q * d[0], q * d[1])) - depth)
@@ -356,25 +370,30 @@ def mech_3d(ax, m):
     def on_surf(P):
         return (P[0], P[1], float(surf(P[0], P[1])))
 
-    behind = [p for p in inside if not in_wedge(p[:2]) and p is not sec]
+    behind = [p for p in inside if p is not sec and not (p[:2] @ n1 > 0 and p[:2] @ n2 > 0)]
     older = max(behind, key=lambda p: p[3]) if behind else sec
-    rr, rs = 0.5 * (par["R_c"] + par["R_p"]), 0.5 * (par["R_src"] + R)
-    items = [("Central zone", on_surf((0.0, 0.0))),
-             ("Competent ring", on_surf(-rr * vb)),
-             ("L1 epidermis", on_cut(d2, 0.55 * R, T1 / 2)),
-             ("Inner layer*", on_cut(d2, 0.35 * R, T1 + T2 / 2)),
-             ("Peripheral\nsynthesis*", on_surf(-rs * d1 * 0.98)),
+    rr = 0.5 * (par["R_c"] + par["R_p"])
+    angs = np.radians(np.arange(0, 360, 3))
+    ring_pts = [rr * np.array([np.cos(a), np.sin(a)]) for a in angs]
+    ring_pts = [P for P in ring_pts if not (P @ n1 > -1 and P @ n2 > -1)]
+    ring_l = min(ring_pts, key=lambda P: p2(on_surf(P))[0])          # leftmost visible point of the ring
+    top = p2(on_surf((0.0, 0.0)))
+    ax.annotate("Central zone", xy=top, xycoords="data", xytext=(0, 50), textcoords="offset points", ha="center",
+                va="bottom", fontsize=6.8, arrowprops=dict(arrowstyle="-", lw=0.5, color=INK, shrinkA=1.5, shrinkB=0),
+                zorder=10)
+    items = [("Competent\nring", on_surf(ring_l)),
              ("Primordium", on_surf(older[:2])),
-             ("Drainage*", on_cut(d1, sp, T1 + 0.5)),
-             ("Vascular\nstrand*", (sp * d1[0], sp * d1[1], Z0 + 1.0))]
-    cx0 = p2((0, 0, 0))[0]
-    for side in "LR":
-        col = sorted([it for it in items if (p2(it[1])[0] < cx0) == (side == "L")], key=lambda it: -p2(it[1])[1])
-        ys = np.linspace(0.92, 0.08, len(col)) if len(col) > 1 else [0.5]
+             ("L1\nepidermis", on_cut(d1, 0.86 * R, T1 / 2)),
+             ("Inner\nlayer*", on_cut(d1, 0.25 * R, T1 + T2 / 2)),
+             ("Vascular\nstrand*", (sp * d1[0], sp * d1[1], 0.3 * (zt - T1 - T2)))]
+    c0 = p2((0, 0, 0.5 * HD))[0]
+    for side in "LR":                                       # two columns, ordered by height: leaders do not cross
+        col = sorted([it for it in items if (p2(it[1])[0] < c0) == (side == "L")], key=lambda it: -p2(it[1])[1])
+        ys = np.linspace(0.86, 0.14, len(col)) if len(col) > 1 else [0.62]
         for (text, xyz), yt in zip(col, ys):
             ax.annotate(text, xy=p2(xyz), xycoords="data", xytext=(0.0 if side == "L" else 1.0, yt),
-                        textcoords="axes fraction", ha="left" if side == "L" else "right", va="center", fontsize=6.6,
-                        linespacing=1.0, arrowprops=dict(arrowstyle="-", lw=0.45, color=INK, shrinkA=1.5, shrinkB=0),
+                        textcoords="axes fraction", ha="left" if side == "L" else "right", va="center", fontsize=6.8,
+                        linespacing=1.0, arrowprops=dict(arrowstyle="-", lw=0.5, color=INK, shrinkA=1.5, shrinkB=0),
                         zorder=10)
 
 
@@ -456,12 +475,12 @@ def fig2():
 
     # row 1: the model (A: 3D view of the two layers, B: loop that places primordia)
     T1, H1 = 4.95, 2.85
-    ax = fig.add_axes(box(0.05, T1, 2.85, H1), projection="3d")
+    ax = fig.add_axes(box(0.05, T1, 3.0, H1), projection="3d")
     mech_3d(ax, m)
     fig.text(0.08 / W, (T1 + H1) / H, "A", va="top", ha="left", **LETTER)
-    ax = fig.add_axes(box(2.92, T1, 3.33, H1 - 0.05))
+    ax = fig.add_axes(box(3.08, T1, 3.17, H1 - 0.05))
     loop_panel(ax)
-    fig.text(2.92 / W, (T1 + H1) / H, "B", va="top", ha="left", **LETTER)
+    fig.text(3.08 / W, (T1 + H1) / H, "B", va="top", ha="left", **LETTER)
 
     # row 2: three patterns from the same equations
     S2, Y2 = 1.82, 2.62
