@@ -298,7 +298,7 @@ def model_map(ax, z, name):
     return pc
 
 
-def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=38, azim=-60):
+def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=45, azim=-60, angles=False):
     """C-E as schematic domes, ray-traced: the simulated disc (auxin, cells, competent ring) drawn on a dome, with a
     bulge at each primordium still inside the disc (simulated position; relief schematic, the model is flat)."""
     from matplotlib.colors import Normalize
@@ -337,9 +337,12 @@ def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=38, azim=-60):
     right = np.array([-np.sin(az), np.cos(az), 0.0])
     up = np.cross(view, right)
     ztop = HDc + (bh.max() if len(bh) else 0)
-    corners = np.array([[a, b, c] for a in (-Rm, Rm) for b in (-Rm, Rm) for c in (0, ztop)])
-    cu, cv = corners @ right, corners @ up
-    span = max(cu.max() - cu.min(), cv.max() - cv.min()) * 1.02
+    thr = np.linspace(0, 2 * np.pi, 241)
+    gg = np.linspace(-R, R, 41); GX_, GY_ = np.meshgrid(gg, gg); kk = np.hypot(GX_, GY_) < R
+    samp = np.r_[np.c_[R * np.cos(thr), R * np.sin(thr), np.zeros_like(thr)],
+                 np.c_[GX_[kk], GY_[kk], surf(GX_[kk], GY_[kk])]]
+    cu, cv = samp @ right, samp @ up                                     # frame tight around the dome
+    span = max(cu.max() - cu.min(), cv.max() - cv.min()) * 1.04
     uc, vc = 0.5 * (cu.max() + cu.min()), 0.5 * (cv.max() + cv.min())
     ss = 2                                                              # supersampling
     n = npx * ss
@@ -376,6 +379,16 @@ def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=38, azim=-60):
     nt = Normalize(0, np.percentile(A, 99.5))
     col = np.ones((N, 3))
     disc = hitm & (r < R)
+    sites, site_names = [], []
+    if angles:                                       # the last four recorded primordia, oldest first
+        ev4 = log[-4:]
+        a4 = t_end - ev4[:, 0]
+        for (tt_, x0_, y0_), ag in zip(ev4, a4):
+            pos = np.array([x0_, y0_]) * np.exp(gam * ag)            # simulated position now
+            if np.hypot(*pos) > R - 0.5:                             # grown out of the disc: line to the edge
+                pos = pos / np.hypot(*pos) * 0.97 * R
+            sites.append(tuple(pos))
+        site_names = [f"P{4 - k}" for k in range(4)]
     tree = cKDTree(pts)
     dd, jj = tree.query(np.c_[x[disc], y[disc]], k=2)
     c1, c2 = pts[jj[:, 0]], pts[jj[:, 1]]
@@ -396,6 +409,13 @@ def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=38, azim=-60):
     tip = (uu >= Lr / 2 - head) & (uu < Lr / 2) & (np.abs(vv) < 0.55 * (Lr / 2 - uu))
     arrow = (shaft | tip) & (Lr > 0.12) & (edge_fade > 0.5)
     cd[arrow] = 0.12 * cd[arrow] + 0.88
+    if angles:                                       # dashed radial lines to the last four primordia
+        for (sx_, sy_) in sites:
+            L_ = np.hypot(sx_, sy_); sh_ = np.array([sx_, sy_]) / L_
+            pp = np.c_[x[disc], y[disc]]
+            uu_ = pp @ sh_; vv_ = np.abs(pp[:, 0] * sh_[1] - pp[:, 1] * sh_[0])
+            dash = (uu_ > 0.3) & (uu_ < L_) & (vv_ < 0.06) & (((uu_ / 0.55) % 1) < 0.6)
+            cd[dash] = 0.15 * cd[dash] + 0.85
     # primordia: white circle of radius w, as in the flat maps
     for (px_, py_, _, _) in prim:
         if np.hypot(px_, py_) < R - 0.5:
@@ -430,6 +450,14 @@ def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=38, azim=-60):
     img = img.reshape(npx, ss, npx, ss, 3).mean((1, 3))
     ax.imshow(img, interpolation="lanczos")
     ax.axis("off")
+    if angles and len(sites) >= 2:
+        to_px = lambda P3: (((P3 @ right) - (uc - span / 2)) / span * npx, ((uc * 0 + vc + span / 2) - (P3 @ up)) / span * npx)
+        for (sx_, sy_), nm in zip(sites, site_names):
+            q = (1.0 + 1.25 * w / np.hypot(sx_, sy_)) if np.hypot(sx_, sy_) < 0.9 * R else 0.83
+            P3 = np.array([sx_ * q, sy_ * q, float(surf(np.array([sx_ * q]), np.array([sy_ * q]))[0])])
+            ax.text(*to_px(P3), nm, color="white", fontsize=7.5, fontweight="bold", ha="center", va="center",
+                    path_effects=OUTLINE)
+
     return plt.cm.ScalarMappable(norm=nt, cmap=viridis)
 
 
@@ -670,6 +698,257 @@ def mech_3d(ax, m):
                         zorder=10)
 
 
+def mech_rt(ax, m, W_in=3.0, H_in=2.85, dpi_px=330, ss=2):
+    """Panel A, ray-traced: same geometry, colours and labels as mech_3d, rendered per pixel with smooth light.
+    Top surface: auxin per cell, cell walls, PIN1 arrows, competent ring. Cut faces: tissue section (L1 cells, inner
+    layer, schematic deeper cells, vascular strand of elongated cells)."""
+    from matplotlib.colors import Normalize
+    from scipy.spatial import cKDTree
+
+    par = json.loads(str(m["par"]))
+    R, w = par["R_out"], par["w"]
+    pts, A, A2, pin, prim = m["pts"], m["A"], m["A2"], m["pin"], m["prim"]
+    inside = [p for p in prim if np.hypot(p[0], p[1]) < R - 0.5]
+
+    def surf(x, y):
+        x, y = np.asarray(x, float), np.asarray(y, float)
+        zz = HD * (1.0 - np.clip(np.hypot(x, y) / R, 0, 1) ** 2) ** 0.85
+        for (px, py, _, age) in inside:
+            wb = w * (0.8 + age / 40.0)
+            zz = zz + BUMP * (1 - np.exp(-age / 14.0)) * np.exp(-((x - px) ** 2 + (y - py) ** 2) / (2 * wb ** 2))
+        return zz
+
+    # wedge and view, exactly as in mech_3d
+    sec = min([p for p in inside if p[3] >= 6], key=lambda p: p[3])
+    d1 = sec[:2] / np.hypot(sec[0], sec[1])
+    perp = lambda d: np.array([-d[1], d[0]])
+    rot = lambda d, a: np.array([d[0] * np.cos(a) - d[1] * np.sin(a), d[0] * np.sin(a) + d[1] * np.cos(a)])
+    best = None
+    for sgn in (1, -1):
+        d2 = rot(d1, sgn * np.radians(WEDGE))
+        n1, n2 = perp(d1) * np.sign(perp(d1) @ d2), perp(d2) * np.sign(perp(d2) @ d1)
+        score = sum(p[3] for p in inside if not (p[:2] @ n1 > 0 and p[:2] @ n2 > 0))
+        if best is None or score > best[0]:
+            best = (score, d2, n1, n2)
+    _, d2, n1, n2 = best
+    vb = (d1 + d2) / np.hypot(*(d1 + d2))
+    look = vb + 0.35 * n1
+    az = np.arctan2(look[1], look[0]); el = np.radians(ELEV)
+    view = np.array([np.cos(el) * np.cos(az), np.cos(el) * np.sin(az), np.sin(el)])
+    right = np.array([-np.sin(az), np.cos(az), 0.0])
+    up = np.cross(view, right)
+    in_wedge = lambda x, y: (x * n1[0] + y * n1[1] > 0) & (x * n2[0] + y * n2[1] > 0)
+
+    # frame: the apex fills the middle ~70% of the width, labels go in the side columns
+    th = np.linspace(0, 2 * np.pi, 361)
+    rim = np.c_[R * np.cos(th), R * np.sin(th), np.zeros_like(th)]
+    gx = np.linspace(-R, R, 61); GX, GY = np.meshgrid(gx, gx); keep = np.hypot(GX, GY) < R
+    topP = np.c_[GX[keep], GY[keep], surf(GX[keep], GY[keep])]
+    allP = np.r_[rim, topP]
+    pu, pv = allP @ right, allP @ up
+    span_u = (pu.max() - pu.min()) / 0.74
+    span_v = span_u * H_in / W_in
+    uc = 0.5 * (pu.max() + pu.min()); vc = 0.5 * (pv.max() + pv.min()) - 0.04 * span_v
+    nx, ny = int(W_in * dpi_px), int(H_in * dpi_px)
+    NX, NY = nx * ss, ny * ss
+    U, V = np.meshgrid(uc - span_u / 2 + span_u * (np.arange(NX) + 0.5) / NX,
+                       vc + span_v / 2 - span_v * (np.arange(NY) + 0.5) / NY)
+    T0 = 4 * R
+    O = U.ravel()[:, None] * right + V.ravel()[:, None] * up + T0 * view
+    D = -view
+    N = len(O)
+
+    def solid(P):
+        x, y, zq = P[:, 0], P[:, 1], P[:, 2]
+        return (np.hypot(x, y) < R) & ~in_wedge(x, y) & (zq > 0) & (zq < surf(x, y))
+
+    # where the ray meets the floor: under the solid (it must have passed through it) or in the cut (floor visible)
+    tf = O[:, 2] / view[2]
+    Qf0 = O + tf[:, None] * D
+    fin = (np.hypot(Qf0[:, 0], Qf0[:, 1]) < R) & ~in_wedge(Qf0[:, 0], Qf0[:, 1])
+    t_hit = np.full(N, np.nan); prev = np.zeros(N)
+    t = np.full(N, T0 - 2.0 * R)
+    act = np.arange(N); step = 0.2
+    while act.size and t[act[0]] < T0 + 2.5 * R:
+        P = O[act] + t[act, None] * D
+        under = P[:, 2] <= 0
+        hit = solid(P) | (under & fin[act])
+        if hit.any():
+            idx = act[hit]; lo, hi = t[idx] - step, np.minimum(t[idx], tf[idx])
+            for _ in range(12):
+                mid = 0.5 * (lo + hi); Q = O[idx] + mid[:, None] * D
+                ins = solid(Q) | ((Q[:, 2] <= 0) & fin[idx])
+                hi = np.where(ins, mid, hi); lo = np.where(ins, lo, mid)
+            t_hit[idx] = hi; prev[idx] = lo
+        act = act[~hit & ~under]
+        t[act] += step
+    hitm = ~np.isnan(t_hit)
+    P = O + np.nan_to_num(t_hit)[:, None] * D
+    Po = O + prev[:, None] * D
+    x, y, zq = P[:, 0], P[:, 1], P[:, 2]
+    top = hitm & (Po[:, 2] >= surf(Po[:, 0], Po[:, 1]) - 1e-4) & (Po[:, 2] > 0)
+    wo = in_wedge(Po[:, 0], Po[:, 1])
+    f1 = hitm & ~top & wo & (Po[:, :2] @ n1 > 0) & (P[:, :2] @ n1 <= 1e-6)
+    f2 = hitm & ~top & wo & ~f1
+    side = hitm & ~top & ~wo
+    col = np.ones((N, 3))
+
+    viridis = plt.get_cmap("viridis")
+    nt = Normalize(0, np.percentile(A, 99.5))
+    nb = Normalize(np.percentile(A2, 1), np.percentile(A2, 99))
+    tree = cKDTree(pts)
+    to_rgb = lambda c: np.array(mcolors.to_rgb(c))
+    L = -0.45 * right + 0.55 * up + 0.70 * view; L /= np.linalg.norm(L)
+    Hh = (L + view) / np.linalg.norm(L + view)
+
+    # ---- top surface
+    ti = np.where(top | side)[0]
+    dd, jj = tree.query(np.c_[x[ti], y[ti]], k=2)
+    c1, c2 = pts[jj[:, 0]], pts[jj[:, 1]]
+    bis = (dd[:, 1] ** 2 - dd[:, 0] ** 2) / (2 * np.linalg.norm(c2 - c1, axis=1))
+    ct = viridis(nt(A[jj[:, 0]]))[:, :3]
+    ct *= (1 - 0.2 * np.exp(-(bis / 0.045) ** 2))[:, None]
+    # PIN1 arrows on a quarter of the cells (same selection as mech_3d), from the cell centre, length 1.2
+    rng = np.random.default_rng(5)
+    mag = np.hypot(pin[:, 0], pin[:, 1])
+    sel = (mag > 0.3) & (np.hypot(pts[:, 0], pts[:, 1]) < R - 1.5) & (rng.random(len(mag)) < 0.25)
+    sel &= ~((pts @ n1 > -1.5) & (pts @ n2 > -1.5))
+    if sel.any():
+        at = cKDTree(pts[sel]); ad, aj = at.query(np.c_[x[ti], y[ti]], k=3)
+        for kk in range(3):
+            cc = pts[sel][aj[:, kk]]; ph = pin[sel][aj[:, kk]] / mag[sel][aj[:, kk], None]
+            rel = np.c_[x[ti], y[ti]] - cc
+            uu = rel[:, 0] * ph[:, 0] + rel[:, 1] * ph[:, 1]
+            vv = -rel[:, 0] * ph[:, 1] + rel[:, 1] * ph[:, 0]
+            Lr, hd = 1.2, 0.42
+            arrow = (((uu > 0) & (uu < Lr - hd) & (np.abs(vv) < 0.055)) |
+                     ((uu >= Lr - hd) & (uu < Lr) & (np.abs(vv) < 0.62 * (Lr - uu)))) & (ad[:, kk] < 1.4)
+            ct[arrow] = 0.1 * ct[arrow] + 0.9
+    rr_ = np.hypot(x[ti], y[ti]); th_ = np.arctan2(y[ti], x[ti])
+    for rc in (par["R_c"], par["R_p"]):
+        ndash = int(round(2 * np.pi * rc / 0.85))
+        mk = (np.abs(rr_ - rc) < 0.09) & (((th_ / (2 * np.pi) * ndash) % 1) < 0.55)
+        ct[mk] = to_rgb(RED)
+    col[ti] = ct
+    col[side] *= 0.6
+
+    # ---- cut faces as a tissue section
+    sp = float(np.hypot(sec[0], sec[1]))
+    zt = float(surf(sp * d1[0], sp * d1[1])); zs_top = zt - T1 - T2; half = 0.95
+    lerp = lambda a, b, f: to_rgb(a)[None, :] * (1 - f[:, None]) + to_rgb(b)[None, :] * f[:, None]
+    rngc = np.random.default_rng(11)
+    for fm, d, nf in ((f1, d1, n1), (f2, d2, n2)):
+        fi = np.where(fm)[0]
+        if not fi.size:
+            continue
+        s_ = P[fi, :2] @ d; z_ = zq[fi]
+        Zs = surf(s_ * d[0], s_ * d[1]); dep = Zs - z_
+        g_ = np.maximum(Zs - T1 - T2, 0)
+        cf = np.zeros((fi.size, 3))
+        q = np.c_[s_ * d[0], s_ * d[1]] - 0.15 * nf
+        dq, jq = tree.query(q, k=2)
+        cq1, cq2 = pts[jq[:, 0]], pts[jq[:, 1]]
+        bq = (dq[:, 1] ** 2 - dq[:, 0] ** 2) / (2 * np.linalg.norm(cq2 - cq1, axis=1))
+        wall_q = np.exp(-(bq / 0.05) ** 2)
+        l1 = dep < T1
+        cf[l1] = viridis(nt(A[jq[l1, 0]]))[:, :3] * (1 - 0.45 * wall_q[l1])[:, None]
+        il = (dep >= T1) & (dep < T1 + T2)
+        cf[il] = lerp("#DCE3EA", "#B9C6D3", 0.6 * nb(A2[jq[il, 0]])) * (1 - 0.35 * wall_q[il])[:, None]
+        dp = dep >= T1 + T2
+        h = 1.2
+        seeds = np.array([((i + 0.5 + rngc.uniform(-0.32, 0.32)) * h, (j + 0.5 + rngc.uniform(-0.32, 0.32)) * h)
+                          for i in range(int(R / h) + 2) for j in range(int((HD + BUMP) / h) + 2)])
+        st = cKDTree(seeds)
+        ds, js = st.query(np.c_[s_[dp], z_[dp]], k=2)
+        s1, s2 = seeds[js[:, 0]], seeds[js[:, 1]]
+        bs = (ds[:, 1] ** 2 - ds[:, 0] ** 2) / (2 * np.linalg.norm(s2 - s1, axis=1))
+        fz = np.clip(z_[dp] / np.maximum(g_[dp], 1e-6), 0, 1)
+        cf[dp] = lerp("#E3D4BF", "#F7F1E7", fz) * (1 - 0.22 * np.exp(-(bs / 0.05) ** 2))[:, None]
+        if d is d1:                                            # vascular strand: three files of long cells
+            vs = (np.abs(s_ - sp) < half) & (z_ < zs_top)
+            fidx = np.clip(((s_[vs] - (sp - half)) / (2 * half / 3)).astype(int), 0, 2)
+            first = 1.75 * (0.45 + 0.3 * fidx)
+            depth_v = zs_top - z_[vs]
+            phase = np.where(depth_v < first, depth_v / first, (depth_v - first) / 1.75 % 1)
+            wall_v = (np.minimum(phase, 1 - phase) * np.where(depth_v < first, first, 1.75) < 0.05)
+            fsep = np.abs(((s_[vs] - (sp - half)) / (2 * half / 3) + 0.5) % 1 - 0.5) * (2 * half / 3) < 0.035
+            cv_ = lerp("#E8B96E", "#F4D9A8", np.clip(z_[vs] / max(zs_top, 1e-6), 0, 1))
+            cv_[wall_v | fsep] *= 0.72
+            edge_v = np.abs(np.abs(s_[vs] - sp) - half) < 0.06
+            cv_[edge_v] = to_rgb("#7A5524")
+            cf[vs] = cv_
+        # outlines: cut edge, layer boundaries, axis, rim, base
+        cf[dep < 0.07] = to_rgb(INK)
+        cf[np.abs(dep - T1) < 0.035] = to_rgb("#2B2B2B")
+        cf[np.abs(dep - T1 - T2) < 0.035] = to_rgb("#55606B")
+        cf[(s_ < 0.06) | (s_ > R - 0.06) | (z_ < 0.06)] = to_rgb(INK)
+        nf3 = np.array([nf[0], nf[1], 0.0])
+        lit = 0.80 + 0.25 * max(float(nf3 @ L), 0.0)
+        col[fi] = cf * lit
+
+    # ---- light on the top surface
+    ex = 0.03
+    Sx = (surf(x[ti] + ex, y[ti]) - surf(x[ti] - ex, y[ti])) / (2 * ex)
+    Sy = (surf(x[ti], y[ti] + ex) - surf(x[ti], y[ti] - ex)) / (2 * ex)
+    nrm = np.c_[-Sx, -Sy, np.ones(ti.size)]; nrm /= np.linalg.norm(nrm, axis=1)[:, None]
+    lam = np.clip(nrm @ L, 0, 1); spec = np.clip(nrm @ Hh, 0, 1) ** 40
+    col[ti] = np.clip(col[ti] * (0.5 + 0.58 * lam)[:, None] + (0.08 * spec)[:, None], 0, 1)
+
+    # ---- floor of the cut and soft shadow
+    tz = O[:, 2] / view[2]; Qf = O + tz[:, None] * D
+    rf = np.hypot(Qf[:, 0], Qf[:, 1])
+    fl = ~hitm
+    shade = 1 - 0.075 * np.exp(-np.clip(rf / R - 0.9, 0, None) ** 2 / 0.012)
+    shade = np.where(shade > 0.995, 1.0, shade)
+    col[fl] = shade[fl, None]
+    flo = fl & (rf < R) & in_wedge(Qf[:, 0], Qf[:, 1])
+    col[flo] = to_rgb("#E6E6E6")
+    img = col.reshape(NY, NX, 3).reshape(ny, ss, nx, ss, 3).mean((1, 3))
+    ax.imshow(img, interpolation="lanczos", extent=(0, nx, ny, 0))
+    ax.set_xlim(0, nx); ax.set_ylim(ny, 0); ax.axis("off")
+
+    # ---- overlays: drainage arrows, then the labels (as in mech_3d)
+    def p2(xyz):
+        Pq = np.atleast_2d(np.asarray(xyz, float))
+        return np.c_[(Pq @ right - (uc - span_u / 2)) / span_u * nx, (vc + span_v / 2 - Pq @ up) / span_v * ny][0]
+
+    a0, a1 = p2((sp * d1[0], sp * d1[1], zt - 0.2)), p2((sp * d1[0], sp * d1[1], zs_top + 0.1))
+    ax.annotate("", xy=a1, xytext=a0, arrowprops=dict(arrowstyle="-|>", lw=0.9, color=INK, ls=(0, (2.5, 1.5)),
+                                                      mutation_scale=7, shrinkA=0, shrinkB=0))
+    b0, b1 = p2((sp * d1[0], sp * d1[1], 0.55 * zs_top)), p2((sp * d1[0], sp * d1[1], 0.2 * zs_top))
+    ax.annotate("", xy=b1, xytext=b0, arrowprops=dict(arrowstyle="-|>", lw=1.1, color="white", mutation_scale=7,
+                                                      shrinkA=0, shrinkB=0))
+
+    def on_cut(d, q, depth):
+        return (q * d[0], q * d[1], float(surf(q * d[0], q * d[1])) - depth)
+
+    def on_surf(Pq):
+        return (Pq[0], Pq[1], float(surf(Pq[0], Pq[1])))
+
+    behind = [p for p in inside if p is not sec and not (p[:2] @ n1 > 0 and p[:2] @ n2 > 0)]
+    older = max(behind, key=lambda p: p[3]) if behind else sec
+    rr = 0.5 * (par["R_c"] + par["R_p"])
+    ring_pts = [rr * np.array([np.cos(a), np.sin(a)]) for a in np.radians(np.arange(0, 360, 3))]
+    ring_pts = [Pq for Pq in ring_pts if not (Pq @ n1 > -1 and Pq @ n2 > -1)]
+    ring_l = min(ring_pts, key=lambda Pq: p2(on_surf(Pq))[0])
+    tp = p2(on_surf((0.0, 0.0)))
+    ax.annotate("Central zone", xy=tp, xycoords="data", xytext=(0, 50), textcoords="offset points", ha="center",
+                va="bottom", fontsize=6.8, arrowprops=dict(arrowstyle="-", lw=0.5, color=INK, shrinkA=1.5, shrinkB=0),
+                zorder=10)
+    items = [("Competent\nring", on_surf(ring_l)), ("Primordium", on_surf(older[:2])),
+             ("L1\nepidermis", on_cut(d1, 0.86 * R, T1 / 2)), ("Inner\nlayer*", on_cut(d1, 0.25 * R, T1 + T2 / 2)),
+             ("Vascular\nstrand*", (sp * d1[0], sp * d1[1], 0.3 * zs_top))]
+    c0 = p2((0, 0, 0.5 * HD))[0]
+    for sd in "LR":
+        colm = sorted([it for it in items if (p2(it[1])[0] < c0) == (sd == "L")], key=lambda it: p2(it[1])[1])
+        ys = np.linspace(0.86, 0.14, len(colm)) if len(colm) > 1 else [0.62]
+        for (text, xyz), yt in zip(colm, ys):
+            ax.annotate(text, xy=p2(xyz), xycoords="data", xytext=(0.0 if sd == "L" else 1.0, yt),
+                        textcoords="axes fraction", ha="left" if sd == "L" else "right", va="center", fontsize=6.8,
+                        linespacing=1.0, arrowprops=dict(arrowstyle="-", lw=0.5, color=INK, shrinkA=1.5, shrinkB=0),
+                        zorder=10)
+
+
 def loop_panel(ax):
     """Panel B: regulatory loop of the model (after the layout of the earlier schematic, simplified)."""
     from matplotlib.patches import FancyBboxPatch
@@ -752,6 +1031,9 @@ def fig2():
     if a_img:
         ax = fig.add_axes(box(0.05, T1, 3.0, H1))
         ax.imshow(plt.imread(a_img), interpolation="lanczos"); ax.axis("off")
+    elif os.environ.get("RT3D"):
+        ax = fig.add_axes(box(0.05, T1, 3.0, H1))
+        mech_rt(ax, m)
     else:
         ax = fig.add_axes(box(0.05, T1, 3.0, H1), projection="3d")
         mech_3d(ax, m)
@@ -769,9 +1051,9 @@ def fig2():
     gap = (6.22 - 0.08 - 3 * S2) / 2
     for c, (name, en, rc) in enumerate(TYPES):
         x0 = 0.08 + c * (S2 + gap)
-        if os.environ.get("CE3D"):                   # optional: C-E as schematic 3D domes
+        if os.environ.get("CE3D") or os.environ.get("RT3D"):   # optional: C-E as schematic 3D domes
             ax = fig.add_axes(box(x0 - 0.06, Y2 - 0.06, S2 + 0.12, S2 + 0.12))
-            pc = pattern_3d(ax, z, name)
+            pc = pattern_3d(ax, z, name, **{"spiral": dict(elev=68, azim=-45, angles=True)}.get(name, {}))
         else:
             ax = fig.add_axes(box(x0, Y2, S2, S2))
             pc = model_map(ax, z, name)
@@ -780,7 +1062,7 @@ def fig2():
         sub = (f"pairs, {st['rot_frac'] * 180:.0f}° between nodes" if st["jugacy"] >= 2
                else f"dominant angle {st['alpha']:.0f}°")
         ttl = f"{en} ($R_\\mathrm{{c}}$ = {rc:g})\n{sub}"
-        if os.environ.get("CE3D"):
+        if os.environ.get("CE3D") or os.environ.get("RT3D"):
             fig.text((x0 + S2 / 2) / W, (Y2 + S2 + 0.03) / H, ttl, ha="center", va="bottom", fontsize=8)
         else:
             ax.set_title(ttl, pad=2, fontsize=8)
@@ -827,7 +1109,7 @@ def fig2():
     fig.text(3.45 / W, (Y3 + H3 + 0.25) / H, "G", va="top", ha="left", **LETTER)
 
     ppt = "".join(k for k in "AB" if os.environ.get(f"{k}_PANEL"))
-    save(fig, "fig2_model" + (f"_ppt{ppt}" if ppt else "") + ("_3dCE" if os.environ.get("CE3D") else ""), tight=False)
+    save(fig, "fig2_model" + (f"_ppt{ppt}" if ppt else "") + ("_rt" if os.environ.get("RT3D") else "_3dCE" if os.environ.get("CE3D") else ""), tight=False)
 
 
 # ---------------------------------------------------------------- Fig. 3: tests against data (sampled model)
