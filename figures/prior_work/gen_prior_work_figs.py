@@ -298,7 +298,7 @@ def model_map(ax, z, name):
     return pc
 
 
-def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=45, azim=-60, angles=False):
+def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=52, azim=-60, labels=True):
     """C-E as schematic domes, ray-traced: the simulated disc (auxin, cells, competent ring) drawn on a dome, with a
     bulge at each primordium still inside the disc (simulated position; relief schematic, the model is flat)."""
     from matplotlib.colors import Normalize
@@ -379,16 +379,8 @@ def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=45, azim=-60, angles=Fal
     nt = Normalize(0, np.percentile(A, 99.5))
     col = np.ones((N, 3))
     disc = hitm & (r < R)
-    sites, site_names = [], []
-    if angles:                                       # the last four recorded primordia, oldest first
-        ev4 = log[-4:]
-        a4 = t_end - ev4[:, 0]
-        for (tt_, x0_, y0_), ag in zip(ev4, a4):
-            pos = np.array([x0_, y0_]) * np.exp(gam * ag)            # simulated position now
-            if np.hypot(*pos) > R - 0.5:                             # grown out of the disc: line to the edge
-                pos = pos / np.hypot(*pos) * 0.97 * R
-            sites.append(tuple(pos))
-        site_names = [f"P{4 - k}" for k in range(4)]
+    vis = sorted([(px_, py_, age_) for (px_, py_, _, age_) in prim if np.hypot(px_, py_) < R - 0.5],
+                 key=lambda q: q[2])                                   # primordia in the disc, youngest first
     tree = cKDTree(pts)
     dd, jj = tree.query(np.c_[x[disc], y[disc]], k=2)
     c1, c2 = pts[jj[:, 0]], pts[jj[:, 1]]
@@ -409,13 +401,6 @@ def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=45, azim=-60, angles=Fal
     tip = (uu >= Lr / 2 - head) & (uu < Lr / 2) & (np.abs(vv) < 0.55 * (Lr / 2 - uu))
     arrow = (shaft | tip) & (Lr > 0.12) & (edge_fade > 0.5)
     cd[arrow] = 0.12 * cd[arrow] + 0.88
-    if angles:                                       # dashed radial lines to the last four primordia
-        for (sx_, sy_) in sites:
-            L_ = np.hypot(sx_, sy_); sh_ = np.array([sx_, sy_]) / L_
-            pp = np.c_[x[disc], y[disc]]
-            uu_ = pp @ sh_; vv_ = np.abs(pp[:, 0] * sh_[1] - pp[:, 1] * sh_[0])
-            dash = (uu_ > 0.3) & (uu_ < L_) & (vv_ < 0.06) & (((uu_ / 0.55) % 1) < 0.6)
-            cd[dash] = 0.15 * cd[dash] + 0.85
     # primordia: white circle of radius w, as in the flat maps
     for (px_, py_, _, _) in prim:
         if np.hypot(px_, py_) < R - 0.5:
@@ -450,13 +435,14 @@ def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=45, azim=-60, angles=Fal
     img = img.reshape(npx, ss, npx, ss, 3).mean((1, 3))
     ax.imshow(img, interpolation="lanczos")
     ax.axis("off")
-    if angles and len(sites) >= 2:
-        to_px = lambda P3: (((P3 @ right) - (uc - span / 2)) / span * npx, ((uc * 0 + vc + span / 2) - (P3 @ up)) / span * npx)
-        for (sx_, sy_), nm in zip(sites, site_names):
-            q = (1.0 + 1.25 * w / np.hypot(sx_, sy_)) if np.hypot(sx_, sy_) < 0.9 * R else 0.83
+    if labels:                                       # P1 (newest), P2, ... next to each primordium circle
+        to_px = lambda P3: (((P3 @ right) - (uc - span / 2)) / span * npx, ((vc + span / 2) - (P3 @ up)) / span * npx)
+        for k, (sx_, sy_, _) in enumerate(vis):
+            q = 1.0 + 1.3 * w / np.hypot(sx_, sy_)
+            q = min(q, 0.93 * R / np.hypot(sx_, sy_))
             P3 = np.array([sx_ * q, sy_ * q, float(surf(np.array([sx_ * q]), np.array([sy_ * q]))[0])])
-            ax.text(*to_px(P3), nm, color="white", fontsize=7.5, fontweight="bold", ha="center", va="center",
-                    path_effects=OUTLINE)
+            ax.text(*to_px(P3), f"P{k + 1}", color="white", fontsize=7.5, fontweight="bold", ha="center",
+                    va="center", path_effects=OUTLINE)
 
     return plt.cm.ScalarMappable(norm=nt, cmap=viridis)
 
@@ -1053,7 +1039,7 @@ def fig2():
         x0 = 0.08 + c * (S2 + gap)
         if os.environ.get("CE3D") or os.environ.get("RT3D"):   # optional: C-E as schematic 3D domes
             ax = fig.add_axes(box(x0 - 0.06, Y2 - 0.06, S2 + 0.12, S2 + 0.12))
-            pc = pattern_3d(ax, z, name, **{"spiral": dict(elev=68, azim=-45, angles=True)}.get(name, {}))
+            pc = pattern_3d(ax, z, name)
         else:
             ax = fig.add_axes(box(x0, Y2, S2, S2))
             pc = model_map(ax, z, name)
