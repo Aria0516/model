@@ -69,8 +69,8 @@ function build(lang, outFile) {
   const font = "Times New Roman";
 
   const nodes = {
-    src: [XL, Y[0], T.src, "solid", true], A: [XM, Y[0], T.A, "state"], pin: [XR, Y[0], T.pin, "solid"],
-    dr5: [XL, Y[1], T.dr5, "grey"], M: [XM, Y[1], T.M, "solid"],
+    src: [XL, Y[0], T.src, "solid", true], A: [XM, Y[0], T.A, "solid"], pin: [XR, Y[0], T.pin, "solid"],
+    dr5: [XL, Y[1], T.dr5, "solid"], M: [XM, Y[1], T.M, "solid"],
     inh: [XL, Y[2], T.inh, "solid", true], ini: [XM, Y[2], T.ini, "solid"],
     pri: [XM, Y[3], T.pri, "dashed"], inner: [XM, Y[4], T.inner, "solid"],
   };

@@ -544,9 +544,9 @@ def loop_panel(ax):
     Y = [0.85, 0.665, 0.48, 0.295, 0.11]
     nodes = {
         "src": (XL, Y[0], "Peripheral\nsynthesis*", None, "solid"),
-        "A": (XM, Y[0], "Auxin $A$", "epidermis", "state"),
+        "A": (XM, Y[0], "Auxin $A$", "epidermis", "solid"),
         "pin": (XR, Y[0], "PIN1 polarity", "up-gradient", "solid"),
-        "dr5": (XL, Y[1], "$\\mathit{DR5}$-like $R$", "passive read-out", "grey"),
+        "dr5": (XL, Y[1], "$\\mathit{DR5}$-like $R$", "passive read-out", "solid"),
         "M": (XM, Y[1], "Integration $M$", "leaky, $\\tau_M$", "solid"),
         "inh": (XL, Y[2], "Secondary\ninhibition", None, "solid"),
         "ini": (XM, Y[2], "Initiation", "$M \\geq \\theta$ in ring", "solid"),
