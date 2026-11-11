@@ -566,7 +566,11 @@ def fig2():
     mech_3d(ax, m)
     fig.text(0.08 / W, (T1 + H1) / H, "A", va="top", ha="left", **LETTER)
     ax = fig.add_axes(box(3.08, T1, 3.17, H1 - 0.05))
-    loop_panel(ax)
+    b_img = os.environ.get("B_PANEL")                 # optional: panel B drawn in PowerPoint and rendered to PNG
+    if b_img:
+        ax.imshow(plt.imread(b_img), interpolation="lanczos"); ax.axis("off")
+    else:
+        loop_panel(ax)
     fig.text(3.08 / W, (T1 + H1) / H, "B", va="top", ha="left", **LETTER)
 
     # row 2: three patterns from the same equations
@@ -623,7 +627,7 @@ def fig2():
     ax.legend(frameon=False, loc="upper right", bbox_to_anchor=(1.0, 1.0), handletextpad=0.4, borderaxespad=0.1)
     fig.text(3.45 / W, (Y3 + H3 + 0.25) / H, "G", va="top", ha="left", **LETTER)
 
-    save(fig, "fig2_model", tight=False)
+    save(fig, "fig2_model" + ("_pptB" if os.environ.get("B_PANEL") else ""), tight=False)
 
 
 # ---------------------------------------------------------------- Fig. 3: tests against data (sampled model)
