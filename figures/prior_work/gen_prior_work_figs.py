@@ -562,8 +562,13 @@ def fig2():
 
     # row 1: the model (A: 3D view of the two layers, B: loop that places primordia)
     T1, H1 = 4.95, 2.85
-    ax = fig.add_axes(box(0.05, T1, 3.0, H1), projection="3d")
-    mech_3d(ax, m)
+    a_img = os.environ.get("A_PANEL")                 # optional: panel A drawn in PowerPoint and rendered to PNG
+    if a_img:
+        ax = fig.add_axes(box(0.05, T1, 3.0, H1))
+        ax.imshow(plt.imread(a_img), interpolation="lanczos"); ax.axis("off")
+    else:
+        ax = fig.add_axes(box(0.05, T1, 3.0, H1), projection="3d")
+        mech_3d(ax, m)
     fig.text(0.08 / W, (T1 + H1) / H, "A", va="top", ha="left", **LETTER)
     ax = fig.add_axes(box(3.08, T1, 3.17, H1 - 0.05))
     b_img = os.environ.get("B_PANEL")                 # optional: panel B drawn in PowerPoint and rendered to PNG
@@ -627,7 +632,8 @@ def fig2():
     ax.legend(frameon=False, loc="upper right", bbox_to_anchor=(1.0, 1.0), handletextpad=0.4, borderaxespad=0.1)
     fig.text(3.45 / W, (Y3 + H3 + 0.25) / H, "G", va="top", ha="left", **LETTER)
 
-    save(fig, "fig2_model" + ("_pptB" if os.environ.get("B_PANEL") else ""), tight=False)
+    ppt = "".join(k for k in "AB" if os.environ.get(f"{k}_PANEL"))
+    save(fig, "fig2_model" + (f"_ppt{ppt}" if ppt else ""), tight=False)
 
 
 # ---------------------------------------------------------------- Fig. 3: tests against data (sampled model)
