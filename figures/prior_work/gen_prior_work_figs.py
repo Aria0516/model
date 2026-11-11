@@ -550,7 +550,7 @@ def loop_panel(ax):
         "M": (XM, Y[1], "Integration $M$", "leaky, $\\tau_M$", "solid"),
         "inh": (XL, Y[2], "Secondary\ninhibition", None, "solid"),
         "ini": (XM, Y[2], "Initiation", "$M \\geq \\theta$ in ring", "solid"),
-        "pri": (XM, Y[3], "Primordium", "placed object", "dashed"),
+        "pri": (XM, Y[3], "Primordium", None, "solid"),
         "inner": (XM, Y[4], "Inner layer*", "vascular drainage", "solid"),
     }
     for key, (x, y, title, sub, style) in nodes.items():

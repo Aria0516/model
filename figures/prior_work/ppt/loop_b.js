@@ -24,7 +24,7 @@ const TEXT = {
     M: [[["Integration ", {}], ["M", { italic: true }]], [["leaky, ", {}], ["τ", { italic: true }], ["M", { italic: true, subscript: true }]]],
     inh: [[["Secondary", {}]], [["inhibition", {}]]],
     ini: [[["Initiation", {}]], [["M", { italic: true }], [" ≥ ", {}], ["θ", { italic: true }], [" in ring", {}]]],
-    pri: [[["Primordium", {}]], [["placed object", {}]]],
+    pri: [[["Primordium", {}]]],
     inner: [[["Inner layer*", {}]], [["vascular drainage", {}]]],
     edges: { inward: "inward*", polarizes: "polarizes", transport: "transport", places: "places", drains: "drains",
              sink: "sink", cue: "polarity\ncue", triggers: "triggers", raises: "raises θ" },
@@ -36,7 +36,7 @@ const TEXT = {
     M: [[["时间整合 ", {}], ["M", { italic: true }]], [["泄漏积分，", {}], ["τ", { italic: true }], ["M", { italic: true, subscript: true }]]],
     inh: [[["次级", {}]], [["抑制", {}]]],
     ini: [[["原基启动", {}]], [["环内 ", {}], ["M", { italic: true }], [" ≥ ", {}], ["θ", { italic: true }]]],
-    pri: [[["原基", {}]], [["放置的对象", {}]]],
+    pri: [[["原基", {}]]],
     inner: [[["内层*", {}]], [["维管排出", {}]]],
     edges: { inward: "向内*", polarizes: "定极性", transport: "运输", places: "放置", drains: "排出",
              sink: "汇", cue: "极化\n线索", triggers: "触发", raises: "抬高θ" },
@@ -72,7 +72,7 @@ function build(lang, outFile) {
     src: [XL, Y[0], T.src, "solid", true], A: [XM, Y[0], T.A, "solid"], pin: [XR, Y[0], T.pin, "solid"],
     dr5: [XL, Y[1], T.dr5, "solid"], M: [XM, Y[1], T.M, "solid"],
     inh: [XL, Y[2], T.inh, "solid", true], ini: [XM, Y[2], T.ini, "solid"],
-    pri: [XM, Y[3], T.pri, "dashed"], inner: [XM, Y[4], T.inner, "solid"],
+    pri: [XM, Y[3], T.pri, "solid"], inner: [XM, Y[4], T.inner, "solid"],
   };
   for (const [key, [u, v, lines, style, twoTitles]] of Object.entries(nodes)) {
     const color = style === "grey" ? MUTED : INK;
