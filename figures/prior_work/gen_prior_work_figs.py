@@ -77,7 +77,7 @@ TR = {
     "Integration $M$": "时间整合 $M$", "leaky, $\\tau_M$": "泄漏积分，$\\tau_M$",
     "Secondary\ninhibition": "次级\n抑制", "Initiation": "原基启动", "$M \\geq \\theta$ in ring": "环内 $M \\geq \\theta$",
     "placed object": "放置的对象", "Inner layer*": "内层*", "vascular drainage": "维管排出",
-    "inward*": "向内*", "polarizes": "定极性", "transport": "运输", "places": "放置", "drains": "排出",
+    "inward*": "向内*", "polarizes": "定极性", "transport": "运输", "forms": "形成", "drains": "排出",
     "sink": "汇", "polarity\ncue": "极化\n线索", "triggers": "触发", "raises θ": "抬高θ",
     "Auxin (model)": "模型生长素浓度",
     "Ring mid-radius / primordium range": "发生环中线半径 / 原基作用范围",
@@ -592,7 +592,7 @@ def loop_panel(ax):
     # main chain
     promote([(XM, B("A")), (XM, T("M"))])
     promote([(XM, B("M")), (XM, T("ini"))])
-    promote([(XM, B("ini")), (XM, T("pri"))]); lab(XM + 0.015, 0.388, "places", ha="left", va="center")
+    promote([(XM, B("ini")), (XM, T("pri"))]); lab(XM + 0.015, 0.388, "forms", ha="left", va="center")
     promote([(XM, B("pri")), (XM, T("inner"))]); lab(XM + 0.015, 0.203, "drains", ha="left", va="center")
     promote([(L("M"), ny("M")), (Rt("dr5"), ny("dr5"))], color=GREY, ls=(0, (1.5, 1.5)))
     # primordium feedback

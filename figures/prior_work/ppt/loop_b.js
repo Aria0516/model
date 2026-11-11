@@ -26,7 +26,7 @@ const TEXT = {
     ini: [[["Initiation", {}]], [["M", { italic: true }], [" ≥ ", {}], ["θ", { italic: true }], [" in ring", {}]]],
     pri: [[["Primordium", {}]]],
     inner: [[["Inner layer*", {}]], [["vascular drainage", {}]]],
-    edges: { inward: "inward*", polarizes: "polarizes", transport: "transport", places: "places", drains: "drains",
+    edges: { inward: "inward*", polarizes: "polarizes", transport: "transport", places: "forms", drains: "drains",
              sink: "sink", cue: "polarity\ncue", triggers: "triggers", raises: "raises θ" },
   },
   zh: {
@@ -38,7 +38,7 @@ const TEXT = {
     ini: [[["原基启动", {}]], [["环内 ", {}], ["M", { italic: true }], [" ≥ ", {}], ["θ", { italic: true }]]],
     pri: [[["原基", {}]]],
     inner: [[["内层*", {}]], [["维管排出", {}]]],
-    edges: { inward: "向内*", polarizes: "定极性", transport: "运输", places: "放置", drains: "排出",
+    edges: { inward: "向内*", polarizes: "定极性", transport: "运输", places: "形成", drains: "排出",
              sink: "汇", cue: "极化\n线索", triggers: "触发", raises: "抬高θ" },
   },
 };
