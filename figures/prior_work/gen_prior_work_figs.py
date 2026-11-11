@@ -401,6 +401,13 @@ def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=52, azim=-60, labels=Tru
     tip = (uu >= Lr / 2 - head) & (uu < Lr / 2) & (np.abs(vv) < 0.55 * (Lr / 2 - uu))
     arrow = (shaft | tip) & (Lr > 0.12) & (edge_fade > 0.5)
     cd[arrow] = 0.12 * cd[arrow] + 0.88
+    if labels:                                       # dashed line from the centre to each visible primordium
+        pp = np.c_[x[disc], y[disc]]
+        for (sx_, sy_, _) in vis:
+            L_ = np.hypot(sx_, sy_); sh_ = np.array([sx_, sy_]) / L_
+            uu_ = pp @ sh_; vv_ = np.abs(pp[:, 0] * sh_[1] - pp[:, 1] * sh_[0])
+            dash = (uu_ > 0.25) & (uu_ < L_) & (vv_ < 0.10) & (((uu_ / 0.85) % 1) < 0.62)
+            cd[dash] = 1.0
     # primordia: white circle of radius w, as in the flat maps
     for (px_, py_, _, _) in prim:
         if np.hypot(px_, py_) < R - 0.5:
