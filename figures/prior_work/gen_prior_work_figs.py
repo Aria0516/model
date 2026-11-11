@@ -88,7 +88,7 @@ TR = {
     "Regular spiral": "出现规则螺旋", "Initiates without transport": "无运输也能起始",
     "Primordium range $w$ (cells)": "原基作用范围 $w$（细胞）",
     "Centripetal transport bias $\\kappa_\\mathrm{c}$": "向心运输偏置 $\\kappa_\\mathrm{c}$",
-    "Mean divergence (°)": "平均发散角（°）", "P1–P5 spread (°)": "P1—P5夹角离散（°）",
+    "Dominant divergence (°)": "主导发散角（°）", "P1–P5 spread (°)": "P1—P5夹角离散（°）",
     "Plastochron (h)": "发生间隔（h）", "Co-initiation (%)": "同时起始比例（%）",
     "All runs": "全部运行", "Regular\nspirals": "规则\n螺旋",
 }
@@ -1093,7 +1093,7 @@ def fig2():
     for key, lab, col, mk in (("sub", "Subcritical", GREEN, "o"), ("hot", "Supercritical", ORANGE, "s")):
         taus = sorted(t for (k, t) in grp if k == key)
         tp0 = np.mean([r["Tp"] for r in grp[(key, 0.0)] if r.get("Tp")])
-        ys = [np.mean([(not r["pattern"].endswith("~")) and r["pattern"] != "none" for r in grp[(key, t)]]) for t in taus]
+        ys = [np.mean([r["pattern"] == "spiral" for r in grp[(key, t)]]) for t in taus]     # regular spirals only
         ax.plot([t / tp0 for t in taus], ys, "-", color=col, lw=1.0, marker=mk, ms=3.8,
                 label=f"{lab} (n = {len(grp[(key, 0.0)])})")
     ax.set_xlabel("Integration time constant / plastochron"); ax.set_ylabel("Fraction of regular spirals")
@@ -1142,7 +1142,7 @@ def fig3():
     # B: model statistics vs measurements
     analysed = [r for r in runs if "alpha" in r]
     reg = [r for r in analysed if r["pattern"] == "spiral"]
-    stats = [("alpha", "Mean divergence (°)", 1, (137.5, None), (80, 185)),
+    stats = [("alpha", "Dominant divergence (°)", 1, (137.5, None), (0, 185)),
              ("spread", "P1–P5 spread (°)", 1, (6.7, None), (0, 120)),
              ("hours", "Plastochron (h)", 1, (12, (10, 14)), (0, 30)),
              ("co50", "Co-initiation (%)", 100, (28, None), (0, 80))]
@@ -1160,6 +1160,8 @@ def fig3():
         ax.axhline(meas, color=RED, lw=0.9, zorder=1)
         ax.set_xticks([0, 1]); ax.set_xticklabels([tr("All runs"), tr("Regular\nspirals")], fontsize=6.5)
         ax.set_xlim(-0.55, 1.55); ax.set_ylim(*ylim)
+        if key == "alpha":
+            ax.set_yticks([0, 45, 90, 135, 180])
         ax.set_title(lab, fontsize=7.5, pad=3)
         if k == 0:
             panel_letter(ax, "B", dx=-0.3, dy=1.12)
