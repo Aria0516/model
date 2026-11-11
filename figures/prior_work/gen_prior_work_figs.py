@@ -27,6 +27,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.text
+import matplotlib.colors as mcolors
 import matplotlib.patheffects as pe
 from matplotlib.collections import PolyCollection
 from scipy.spatial import Voronoi
@@ -298,7 +299,7 @@ def model_map(ax, z, name):
 
 
 # ---------------------------------------------------------------- Fig. 2A: shoot apex seen obliquely, narrow wedge cut away
-HD, BUMP, T1, T2, ELEV, WEDGE = 8.0, 4.2, 0.9, 1.9, 45, 70   # dome height, bulge, L1 / inner-layer thickness, view, cut
+HD, BUMP, T1, T2, ELEV, WEDGE = 8.0, 4.2, 1.25, 1.6, 45, 70   # dome height, bulge, L1 / inner-layer thickness, view, cut
 
 
 def ccw(poly):
@@ -396,49 +397,99 @@ def mech_3d(ax, m):
         cx, cy = np.where(cut, np.nan, cx), np.where(cut, np.nan, cy)
         ax.plot(cx, cy, surf(np.nan_to_num(cx), np.nan_to_num(cy)) + 0.15, color=RED, lw=0.9, ls=(0, (3, 2)), zorder=3)
 
-    # cut faces: L1 (auxin), inner layer (inner-layer auxin), deeper tissue shaded with depth
+    # cut faces drawn as a tissue section: L1 cells (auxin colour; walls where the cut crosses the surface cells),
+    # the inner layer, deeper tissue (schematic cells, lighter near the top) and a vascular strand of elongated cells
+    from scipy.spatial import Voronoi
     tree = cKDTree(pts)
-    s = np.linspace(0, R, 151)
-    deep = lambda f: (0.96 - 0.10 * f, 0.95 - 0.10 * f, 0.92 - 0.11 * f, 1.0)
-    for d in (d1, d2):
+    s = np.linspace(0, R, 401)
+    sp = float(np.hypot(sec[0], sec[1]))                     # the cut primordium (on face d1)
+    zt = float(surf(sp * d1[0], sp * d1[1]))
+    half = 0.95                                             # half-width of the vascular strand
+    to3 = lambda d, P: np.c_[P[:, 0] * d[0], P[:, 0] * d[1], P[:, 1]]
+    lerp = lambda c0, c1, f: tuple(np.array(mcolors.to_rgb(c0)) * (1 - f) + np.array(mcolors.to_rgb(c1)) * f)
+
+    def deep_cells(g, rng):
+        """Voronoi cells (jittered grid seeds) filling 0 <= z <= g(s) on one face, as (s, z) polygons."""
+        h = 1.2
+        seeds = [((i + 0.5 + rng.uniform(-0.32, 0.32)) * h, (j + 0.5 + rng.uniform(-0.32, 0.32)) * h)
+                 for i in range(int(R / h) + 1) for j in range(int((HD + BUMP) / h) + 1)]
+        seeds = np.array([q for q in seeds if q[1] < np.interp(q[0], s, g) + 0.4])
+        far = np.array([[-50, -50], [-50, 80], [80, -50], [80, 80]])
+        vor = Voronoi(np.r_[seeds, far])
+        out = []
+        for k in range(len(seeds)):
+            reg = vor.regions[vor.point_region[k]]
+            if -1 in reg or not reg:
+                continue
+            P = vor.vertices[reg]
+            P = P[np.argsort(np.arctan2(P[:, 1] - seeds[k, 1], P[:, 0] - seeds[k, 0]))]
+            for n_, c_ in (((-1.0, 0.0), 0.0), ((1.0, 0.0), R), ((0.0, -1.0), 0.0)):   # box: 0 <= s <= R, z >= 0
+                n_ = np.array(n_)
+                P = clip_half(P - n_ * c_, n_)                     # keep n.p <= c
+                if P is None:
+                    break
+                P = P + n_ * c_
+            if P is None:
+                continue
+            Q = np.vstack([np.linspace(P[i], P[(i + 1) % len(P)], 12, endpoint=False) for i in range(len(P))])
+            Q[:, 1] = np.minimum(Q[:, 1], np.interp(Q[:, 0], s, g))        # trim to the tissue below the inner layer
+            area = 0.5 * abs(np.dot(Q[:, 0], np.roll(Q[:, 1], 1)) - np.dot(Q[:, 1], np.roll(Q[:, 0], 1)))
+            if area > 0.04:
+                out.append((Q, seeds[k]))
+        return out
+
+    rng_c = np.random.default_rng(11)
+    Ld = np.array(light.direction[:2]); Ld /= np.hypot(*Ld)
+    for d, nf in ((d1, n1), (d2, n2)):
+        lit = 0.9 + 0.1 * max(float(nf @ Ld), 0.0)              # the two faces catch the light differently
+        dim = lambda c: tuple(np.array(mcolors.to_rgba(c)[:3]) * lit) + (1.0,)
         X, Y = s * d[0], s * d[1]
         Zs = surf(X, Y)
-        _, idx = tree.query(np.c_[X, Y] + 0.3 * vb)
-        quads, qc = [], []
-        for k in range(len(s) - 1):
-            a, b = k, k + 1
-            bands = [(0.0, T1, viridis(nt(A[idx[k]]))), (T1, T1 + T2, plt.get_cmap("Greys")(0.18 + 0.4 * nb(A2[idx[k]])))]
-            for q in range(5):                               # deeper tissue: five sub-bands, darker with depth
-                bands.append((("deep", q), None, deep(q / 4)))
-            for top, bot, col in bands:
-                if isinstance(top, tuple):
-                    q = top[1]
-                    za = [max(Zs[a] - T1 - T2, 0) * (1 - q / 5), max(Zs[a] - T1 - T2, 0) * (1 - (q + 1) / 5)]
-                    zb = [max(Zs[b] - T1 - T2, 0) * (1 - q / 5), max(Zs[b] - T1 - T2, 0) * (1 - (q + 1) / 5)]
-                else:
-                    za = [max(Zs[a] - top, 0), max(Zs[a] - bot, 0)]
-                    zb = [max(Zs[b] - top, 0), max(Zs[b] - bot, 0)]
-                quads.append([(X[a], Y[a], za[0]), (X[b], Y[b], zb[0]), (X[b], Y[b], zb[1]), (X[a], Y[a], za[1])])
-                qc.append(col)
-        pc = Poly3DCollection(quads, facecolors=qc, edgecolors=qc, linewidths=0.25)
+        g = np.maximum(Zs - T1 - T2, 0)
+        _, idx = tree.query(np.c_[X, Y] - 0.15 * nf)           # surface cell just beside the cut
+        polys, fc, ec = [], [], []
+        brk = np.r_[0, np.where(np.diff(idx) != 0)[0] + 1, len(s) - 1]
+        for a, b in zip(brk[:-1], brk[1:]):
+            seg = slice(a, b + 1)
+            top_, mid_, bot_ = Zs[seg], np.maximum(Zs[seg] - T1, 0), g[seg]
+            polys.append(np.r_[np.c_[s[seg], top_], np.c_[s[seg], mid_][::-1]])          # L1 cell
+            fc.append(viridis(nt(A[idx[a]]))); ec.append((0.12, 0.12, 0.12, 0.55))
+            polys.append(np.r_[np.c_[s[seg], mid_], np.c_[s[seg], bot_][::-1]])          # inner-layer cell
+            fc.append(lerp("#DCE3EA", "#B9C6D3", nb(A2[idx[a]]) * 0.6)); ec.append("#7D8C9B")
+        for Q, c in deep_cells(g, rng_c):
+            f = np.clip(c[1] / max(np.interp(c[0], s, g), 1e-6), 0, 1)                   # 1 near the top
+            polys.append(Q); fc.append(lerp("#E3D4BF", "#F7F1E7", f)); ec.append("#B8A68D")
+        pc = Poly3DCollection([to3(d, P) for P in polys], facecolors=[dim(c) for c in fc], edgecolors=ec,
+                              linewidths=0.3)
         pc.set_zorder(5); ax.add_collection3d(pc)
-        ax.plot(X, Y, Zs, color=INK, lw=0.8, zorder=6)
-        for off in (T1, T1 + T2):
-            ax.plot(X, Y, np.maximum(Zs - off, 0), color="#444444", lw=0.4, zorder=6)
+        ax.plot(X, Y, Zs, color=INK, lw=0.9, zorder=6)
+        ax.plot(X, Y, np.maximum(Zs - T1, 0), color="#2B2B2B", lw=0.45, zorder=6)
+        ax.plot(X, Y, g, color="#55606B", lw=0.45, zorder=6)
         ax.plot([0, X[-1]], [0, Y[-1]], [0, 0], color=INK, lw=0.5, zorder=6)
+        ax.plot([X[-1]] * 2, [Y[-1]] * 2, [0, Zs[-1]], color=INK, lw=0.5, zorder=6)
     ax.plot([0, 0], [0, 0], [float(surf(0, 0)), 0], color=INK, lw=0.6, zorder=6)
 
-    sp = float(np.hypot(sec[0], sec[1]))                     # vascular strand and drainage under the cut primordium
-    half = 0.9
-    zt = float(surf(sp * d1[0], sp * d1[1]))
-    strand = [(sp - half, zt - T1 - T2), (sp + half, zt - T1 - T2), (sp + half, 0), (sp - half, 0)]
-    vq = Poly3DCollection([[(q * d1[0], q * d1[1], zq) for q, zq in strand]], facecolors="#8E8E8E",
-                          edgecolors="#3A3A3A", linewidths=0.5)
+    # vascular strand under the cut primordium: three files of long, narrow (provascular-like) cells
+    zs_top = zt - T1 - T2
+    cells_v, nfile, hgt = [], 3, 1.75
+    for c in range(nfile):
+        s0, s1 = sp - half + 2 * half * c / nfile, sp - half + 2 * half * (c + 1) / nfile
+        z = zs_top
+        first = hgt * (0.45 + 0.3 * c)                      # stagger the files
+        while z > 0:
+            z0 = max(z - (first if z == zs_top else hgt), 0.0)
+            cells_v.append(np.array([[s0, z], [s1, z], [s1, z0], [s0, z0]]))
+            z = z0
+    fcv = [lerp("#E8B96E", "#F4D9A8", min(P[:, 1].mean() / max(zs_top, 1e-6), 1)) for P in cells_v]
+    vq = Poly3DCollection([to3(d1, P) for P in cells_v], facecolors=fcv, edgecolors="#9A7136", linewidths=0.35)
     vq.set_zorder(7); ax.add_collection3d(vq)
-    ax.plot([sp * d1[0]] * 2, [sp * d1[1]] * 2, [zt - 0.2, zt - T1 - T2 + 0.35], color=INK, lw=0.9,
+    ax.plot(*to3(d1, np.array([[sp - half, zs_top], [sp - half, 0]])).T, color="#7A5524", lw=0.6, zorder=7)
+    ax.plot(*to3(d1, np.array([[sp + half, zs_top], [sp + half, 0]])).T, color="#7A5524", lw=0.6, zorder=7)
+    ax.plot([sp * d1[0]] * 2, [sp * d1[1]] * 2, [zt - 0.2, zs_top + 0.35], color=INK, lw=0.9,
             ls=(0, (2.5, 1.5)), zorder=8)
-    ax.quiver(sp * d1[0], sp * d1[1], zt - T1 - T2 + 1.3, 0, 0, -1.1, color=INK, lw=0.9, arrow_length_ratio=0.8, zorder=8)
-    ax.quiver(sp * d1[0], sp * d1[1], 2.0, 0, 0, -1.3, color="white", lw=1.0, arrow_length_ratio=0.8, zorder=8)
+    ax.quiver(sp * d1[0], sp * d1[1], zs_top + 1.3, 0, 0, -1.1, color=INK, lw=0.9, arrow_length_ratio=0.8, zorder=8)
+    ax.quiver(sp * d1[0], sp * d1[1], 0.55 * zs_top, 0, 0, -0.3 * zs_top, color="white", lw=1.1,
+              arrow_length_ratio=0.35, zorder=8)
 
     lim = R + 0.6
     ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim); ax.set_zlim(0, HD + BUMP)
