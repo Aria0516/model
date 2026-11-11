@@ -88,7 +88,7 @@ TR = {
     "Regular spiral": "出现规则螺旋", "Initiates without transport": "无运输也能起始",
     "Primordium range $w$ (cells)": "原基作用范围 $w$（细胞）",
     "Centripetal transport bias $\\kappa_\\mathrm{c}$": "向心运输偏置 $\\kappa_\\mathrm{c}$",
-    "Dominant divergence (°)": "主导发散角（°）", "P1–P5 spread (°)": "P1—P5夹角离散（°）",
+    "Dominant divergence (°)": "主导发散角（°）", "P1–P5 spread (°)": "P1—P5方位角离散（°）",
     "Plastochron (h)": "发生间隔（h）", "Co-initiation (%)": "同时起始比例（%）",
     "All runs": "全部运行", "Regular\nspirals": "规则\n螺旋",
 }
@@ -934,9 +934,9 @@ def mech_rt(ax, m, W_in=3.0, H_in=2.85, dpi_px=330, ss=2):
     c0 = p2((0, 0, 0.5 * HD))[0]
     for sd in "LR":
         colm = sorted([it for it in items if (p2(it[1])[0] < c0) == (sd == "L")], key=lambda it: p2(it[1])[1])
-        ys = np.linspace(0.86, 0.14, len(colm)) if len(colm) > 1 else [0.62]
+        ys = np.linspace(0.86, 0.14, len(colm)) if len(colm) > 1 else [0.80]   # single right label: high, clear of the dome
         for (text, xyz), yt in zip(colm, ys):
-            ax.annotate(text, xy=p2(xyz), xycoords="data", xytext=(0.0 if sd == "L" else 1.0, yt),
+            ax.annotate(text, xy=p2(xyz), xycoords="data", xytext=(0.0 if sd == "L" else 0.93, yt),   # keep off panel B
                         textcoords="axes fraction", ha="left" if sd == "L" else "right", va="center", fontsize=6.8,
                         linespacing=1.0, arrowprops=dict(arrowstyle="-", lw=0.5, color=INK, shrinkA=1.5, shrinkB=0),
                         zorder=10)
@@ -1054,7 +1054,7 @@ def fig2():
         st = analysis.summarize([tuple(r) for r in z[f"{name}_log"]], par["gamma"])
         sub = (f"pairs, {st['rot_frac'] * 180:.0f}° between nodes" if st["jugacy"] >= 2
                else f"dominant angle {st['alpha']:.0f}°")
-        ttl = f"{en} ($R_\\mathrm{{c}}$ = {rc:g})\n{sub}"
+        ttl = en                                                   # pattern type only (ring size and angles: F and text)
         if os.environ.get("CE3D") or os.environ.get("RT3D"):
             fig.text((x0 + S2 / 2) / W, (Y2 + S2 + 0.03) / H, ttl, ha="center", va="bottom", fontsize=8)
         else:
