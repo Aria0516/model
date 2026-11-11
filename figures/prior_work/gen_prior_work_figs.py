@@ -298,6 +298,141 @@ def model_map(ax, z, name):
     return pc
 
 
+def pattern_3d(ax, z, name, n_prim=None, npx=1100, elev=38, azim=-60):
+    """C-E as schematic domes, ray-traced: the simulated disc (auxin, cells, competent ring) drawn on a dome, with a
+    bulge at each primordium still inside the disc (simulated position; relief schematic, the model is flat)."""
+    from matplotlib.colors import Normalize
+    from scipy.spatial import cKDTree
+    par = json.loads(str(z[f"{name}_par"]))
+    pts, A, pin, prim, log = z[f"{name}_pts"], z[f"{name}_A"], z[f"{name}_pin"], z[f"{name}_prim"], z[f"{name}_log"]
+    R, w, gam = par["R_out"], par["w"], par["gamma"]
+    Rs, HDc = R, 0.5 * R                              # dome = the simulated disc; height schematic
+    n_prim = n_prim or {"distichous": 6, "spiral": 7, "decussate": 8}.get(name, 7)
+    t_end = log[-1, 0] + prim[:, 3].min()
+    ev = log[-n_prim:]
+    age = t_end - ev[:, 0]
+    cur = ev[:, 1:3] * np.exp(gam * age)[:, None]               # simulated outward drift (cells move radially)
+    ang = np.arctan2(ev[:, 2], ev[:, 1])
+    rcur = np.hypot(cur[:, 0], cur[:, 1])
+    out = rcur > R - 0.5
+    f = (age - age.min()) / max(age.max() - age.min(), 1e-9)   # 0 youngest .. 1 oldest
+    keep = ~out                                                        # only primordia inside the simulated disc
+    bx, by = rcur[keep] * np.cos(ang[keep]), rcur[keep] * np.sin(ang[keep])
+    bh = 0.30 * HDc * (0.5 + 0.5 * f[keep] / max(f[keep].max(), 1e-9)) if keep.any() else np.zeros(0)
+    bw = w * (0.85 + 0.3 * f[keep]) if keep.any() else np.zeros(0)
+    Rm = 1.03 * R
+
+    def buds(x, y):
+        if not len(bx):
+            return np.zeros((1, np.size(x)))
+        return np.array([bh[k] * np.clip(1 - ((x - bx[k]) ** 2 + (y - by[k]) ** 2) / bw[k] ** 2, 0, None) ** 1.3
+                         * (np.hypot(x, y) < R) for k in range(len(bx))])
+
+    def surf(x, y):
+        zz = HDc * np.clip(1.0 - (np.hypot(x, y) / Rs) ** 2, 0, None)       # paraboloid: meets the floor at 45 deg
+        return zz + buds(x, y).sum(0)
+
+    el, az = np.radians(elev), np.radians(azim)
+    view = np.array([np.cos(el) * np.cos(az), np.cos(el) * np.sin(az), np.sin(el)])
+    right = np.array([-np.sin(az), np.cos(az), 0.0])
+    up = np.cross(view, right)
+    ztop = HDc + (bh.max() if len(bh) else 0)
+    corners = np.array([[a, b, c] for a in (-Rm, Rm) for b in (-Rm, Rm) for c in (0, ztop)])
+    cu, cv = corners @ right, corners @ up
+    span = max(cu.max() - cu.min(), cv.max() - cv.min()) * 1.02
+    uc, vc = 0.5 * (cu.max() + cu.min()), 0.5 * (cv.max() + cv.min())
+    ss = 2                                                              # supersampling
+    n = npx * ss
+    U, V = np.meshgrid(uc + span * (np.arange(n) + 0.5) / n - span / 2, vc + span / 2 - span * (np.arange(n) + 0.5) / n)
+    O = U.ravel()[:, None] * right + V.ravel()[:, None] * up + 3 * Rm * view
+    D = -view
+    N = len(O)
+    t_hit = np.full(N, np.nan)
+    t = np.full(N, 3 * Rm - 1.5 * Rm)
+    act = np.arange(N)
+    step = 0.3
+    while act.size and t[act[0]] < 3 * Rm + 2 * Rm:
+        P = O[act] + t[act, None] * D
+        rP = np.hypot(P[:, 0], P[:, 1])
+        below = P[:, 2] <= 0.0
+        # inside the footprint the dome covers the floor, so a ray that got below it has passed through the surface
+        hit = ((P[:, 2] < surf(P[:, 0], P[:, 1])) & ~below & (rP < R)) | (below & (rP < R))
+        if hit.any():
+            idx = act[hit]; lo, hi = t[idx] - step, t[idx].copy()
+            for _ in range(10):
+                mid = 0.5 * (lo + hi); Q = O[idx] + mid[:, None] * D
+                ins = (Q[:, 2] < surf(Q[:, 0], Q[:, 1])) | (Q[:, 2] <= 0)
+                hi = np.where(ins, mid, hi); lo = np.where(ins, lo, mid)
+            t_hit[idx] = hi
+        act = act[~hit & ~below]
+        t[act] += step
+    hitm = ~np.isnan(t_hit)
+    P = O + np.nan_to_num(t_hit)[:, None] * D
+    x, y = P[:, 0], P[:, 1]
+    r = np.hypot(x, y)
+
+    # base colour
+    viridis = plt.get_cmap("viridis")
+    nt = Normalize(0, np.percentile(A, 99.5))
+    col = np.ones((N, 3))
+    disc = hitm & (r < R)
+    tree = cKDTree(pts)
+    dd, jj = tree.query(np.c_[x[disc], y[disc]], k=2)
+    c1, c2 = pts[jj[:, 0]], pts[jj[:, 1]]
+    bis = (dd[:, 1] ** 2 - dd[:, 0] ** 2) / (2 * np.linalg.norm(c2 - c1, axis=1))
+    cd = viridis(nt(A[jj[:, 0]]))[:, :3]
+    edge_fade = np.clip((R - 0.4 - r[disc]) / 0.8, 0, 1)                   # outermost cells: no walls or arrows
+    cd *= (1 - 0.22 * edge_fade * np.exp(-(bis / 0.05) ** 2))[:, None]  # cell walls
+    # PIN1 polarity: an arrow in each cell, length scaled by polarity strength (as in the flat maps)
+    pv = pin[jj[:, 0]]
+    mag = np.hypot(pv[:, 0], pv[:, 1])
+    Lr = 0.85 * np.clip(mag / np.percentile(np.hypot(pin[:, 0], pin[:, 1]), 95), 0, 1)
+    ph = pv / np.maximum(mag, 1e-9)[:, None]
+    rel = np.c_[x[disc], y[disc]] - c1
+    uu = rel @ np.array([1.0, 0.0]) * ph[:, 0] + rel @ np.array([0.0, 1.0]) * ph[:, 1]
+    vv = -rel[:, 0] * ph[:, 1] + rel[:, 1] * ph[:, 0]
+    head = 0.38 * Lr
+    shaft = (uu > -Lr / 2) & (uu < Lr / 2 - head) & (np.abs(vv) < 0.045)
+    tip = (uu >= Lr / 2 - head) & (uu < Lr / 2) & (np.abs(vv) < 0.55 * (Lr / 2 - uu))
+    arrow = (shaft | tip) & (Lr > 0.12) & (edge_fade > 0.5)
+    cd[arrow] = 0.12 * cd[arrow] + 0.88
+    # primordia: white circle of radius w, as in the flat maps
+    for (px_, py_, _, _) in prim:
+        if np.hypot(px_, py_) < R - 0.5:
+            ring_ = np.abs(np.hypot(x[disc] - px_, y[disc] - py_) - w) < 0.07
+            cd[ring_] = 1.0
+    col[disc] = cd
+    th_ = np.arctan2(y, x)
+    for rr_ in (par["R_c"], par["R_p"]):                               # competent ring, dashed, on the surface
+        ndash = max(int(round(2 * np.pi * rr_ / 0.9)), 8)
+        m = hitm & (np.abs(r - rr_) < 0.085) & (((th_ / (2 * np.pi) * ndash) % 1) < 0.55)
+        col[m] = mcolors.to_rgb(RED)
+
+    # light
+    e = 0.05
+    Sx = (surf(x + e, y) - surf(x - e, y)) / (2 * e)
+    Sy = (surf(x, y + e) - surf(x, y - e)) / (2 * e)
+    nrm = np.c_[-Sx, -Sy, np.ones(N)]; nrm /= np.linalg.norm(nrm, axis=1)[:, None]
+    L = -0.45 * right + 0.55 * up + 0.70 * view; L /= np.linalg.norm(L)
+    H = (L + view) / np.linalg.norm(L + view)
+    lam = np.clip(nrm @ L, 0, 1)
+    spec = np.clip(nrm @ H, 0, 1) ** 40
+    shade = 0.48 + 0.6 * lam
+    col[hitm] = np.clip(col[hitm] * shade[hitm, None] + (0.10 * spec[hitm])[:, None], 0, 1)
+    # floor and soft shadow
+    tz = O[:, 2] / view[2]
+    Qf = O + tz[:, None] * D
+    rf = np.hypot(Qf[:, 0], Qf[:, 1])
+    sh = 1 - 0.07 * np.exp(-np.clip(rf / Rm - 0.85, 0, None) ** 2 / 0.02)
+    sh = np.where(sh > 0.995, 1.0, sh)
+    col[~hitm] = sh[~hitm, None] * np.ones(3)
+    img = col.reshape(n, n, 3)
+    img = img.reshape(npx, ss, npx, ss, 3).mean((1, 3))
+    ax.imshow(img, interpolation="lanczos")
+    ax.axis("off")
+    return plt.cm.ScalarMappable(norm=nt, cmap=viridis)
+
+
 # ---------------------------------------------------------------- Fig. 2A: shoot apex seen obliquely, narrow wedge cut away
 HD, BUMP, T1, T2, ELEV, WEDGE = 8.0, 4.2, 1.25, 1.6, 45, 70   # dome height, bulge, L1 / inner-layer thickness, view, cut
 
@@ -634,13 +769,21 @@ def fig2():
     gap = (6.22 - 0.08 - 3 * S2) / 2
     for c, (name, en, rc) in enumerate(TYPES):
         x0 = 0.08 + c * (S2 + gap)
-        ax = fig.add_axes(box(x0, Y2, S2, S2))
-        pc = model_map(ax, z, name)
+        if os.environ.get("CE3D"):                   # optional: C-E as schematic 3D domes
+            ax = fig.add_axes(box(x0 - 0.06, Y2 - 0.06, S2 + 0.12, S2 + 0.12))
+            pc = pattern_3d(ax, z, name)
+        else:
+            ax = fig.add_axes(box(x0, Y2, S2, S2))
+            pc = model_map(ax, z, name)
         par = json.loads(str(z[f"{name}_par"]))
         st = analysis.summarize([tuple(r) for r in z[f"{name}_log"]], par["gamma"])
         sub = (f"pairs, {st['rot_frac'] * 180:.0f}° between nodes" if st["jugacy"] >= 2
                else f"dominant angle {st['alpha']:.0f}°")
-        ax.set_title(f"{en} ($R_\\mathrm{{c}}$ = {rc:g})\n{sub}", pad=2, fontsize=8)
+        ttl = f"{en} ($R_\\mathrm{{c}}$ = {rc:g})\n{sub}"
+        if os.environ.get("CE3D"):
+            fig.text((x0 + S2 / 2) / W, (Y2 + S2 + 0.03) / H, ttl, ha="center", va="bottom", fontsize=8)
+        else:
+            ax.set_title(ttl, pad=2, fontsize=8)
         fig.text(x0 / W, (Y2 + S2) / H, "CDE"[c], va="top", ha="left", **LETTER)
     low_high_bar(fig, pc, box(W / 2 - 0.7, Y2 - 0.16, 1.4, 0.05), "Auxin (model)")
 
@@ -684,7 +827,7 @@ def fig2():
     fig.text(3.45 / W, (Y3 + H3 + 0.25) / H, "G", va="top", ha="left", **LETTER)
 
     ppt = "".join(k for k in "AB" if os.environ.get(f"{k}_PANEL"))
-    save(fig, "fig2_model" + (f"_ppt{ppt}" if ppt else ""), tight=False)
+    save(fig, "fig2_model" + (f"_ppt{ppt}" if ppt else "") + ("_3dCE" if os.environ.get("CE3D") else ""), tight=False)
 
 
 # ---------------------------------------------------------------- Fig. 3: tests against data (sampled model)
