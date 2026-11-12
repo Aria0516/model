@@ -42,8 +42,8 @@ import analysis  # noqa: E402  (model_mvp/analysis.py: pattern statistics)
 # Times-style serif, matching the Latin text in the proposal's own figure
 SERIF = ["Times New Roman", "Liberation Serif", "DejaVu Serif"]
 plt.rcParams.update({
-    "font.family": SERIF, "mathtext.fontset": "custom", "mathtext.rm": "Liberation Serif",
-    "mathtext.it": "Liberation Serif:italic", "mathtext.bf": "Liberation Serif:bold", "mathtext.fallback": "stix",
+    "font.family": SERIF, "mathtext.fontset": "custom", "mathtext.rm": "Times New Roman",
+    "mathtext.it": "Times New Roman:italic", "mathtext.bf": "Times New Roman:bold", "mathtext.fallback": "stix",
     "font.size": 8, "axes.titlesize": 8.5, "axes.labelsize": 8, "xtick.labelsize": 7, "ytick.labelsize": 7,
     "legend.fontsize": 7, "axes.linewidth": 0.6, "xtick.major.width": 0.6, "ytick.major.width": 0.6,
     "axes.spines.top": False, "axes.spines.right": False, "savefig.dpi": 300,
@@ -65,7 +65,7 @@ TR = {
     "L1 nuclear\nspacing": "L1层细胞核\n最近邻间距", "Distance (µm)": "距离（µm）",
     "$\\mathit{CLV3}$ zone\nradius": "$\\mathit{CLV3}$表达区\n半径", "P0 radius\n(0 h)": "P0距中心\n（0 h）",
     "Radius (µm)": "半径（µm）",
-    "Needed by the model\nto match observed\nirregularity": "模型再现实测\n不规则性所需",
+    "Needed by the model\nfor the reported share\nof non-canonical angles": "模型产生文献报道的\n非规范发散角比例所需",
     "Measured\n(4 meristems)": "实测\n（4个茎尖）",
     "Cell-to-cell PIN1 variation\n(log SD)": "细胞间PIN1差异\n（对数标准差）",
     "PIN1 variation": "PIN1量的细胞间差异",
@@ -161,6 +161,7 @@ def low_high_bar(fig, pc, rect, label=None):
     cax = fig.add_axes(rect)
     cb = plt.colorbar(pc, cax=cax, orientation="horizontal")
     cb.set_ticks(pc.get_clim()); cb.set_ticklabels([tr("low"), tr("high")]); cb.outline.set_linewidth(0.4)
+    cb.solids.set_rasterized(False)                      # keep the colour bar vector in the PDF
     cax.tick_params(length=0, pad=1.5, labelsize=7)
     if label:
         cax.set_xlabel(label, fontsize=7, labelpad=1)
@@ -261,7 +262,7 @@ def fig1():
     ax = fig.add_axes(box(cols[2][0], BY, cols[2][1], BH))
     sp = np.array([p["sigma_PIN"] for p in pin])
     ax.axhspan(0.32, 0.48, color=LIGHT, lw=0, zorder=0)
-    ax.text(0.5, 0.40, "Needed by the model\nto match observed\nirregularity", ha="center", va="center", fontsize=7,
+    ax.text(0.5, 0.40, "Needed by the model\nfor the reported share\nof non-canonical angles", ha="center", va="center", fontsize=7,
             color="#444444", transform=ax.get_yaxis_transform())
     ax.scatter(rng.uniform(-0.12, 0.12, len(sp)) + 0.5, sp, s=14, color=BLUE, zorder=3, lw=0)
     ax.plot([0.25, 0.75], [np.median(sp)] * 2, color=INK, lw=1.2)
