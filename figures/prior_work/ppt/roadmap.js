@@ -23,8 +23,8 @@ function box(x, y, w, h, runs, o = {}) {
     margin: [1, 1.5, 1, 1.5], lineSpacingMultiple: 0.95, objectName: o.name,
   });
 }
-function seg(x1, y1, x2, y2, arrow) {
-  const ln = { color: INK, width: 0.7 };
+function seg(x1, y1, x2, y2, arrow, lw) {
+  const ln = { color: INK, width: lw || 0.7 };
   if (arrow) ln.endArrowType = "triangle";
   s.addShape(pres.ShapeType.line, {
     x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.max(Math.abs(x2 - x1), 0.0001), h: Math.max(Math.abs(y2 - y1), 0.0001),
@@ -57,7 +57,7 @@ function chain(x, y, w, texts, h, gap, fill) {    // vertical chain of boxes; re
 const M = 0.03, BH = 0.28, TG = 0.14;              // margin, box height, gap of a split/merge
 box(M, 0.03, W - 2 * M, 0.25, "生长素信号时间整合对原基启动与叶序的影响", { fs: FS_T, bold: true, fill: TOP, lw: 0.9, name: "topic" });
 
-const GAP = 0.12, FW = (W - 2 * M - 2 * GAP) / 3, FY = 0.43;
+const GAP = 0.2, FW = (W - 2 * M - 2 * GAP) / 3, FY = 0.43;
 const HH = 0.25, IN = FY + 0.2;                   // stage theme box height and top
 const BODY = HH + TG + BH + TG + BH + TG + BH + TG + BH;   // stage 3 is the tallest column
 const FH = 0.2 + BODY + 0.06;
@@ -113,6 +113,16 @@ stages.forEach((st, k) => {
   y += BH + TG;
   box(f.hx, y, f.hw, BH, "预测改变处理时长、抑制\n极性运输后的叶序变化", { bold: true, fill: "FFFFFF", lw: 0.8 });
 }
+
+// links between stages: each stage's result goes along the gutter into the next stage's theme box
+const OY = IN + BODY - HH;
+[0, 1].forEach((k) => {
+  const x0 = fx[k] + FW - 0.07, gx = fx[k] + FW + GAP / 2, x1 = fx[k + 1] + 0.07;
+  const y0 = OY + HH / 2, y1 = IN + HH / 2;
+  seg(x0, y0, gx, y0, false, 1.1);
+  seg(gx, y0, gx, y1, false, 1.1);
+  seg(gx, y1, x1, y1, true, 1.1);
+});
 
 // conclusion
 const fb = FY + FH, RY = fb + 0.15;
