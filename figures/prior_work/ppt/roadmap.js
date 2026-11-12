@@ -8,6 +8,7 @@ const INK = "1A1A1A", FRAME = "7F7F7F";
 const FONT = "Times New Roman";                  // East Asian runs are set to 宋体 afterwards (fix_fonts.py)
 const FS = 7.5, FS_H = 8.5, FS_T = 9.5;
 const TINT = ["FCE9D9", "E2EFDA", "DCE6F2"], TOP = "DDF0EE", BOTTOM = "F9DEDC";
+const ACC = ["C55A11", "548235", "2F5597"], TOP_LC = "2E7D78", BOTTOM_LC = "B0474B";   // stage accents; top / bottom borders
 
 const pres = new pptxgen();
 pres.defineLayout({ name: "FIG", width: W, height: H });
@@ -17,8 +18,8 @@ const s = pres.addSlide();
 
 function box(x, y, w, h, runs, o = {}) {
   s.addText(runs, {
-    x, y, w, h, fontFace: FONT, fontSize: o.fs || FS, bold: !!o.bold, color: INK, align: "center", valign: "middle",
-    fill: o.fill ? { color: o.fill } : undefined,
+    x, y, w, h, fontFace: FONT, fontSize: o.fs || FS, bold: !!o.bold, color: o.color || INK, align: "center", valign: "middle",
+    fill: o.fill ? { color: o.fill, transparency: o.transp || 0 } : undefined,
     line: o.noline ? { type: "none" } : { color: o.lc || INK, width: o.lw || 0.6, dashType: o.dash || "solid" },
     margin: [1, 1.5, 1, 1.5], lineSpacingMultiple: 0.95, objectName: o.name,
   });
@@ -56,7 +57,7 @@ function chain(x, y, w, texts, h, gap, fill) {    // vertical chain of boxes; re
 
 const M = 0.03, BH = 0.28, TG = 0.14;              // margin, box height, gap of a split/merge
 const FS_Q = 8;                                    // stage sub-problem boxes
-box(M, 0.03, W - 2 * M, 0.25, "生长素信号时间整合对原基启动与叶序的影响", { fs: FS_T, bold: true, fill: TOP, lw: 0.9, name: "topic" });
+box(M, 0.03, W - 2 * M, 0.25, "生长素信号时间整合对原基启动与叶序的影响", { fs: FS_T, bold: true, fill: TOP, lc: TOP_LC, lw: 1.0, name: "topic" });
 
 const GAP = 0.18, FW = (W - 2 * M - 2 * GAP) / 3, FY = 0.43;
 const HH = 0.25, IN = FY + 0.2;                   // sub-problem box height and top
@@ -70,9 +71,9 @@ split(W / 2, 0.28, fx.map((x) => x + FW / 2), FY);
 // frame: tinted stage band with "stage: approach" on top and the stage's sub-problem in the white box
 function frame(k, name, problem) {
   const x = fx[k];
-  box(x, FY, FW, FH, "", { fill: TINT[k], lc: FRAME, dash: "dash", name: `frame_${k}` });
-  box(x, FY + 0.02, FW, 0.17, name, { fs: FS_H, bold: true, noline: true });
-  box(x + PAD, IN, FW - 2 * PAD, HH, problem, { fs: FS_Q, bold: true, fill: "FFFFFF", lw: 0.8, name: `problem_${k}` });
+  box(x, FY, FW, FH, "", { fill: TINT[k], lc: ACC[k], lw: 0.75, dash: "dash", name: `frame_${k}` });
+  box(x, FY + 0.02, FW, 0.17, name, { fs: FS_H, bold: true, color: ACC[k], noline: true });
+  box(x + PAD, IN, FW - 2 * PAD, HH, problem, { fs: FS_Q, bold: true, color: "FFFFFF", fill: ACC[k], lc: ACC[k], lw: 0.8, name: `problem_${k}` });
   const hx = x + PAD, hw = FW - 2 * PAD, tw = (hw - TS) / 2;
   return { cx: x + FW / 2, hx, hw, tw, tx: [hx, hx + tw + TS], mids: [hx + tw / 2, hx + tw + TS + tw / 2] };
 }
@@ -85,12 +86,12 @@ const AG = (OY - TG - ty - 3 * BH) / 2;           // arrow gap inside a three-st
   split(f.cx, IN + HH, f.mids, ty);
   const b0 = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "输入升高与\nDR5激活先后", "结合细胞移动\n估计生长素轨迹"], BH, AG, "FFFFFF");
   const gh = b0 - ty, gx = f.tx[1];
-  box(gx, ty, f.tw, gh, "", { lc: FRAME, lw: 0.6, name: "imaging_group" });
+  box(gx, ty, f.tw, gh, "", { fill: "FFFFFF", transp: 45, lc: ACC[0], lw: 0.6, dash: "sysDash", name: "imaging_group" });
   const ih = (gh - 0.04 * 2 - 0.08) / 2;
   box(gx + 0.04, ty + 0.04, f.tw - 0.08, ih, "PIN1成像\n极性方向", { fill: "FFFFFF" });
   box(gx + 0.04, ty + 0.04 + ih + 0.08, f.tw - 0.08, ih, "qDII成像\n低生长素区与\n区域输入比值", { fill: "FFFFFF" });
   merge(f.mids, [b0, b0], f.cx, OY);
-  box(f.hx, OY, f.hw, HH, "生长素轨迹、DR5时序与空间分布", { bold: true, fill: "FFFFFF", lw: 0.8 });
+  box(f.hx, OY, f.hw, HH, "生长素轨迹、DR5时序与空间分布", { bold: true, fill: "FFFFFF", lc: ACC[0], lw: 1.2, name: "result_0" });
 }
 
 // stage 2: transport model (left) and response model (right)
@@ -100,7 +101,7 @@ const AG = (OY - TG - ty - 3 * BH) / 2;           // arrow gap inside a three-st
   const b = [chain(f.tx[0], ty, f.tw, ["纳入原基供给与\n中央周边差异", "参数抽样，按\n分布与极性筛选", "再现生长素\n输入分布"], BH, AG, "FFFFFF"),
              chain(f.tx[1], ty, f.tw, ["细胞生长素轨迹\n输入响应模型", "经报告信号换算\n对照DR5变化", "确定响应参数"], BH, AG, "FFFFFF")];
   merge(f.mids, b, f.cx, OY);
-  box(f.hx, OY, f.hw, HH, "经数据约束的运输与响应模型", { bold: true, fill: "FFFFFF", lw: 0.8 });
+  box(f.hx, OY, f.hw, HH, "经数据约束的运输与响应模型", { bold: true, fill: "FFFFFF", lc: ACC[1], lw: 1.2, name: "result_1" });
 }
 
 // stage 3: both rules go through both tests -> judgement -> predictions that follow from it
@@ -116,14 +117,14 @@ const AG = (OY - TG - ty - 3 * BH) / 2;           // arrow gap inside a three-st
   seg(f.mids[0], by, f.mids[1], by);
   y += RB + TG;
   f.mids.forEach((m) => seg(m, by, m, y, true));
-  box(f.tx[0], y, f.tw, TB, "留出茎尖检验：\nDR5延迟与\n发生间隔", { fill: "FFFFFF" });
+  box(f.tx[0], y, f.tw, TB, "留出茎尖检验：\nDR5延迟激活与\n平均发生间隔", { fill: "FFFFFF" });
   box(f.tx[1], y, f.tw, TB, "文献叶序检验：\n发散角变异与\n发生顺序", { fill: "FFFFFF" });
   merge(f.mids, [y + TB, y + TB], f.cx, y + TB + TG);
   y += TB + TG;
-  box(f.hx, y, f.hw, BH, "更符合观测的启动规则\n及两类规则的差异条件", { bold: true, fill: "FFFFFF", lw: 0.8 });
+  box(f.hx, y, f.hw, BH, "两类规则对观测的解释力\n及预测出现差异的条件", { bold: true, fill: "FFFFFF", lc: ACC[2], lw: 1.2, name: "result_2" });
   seg(f.cx, y + BH, f.cx, y + BH + TG, true);
   y += BH + TG;
-  box(f.hx, y, f.hw, BH, "可检验预测：改变处理时长、\n抑制极性运输后的叶序", { fill: "FFFFFF", dash: "dash" });
+  box(f.hx, y, f.hw, BH, "可检验预测：改变处理时长、\n抑制极性运输后的叶序", { fill: "FFFFFF", lc: ACC[2], lw: 0.8, dash: "dash", name: "predictions" });
 }
 
 // links between stages: each stage's result goes along the gutter into the next stage's sub-problem box
@@ -141,6 +142,6 @@ merge(fx.map((x) => x + FW / 2), [fb, fb, fb], W / 2, RY);
 box(M, RY, W - 2 * M, H - RY - 0.03, [
   { text: "建立经成像数据约束的生长素-PIN1叶序模型，", options: { breakLine: true } },
   { text: "明确时间整合在何种条件下影响原基启动时序、叶序精度与稳健性", options: {} },
-], { fs: FS_H, bold: true, fill: BOTTOM, lw: 0.9, name: "conclusion" });
+], { fs: FS_H, bold: true, fill: BOTTOM, lc: BOTTOM_LC, lw: 1.0, name: "conclusion" });
 
 pres.writeFile({ fileName: process.argv[2] || "roadmap.pptx" }).then((f) => console.log("wrote", f));
