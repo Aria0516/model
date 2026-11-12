@@ -34,18 +34,18 @@ function seg(x1, y1, x2, y2, name, arrow) {
 
 // top: scientific question
 const M = 0.03;
-text(M, 0.03, W - 2 * M, 0.3, "科学问题：生长素信号的时间整合如何影响原基启动与叶序？",
+text(M, 0.03, W - 2 * M, 0.3, "生长素信号时间整合对原基启动与叶序的影响",
   { fs: FS_Q, bold: true, fill: TOP, lw: 1.0, name: "question" });
 
 // three module frames
 const GAP = 0.15, FW = (W - 2 * M - 2 * GAP) / 3, FY = 0.5, FH = 1.98;
 const fx = [M, M + FW + GAP, M + 2 * (FW + GAP)];
 const modules = [
-  { head: "① 成像数据定量", q: "细胞经历怎样的生长素变化？",
+  { head: "第一阶段", q: "茎尖生长素与DR5动态定量",
     steps: ["原基阶段划分", "按叶间期排列时间轴", "生长素轨迹与DR5时序"] },
-  { head: "② 运输与响应建模", q: "生长素如何被运输和读取？",
+  { head: "第二阶段", q: "生长素运输与细胞响应建模",
     steps: ["运输模型：原基供给、中央与周边差异", "参数抽样，按实测分布筛选", "响应模型：拟合DR5时序"] },
-  { head: "③ 规则比较与预测", q: "哪类启动规则更能解释叶序？",
+  { head: "第三阶段", q: "启动规则比较与叶序预测",
     steps: ["比较瞬时阈值与时间整合", "留出数据与叶序统计检验", "预测改变生长素处理时长与抑制极性运输后的叶序"] },
 ];
 // tree from the question to the three frames
@@ -68,10 +68,6 @@ modules.forEach((m, k) => {
     y += 0.35;
   });
 });
-// order between modules: 1 -> 2 -> 3
-const ay = FY + 0.25 + 0.14;
-seg(fx[0] + FW, ay, fx[1], ay, "m1_to_m2", true);
-seg(fx[1] + FW, ay, fx[2], ay, "m2_to_m3", true);
 
 // bottom: converge to the expected model and its use
 const by = FY + FH, bus2 = by + 0.08, BY = bus2 + 0.08;
@@ -79,8 +75,8 @@ modules.forEach((m, k) => seg(fx[k] + FW / 2, by, fx[k] + FW / 2, bus2, `down_${
 seg(fx[0] + FW / 2, bus2, fx[2] + FW / 2, bus2, "bottom_bus");
 seg(W / 2, bus2, W / 2, BY, "to_result", true);
 text(M, BY, W - 2 * M, H - BY - 0.03, [
-  { text: "经成像数据约束的生长素-PIN1叶序模型：阐明时间整合在原基启动及叶序精度与稳健性中的作用", options: { bold: true, fontSize: FS_H, breakLine: true } },
-  { text: "预测处理后的叶序变化，服务于后续实验的观测指标与处理条件设计", options: { fontSize: FS } },
-], { fill: BOTTOM, lw: 1.0, name: "result" });
+  { text: "建立经成像数据约束的生长素-PIN1叶序模型，", options: { breakLine: true } },
+  { text: "阐明时间整合对原基启动时序及叶序精度与稳健性的作用", options: {} },
+], { fs: FS_H, bold: true, fill: BOTTOM, lw: 1.0, name: "result" });
 
 pres.writeFile({ fileName: process.argv[2] || "roadmap.pptx" }).then((f) => console.log("wrote", f));
