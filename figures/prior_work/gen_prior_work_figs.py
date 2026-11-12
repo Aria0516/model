@@ -1039,6 +1039,7 @@ def fig2():
     fig.text(0.08 / W, (T1 + H1) / H, "A", va="top", ha="left", **LETTER)
     ax = fig.add_axes(box(3.08, T1, 3.17, H1 - 0.05))
     b_img = os.environ.get("B_PANEL")                 # optional: panel B drawn in PowerPoint and rendered to PNG
+    b_ax, b_box = ax, (3.08, T1, 3.17, H1 - 0.05)
     if b_img:
         ax.imshow(plt.imread(b_img), interpolation="lanczos"); ax.axis("off")
     else:
@@ -1108,7 +1109,19 @@ def fig2():
     fig.text(3.45 / W, (Y3 + H3 + 0.25) / H, "G", va="top", ha="left", **LETTER)
 
     ppt = "".join(k for k in "AB" if os.environ.get(f"{k}_PANEL"))
-    save(fig, "fig2_model" + (f"_ppt{ppt}" if ppt else "") + ("_rt" if os.environ.get("RT3D") else "_3dCE" if os.environ.get("CE3D") else ""), tight=False)
+    stem = "fig2_model" + (f"_ppt{ppt}" if ppt else "") + ("_rt" if os.environ.get("RT3D") else "_3dCE" if os.environ.get("CE3D") else "")
+    b_pdf = os.environ.get("B_PANEL_PDF")             # vector PDF of panel B (exported from PowerPoint)
+    if b_img and b_pdf:
+        localize(fig)
+        out = HERE / (stem + SUFFIX)
+        fig.savefig(f"{out}.png")
+        b_ax.images[0].set_visible(False)              # PDF: leave B empty, then place the vector panel there
+        fig.savefig(f"{out}.pdf", transparent=True)
+        plt.close(fig)
+        place_pdf(f"{out}.pdf", b_pdf, b_box)
+        print("wrote", stem + SUFFIX, "(vector panel B)")
+    else:
+        save(fig, stem, tight=False)
 
 
 # ---------------------------------------------------------------- Fig. 3: tests against data (sampled model)
@@ -1174,6 +1187,23 @@ def fig3():
 
     save(fig, "fig3_tests")
     print("regular-spiral runs", len(reg), "of", len(runs), "| R0 samples", sum(r0.values()))
+
+
+def place_pdf(fig_pdf, panel_pdf, box_in):
+    """Draw page 1 of panel_pdf into fig_pdf, fitted and centred in box_in = (x, y, w, h) inches from the lower left."""
+    from pypdf import PdfReader, PdfWriter, Transformation
+    top = PdfReader(fig_pdf).pages[0]                  # the figure, saved with a transparent background
+    panel = PdfReader(panel_pdf).pages[0]
+    out = PdfWriter()
+    page = out.add_blank_page(width=float(top.mediabox.width), height=float(top.mediabox.height))
+    pw, ph = float(panel.mediabox.width), float(panel.mediabox.height)
+    x, y, w, h = (v * 72 for v in box_in)
+    sc = min(w / pw, h / ph)
+    tx, ty = x + (w - pw * sc) / 2, y + (h - ph * sc) / 2
+    page.merge_transformed_page(panel, Transformation().scale(sc).translate(tx, ty))   # panel underneath
+    page.merge_page(top)                                                                # figure (letters) on top
+    with open(fig_pdf, "wb") as f:
+        out.write(f)
 
 
 def save(fig, stem, tight=True):
