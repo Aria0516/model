@@ -160,7 +160,7 @@ def low_high_bar(fig, pc, rect, label=None):
     cax = fig.add_axes(rect)
     cb = plt.colorbar(pc, cax=cax, orientation="horizontal")
     cb.set_ticks(pc.get_clim()); cb.set_ticklabels([tr("low"), tr("high")]); cb.outline.set_linewidth(0.4)
-    cax.tick_params(length=0, pad=1.5, labelsize=6.5)
+    cax.tick_params(length=0, pad=1.5, labelsize=7)
     if label:
         cax.set_xlabel(label, fontsize=7, labelpad=1)
     return cax
@@ -260,7 +260,7 @@ def fig1():
     ax = fig.add_axes(box(cols[2][0], BY, cols[2][1], BH))
     sp = np.array([p["sigma_PIN"] for p in pin])
     ax.axhspan(0.32, 0.48, color=LIGHT, lw=0, zorder=0)
-    ax.text(0.5, 0.40, "Needed by the model\nto match observed\nirregularity", ha="center", va="center", fontsize=6.5,
+    ax.text(0.5, 0.40, "Needed by the model\nto match observed\nirregularity", ha="center", va="center", fontsize=7,
             color="#444444", transform=ax.get_yaxis_transform())
     ax.scatter(rng.uniform(-0.12, 0.12, len(sp)) + 0.5, sp, s=14, color=BLUE, zorder=3, lw=0)
     ax.plot([0.25, 0.75], [np.median(sp)] * 2, color=INK, lw=1.2)
@@ -1076,7 +1076,7 @@ def fig2():
                    ec=col if reg else LIGHT, lw=0.4, marker="D" if kind == "decussate" else "o", zorder=3 if reg else 2)
     for a, lab in ((180, "180°"), (137.5, "137.5°"), (90, "90°")):
         ax.axhline(a, color=GREY, ls=(0, (3, 2)), lw=0.6, zorder=1)
-        ax.text(5.08, a, lab, fontsize=6.5, color="#555555", va="center")
+        ax.text(5.08, a, lab, fontsize=7, color="#555555", va="center")
     ax.set_xlim(0.8, 5.0); ax.set_ylim(0, 192)
     ax.set_xlabel("Ring mid-radius / primordium range"); ax.set_ylabel("Divergence angle (°)")
     hs = [plt.Line2D([], [], marker=mk, ls="", ms=4, color=TYPE_COL[k], label=l)

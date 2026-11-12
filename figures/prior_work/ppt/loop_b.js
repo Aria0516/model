@@ -50,7 +50,7 @@ function runs(lines, twoTitles) {
   const out = [];
   lines.forEach((line, i) => {
     line.forEach(([t, o], j) => {
-      const size = i === 0 || twoTitles ? 14 : 12;
+      const size = i === 0 || twoTitles ? 15 : 13.5;
       const opt = Object.assign({ fontSize: size }, o);
       if (j === line.length - 1 && i < lines.length - 1) opt.breakLine = true;
       out.push({ text: t, options: opt });
@@ -121,7 +121,7 @@ function build(lang, outFile) {
     if (align === "center") x -= w / 2; else if (align === "right") x -= w;
     if (valign === "bottom") y -= h; else if (valign === "middle") y -= h / 2;
     s.addText(text, {
-      x, y, w, h, fontFace: font, fontSize: 12, color: LABEL, align, valign: valign === "bottom" ? "bottom" : valign === "top" ? "top" : "middle",
+      x, y, w, h, fontFace: font, fontSize: 13.5, color: LABEL, align, valign: valign === "bottom" ? "bottom" : valign === "top" ? "top" : "middle",
       margin: 0, isTextBox: true, lineSpacingMultiple: 0.95,
     });
   }
