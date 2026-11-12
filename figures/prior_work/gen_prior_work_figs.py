@@ -83,6 +83,7 @@ TR = {
     "Ring mid-radius / primordium range": "发生环中线半径 / 原基作用范围",
     "Divergence angle (°)": "相邻原基夹角（°）",
     "Distichous": "二列互生", "Spiral": "螺旋", "Decussate": "交互对生", "Irregular": "不规则",
+    "No regular spiral": "未出现规则螺旋",
     "Integration time constant / plastochron": "积分时间常数 / 叶间期",
     "Fraction of regular spirals": "规则螺旋所占比例",
     "Regular spiral": "出现规则螺旋", "Initiates without transport": "无运输也能起始",
@@ -1131,7 +1132,7 @@ def fig3():
         else:
             ax.scatter(x, y, s=16 if nreg[i] == 1 else 26, color=INK, lw=0, zorder=3)
     hs = [plt.Line2D([], [], marker="o", ls="", ms=4.5, color=INK, label="Regular spiral"),
-          plt.Line2D([], [], marker="o", ls="", ms=3.5, mfc="white", mec=GREY, label="Irregular"),
+          plt.Line2D([], [], marker="o", ls="", ms=3.5, mfc="white", mec=GREY, label="No regular spiral"),
           plt.Line2D([], [], marker="x", ls="", ms=3.5, color=LIGHT, mew=0.8, label="Initiates without transport")]
     ax.legend(handles=hs, frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.2), ncol=2, handletextpad=0.2,
               columnspacing=0.6, fontsize=6.5)
