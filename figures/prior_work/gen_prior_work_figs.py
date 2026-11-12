@@ -290,9 +290,13 @@ def model_map(ax, z, name):
     ax.add_collection(pc)
     ax.quiver(pts[:, 0], pts[:, 1], pin[:, 0], pin[:, 1], color="white", scale=30, width=0.004, headwidth=4,
               headlength=4, alpha=0.85)
-    for (x, y, i, age) in prim:
-        if np.hypot(x, y) < R - 0.5:
-            ax.add_patch(plt.Circle((x, y), par["w"], fill=False, ec="white", lw=0.8))
+    vis = sorted([(x, y, age) for (x, y, i, age) in prim if np.hypot(x, y) < R - 0.5], key=lambda q: q[2])
+    for k, (x, y, age) in enumerate(vis):
+        ax.add_patch(plt.Circle((x, y), par["w"], fill=False, ec="white", lw=0.8))
+        ax.plot([0, x], [0, y], color="white", lw=0.9, ls=(0, (3, 2)), zorder=4)
+        q = min(1.0 + 1.35 * par["w"] / np.hypot(x, y), 0.9 * R / np.hypot(x, y))
+        ax.text(q * x, q * y, f"P{k + 1}", color="white", fontsize=7.5, fontweight="bold", ha="center", va="center",
+                path_effects=OUTLINE, zorder=5)
     for r in (par["R_c"], par["R_p"]):
         ax.add_patch(plt.Circle((0, 0), r, fill=False, ec=RED, ls=(0, (3, 2)), lw=0.7))
     ax.set_xlim(-R, R); ax.set_ylim(-R, R); ax.set_aspect("equal"); ax.axis("off")
@@ -1045,7 +1049,7 @@ def fig2():
     gap = (6.22 - 0.08 - 3 * S2) / 2
     for c, (name, en, rc) in enumerate(TYPES):
         x0 = 0.08 + c * (S2 + gap)
-        if os.environ.get("CE3D") or os.environ.get("RT3D"):   # optional: C-E as schematic 3D domes
+        if os.environ.get("CE3D"):                   # optional: C-E as schematic 3D domes
             ax = fig.add_axes(box(x0 - 0.06, Y2 - 0.06, S2 + 0.12, S2 + 0.12))
             pc = pattern_3d(ax, z, name)
         else:
@@ -1056,7 +1060,7 @@ def fig2():
         sub = (f"pairs, {st['rot_frac'] * 180:.0f}° between nodes" if st["jugacy"] >= 2
                else f"dominant angle {st['alpha']:.0f}°")
         ttl = en                                                   # pattern type only (ring size and angles: F and text)
-        if os.environ.get("CE3D") or os.environ.get("RT3D"):
+        if os.environ.get("CE3D"):
             fig.text((x0 + S2 / 2) / W, (Y2 + S2 + 0.03) / H, ttl, ha="center", va="bottom", fontsize=8)
         else:
             ax.set_title(ttl, pad=2, fontsize=8)
