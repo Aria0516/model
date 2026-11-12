@@ -3,7 +3,7 @@
 //   node roadmap.js <out.pptx>
 const pptxgen = require("pptxgenjs");
 
-const W = 5.906, H = 3.13;                        // inches (15 cm wide)
+const W = 5.906, H = 3.42;                        // inches (15 cm wide)
 const INK = "1A1A1A", FRAME = "44546A", RES = "2F5597";   // text/lines, stage frame border, result text
 const FONT = "Times New Roman";                  // East Asian runs are set to 宋体 afterwards (fix_fonts.py)
 const FS = 7.5, FS_H = 8.5, FS_T = 9.5;
@@ -41,8 +41,8 @@ function split(px, py, xs, cy) {
   xs.forEach((x) => seg(x, by, x, cy));
 }
 // several children (centres xs, bottom ys) to one parent (centre px, top py)
-function merge(xs, ys, px, py) {
-  const by = py - (py - Math.max(...ys)) / 2;
+function merge(xs, ys, px, py) {             // bus nearer the children, so the arrow into the parent stays long
+  const by = Math.max(...ys) + (py - Math.max(...ys)) * 0.4;
   xs.forEach((x, i) => seg(x, ys[i], x, by));
   seg(Math.min(...xs, px), by, Math.max(...xs, px), by);
   seg(px, by, px, py, true);
@@ -56,7 +56,7 @@ function chain(x, y, w, texts, h, gap, fill) {    // vertical chain of boxes; re
   return y;
 }
 
-const M = 0.03, BH = 0.28, TG = 0.14;              // margin, box height, gap of a split/merge
+const M = 0.03, BH = 0.28, TG = 0.2;              // margin, box height, gap of a split/merge
 const FS_Q = 8;                                    // stage sub-problem boxes
 box(M, 0.03, W - 2 * M, 0.25, "生长素信号时间整合对原基启动与叶序的影响", { fs: FS_T, bold: true, fill: TOP, name: "topic" });
 
@@ -113,7 +113,7 @@ const AG = (OY - TG - ty - 3 * BH) / 2;           // arrow gap inside a three-st
   const RB = 0.2, TB = 2 * BH - RB;                // one-line rule boxes, three-line test boxes
   box(f.tx[0], y, f.tw, RB, "瞬时阈值规则", { fill: FILL[2] });
   box(f.tx[1], y, f.tw, RB, "时间整合规则", { fill: FILL[2] });
-  const by = y + RB + TG / 2;                      // both rules go through both tests
+  const by = y + RB + TG * 0.4;                    // both rules go through both tests
   f.mids.forEach((m) => seg(m, y + RB, m, by));
   seg(f.mids[0], by, f.mids[1], by);
   y += RB + TG;
@@ -138,7 +138,7 @@ const AG = (OY - TG - ty - 3 * BH) / 2;           // arrow gap inside a three-st
 });
 
 // conclusion
-const fb = FY + FH, RY = fb + 0.15;
+const fb = FY + FH, RY = fb + 0.2;
 merge(fx.map((x) => x + FW / 2), [fb, fb, fb], W / 2, RY);
 box(M, RY, W - 2 * M, H - RY - 0.03, [
   { text: "建立经成像数据约束的生长素-PIN1叶序模型，", options: { breakLine: true } },
