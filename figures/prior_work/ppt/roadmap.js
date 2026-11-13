@@ -106,7 +106,7 @@ cx.forEach((c) => seg(c, y, c, bus2));
 seg(cx[0], bus2, cx[2], bus2);
 y = bus2 + 0.13;
 seg(CX, bus2, CX, y, true);
-box(CX - 2.6, y, 5.2, H - 0.03 - y, lines("构建“生长素输入 → 时间整合 → 原基启动 → 叶序形成”的生长素-PIN1模型",
+box(M, y, W - 2 * M, H - 0.03 - y, lines("构建经成像数据约束的“生长素输入 → 时间整合 → 原基启动 → 叶序形成”生长素-PIN1模型",
                                          "明确时间整合在何种条件下影响原基启动时序、叶序精度与稳健性"),
     { fs: FS_C, bold: true, fill: PINK, name: "model" });
 console.log("bottom box top", y.toFixed(3), "height", (H - 0.03 - y).toFixed(3));
