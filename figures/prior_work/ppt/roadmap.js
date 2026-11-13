@@ -75,7 +75,7 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
 // stage 1: time course (left), two parallel imaging measurements on one card (right)
 {
   const f = frame(0, "第一阶段：成像定量", "茎尖生长素输入的时空分布\n与DR5响应时序");
-  const b = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "生长素升高与\nDR5激活时间", "估计细胞移动", "外推细胞\n生长素轨迹"], BH, AG);
+  const b = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "生长素升高与\nDR5激活时间", "追踪细胞随茎尖\n生长的位置变化", "推算细胞经历的\n生长素变化"], BH, AG);
   // two parallel measurements on one snug card; the arrows meet the card, not the boxes
   const CP = 0.05, P1 = 0.34, P2 = 0.46, PG = 0.09, ch = CP + P1 + PG + P2 + CP, cy = ty + (b - ty - ch) / 2;
   split(f.cx, IN + HH, f.mids, [ty, cy], true);
