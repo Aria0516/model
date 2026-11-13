@@ -3,8 +3,8 @@
 //   node roadmap.js <out.pptx>
 const pptxgen = require("pptxgenjs");
 
-const W = 5.906, H = 3.84;                          // inches
-const INK = "1A1A1A", FRAME = "7F7F7F", PLUS = "64717E";
+const W = 5.906, H = 3.77;                          // inches
+const INK = "1A1A1A", FRAME = "7F7F7F";
 const FONT = "Times New Roman";                     // East Asian runs are set to 宋体 afterwards (fix_fonts.py)
 const FS = 7.5, FS_L = 8.5, FS_Q = 8, FS_T = 9.5;
 const TINT = ["FCE9D9", "E2EFDA", "DCE6F2"], TOP = "DDF0EE", BOTTOM = "F9DEDC";
@@ -76,16 +76,13 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
 {
   const f = frame(0, "第一阶段：成像定量", "茎尖生长素输入的时空分布\n与DR5响应时序");
   const b = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "输入升高与\nDR5激活先后", "估计细胞移动", "外推细胞\n生长素轨迹"], BH, AG);
-  // two parallel measurements on a darker card spanning the track; the arrows meet the card, not the boxes
-  split(f.cx, IN + HH, f.mids, ty, true);
-  box(f.tx[1], ty, f.tw, b - ty, "", { fill: "F6D5BC", noline: true, name: "imaging_card" });
-  const gx = f.tx[1] + 0.045, gw = f.tw - 0.09, P1 = 0.34, P2 = 0.46, PG = 0.26, gh = P1 + PG + P2;
-  const gy = ty + (b - ty - gh) / 2;
-  box(gx, gy, gw, P1, "PIN1成像\n极性方向");
-  s.addShape(pres.ShapeType.mathPlus, { x: gx + gw / 2 - 0.09, y: gy + P1 + PG / 2 - 0.09, w: 0.18, h: 0.18,
-    fill: { color: PLUS }, line: { type: "none" }, objectName: "parallel_plus" });
-  box(gx, gy + P1 + PG, gw, P2, "qDII成像\n低生长素区与\n区域输入比值");
-  merge(f.mids, [b, b], f.cx, OY);
+  // two parallel measurements on one snug card; the arrows meet the card, not the boxes
+  const CP = 0.05, P1 = 0.34, P2 = 0.46, PG = 0.09, ch = CP + P1 + PG + P2 + CP, cy = ty + (b - ty - ch) / 2;
+  split(f.cx, IN + HH, f.mids, [ty, cy], true);
+  box(f.tx[1], cy, f.tw, ch, "", { fill: "F6D5BC", noline: true, name: "imaging_card" });
+  box(f.tx[1] + 0.045, cy + CP, f.tw - 0.09, P1, "PIN1成像：\n极性方向");
+  box(f.tx[1] + 0.045, cy + CP + P1 + PG, f.tw - 0.09, P2, "qDII成像：\n低生长素区及\n区域输入比值");
+  merge(f.mids, [b, cy + ch], f.cx, OY);
   box(f.hx, OY, f.hw, RH, "生长素轨迹、DR5时序与空间分布", { lw: 0.75, name: "result_0" });
 }
 
@@ -93,8 +90,8 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
 {
   const f = frame(1, "第二阶段：机制建模", "空间分布与响应延迟\n的形成机制");
   split(f.cx, IN + HH, f.mids, ty, true);
-  const bl = chain(f.tx[0], ty, f.tw, ["扩展已有表皮层\n与内层运输模型", "纳入原基供给与\n中央周边差异", "参数抽样，按\n分布与极性筛选", "再现生长素\n输入分布"], BH, AG);
-  const br = chain(f.tx[1], ty, f.tw, ["细胞生长素轨迹\n输入响应模型", "经报告信号换算", "对照DR5变化", "确定响应参数"], BH, AG);
+  const bl = chain(f.tx[0], ty, f.tw, ["扩展已有表皮层\n与内层运输模型", "纳入原基对\n生长素的供给", "参数抽样，按\n分布与极性筛选", "再现生长素\n输入分布"], BH, AG);
+  const br = chain(f.tx[1], ty, f.tw, ["细胞生长素轨迹\n输入响应模型", "区分中央与\n周边的响应", "经报告信号换算\n对照DR5变化", "确定响应参数"], BH, AG);
   seg(f.tx[0] + f.tw, bl - BH / 2, f.tx[1], bl - BH / 2, true);   // transport reproduces input -> response fixed
   merge(f.mids, [bl, br], f.cx, OY);
   box(f.hx, OY, f.hw, RH, "运输与响应模型\n及参数取值范围", { lw: 0.75, name: "result_1" });
@@ -129,10 +126,10 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
   seg(x0, y0, gx, y0, false, 1.0); seg(gx, y0, gx, y1, false, 1.0); seg(gx, y1, x1, y1, true, 1.0);
 });
 
-// answer: the model obtained and what it settles
+// answer to the question on top
 const fb = FY + FH, RY = fb + 0.17;
 merge(fx.map((x) => x + FW / 2), [fb, fb, fb], W / 2, RY);
-box(M, RY, W - 2 * M, H - RY - 0.03, "构建“生长素输入 → 时间整合 → 原基启动 → 叶序形成”的生长素-PIN1模型\n明确时间整合在何种条件下影响原基启动时序、叶序精度与稳健性",
+box(M, RY, W - 2 * M, H - RY - 0.03, "明确生长素信号的时间整合在何种条件下影响原基启动时序、叶序精度与稳健性",
     { fs: FS_L, bold: true, fill: BOTTOM, lw: 0.9, name: "answer" });
 console.log("answer box", RY.toFixed(3), (H - RY - 0.03).toFixed(3), "AG", AG.toFixed(3));
 pres.writeFile({ fileName: process.argv[2] || "roadmap4.pptx" }).then((f) => console.log("wrote", f));
