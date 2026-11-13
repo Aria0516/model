@@ -72,18 +72,20 @@ function frame(k, label, problem) {
 const ty = IN + HH + TG;                            // first row of track boxes (stages 1, 2)
 const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step track
 
-// stage 1: time course (left), two parallel imaging measurements joined by a plus (right)
+// stage 1: time course (left), two parallel imaging measurements on one card (right)
 {
   const f = frame(0, "第一阶段：成像定量", "茎尖生长素输入的时空分布\n与DR5响应时序");
   const b = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "输入升高与\nDR5激活先后", "估计细胞移动", "外推细胞\n生长素轨迹"], BH, AG);
-  const gx = f.tx[1] + 0.06, gw = f.tw - 0.12, P1 = 0.34, P2 = 0.46, PG = 0.26, gh = P1 + PG + P2;
-  const gy = ty + (b - ty - gh) / 2;                // two parallel measurements joined by a plus, centred in the column
-  split(f.cx, IN + HH, f.mids, [ty, gy], true);
+  // two parallel measurements on a darker card spanning the track; the arrows meet the card, not the boxes
+  split(f.cx, IN + HH, f.mids, ty, true);
+  box(f.tx[1], ty, f.tw, b - ty, "", { fill: "F6D5BC", noline: true, name: "imaging_card" });
+  const gx = f.tx[1] + 0.045, gw = f.tw - 0.09, P1 = 0.34, P2 = 0.46, PG = 0.26, gh = P1 + PG + P2;
+  const gy = ty + (b - ty - gh) / 2;
   box(gx, gy, gw, P1, "PIN1成像\n极性方向");
   s.addShape(pres.ShapeType.mathPlus, { x: gx + gw / 2 - 0.09, y: gy + P1 + PG / 2 - 0.09, w: 0.18, h: 0.18,
     fill: { color: PLUS }, line: { type: "none" }, objectName: "parallel_plus" });
   box(gx, gy + P1 + PG, gw, P2, "qDII成像\n低生长素区与\n区域输入比值");
-  merge(f.mids, [b, gy + gh], f.cx, OY);
+  merge(f.mids, [b, b], f.cx, OY);
   box(f.hx, OY, f.hw, RH, "生长素轨迹、DR5时序与空间分布", { lw: 0.75, name: "result_0" });
 }
 
