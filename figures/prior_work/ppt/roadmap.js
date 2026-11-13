@@ -1,15 +1,13 @@
-// Fig. 2-1 technical roadmap, matrix layout: row labels on the left, one tinted dashed frame per research content,
-// short two-line white boxes, black lines, one font size throughout; palette after the NSFC multicolour scheme
-// (grey / orange / green / blue / purple). Drawn 15 cm wide as an editable PowerPoint slide (Chinese).
+// Fig. 2-1 technical roadmap, three columns: scientific question -> three stages (sub-problem, parallel tracks, result;
+// each result feeds the next stage) -> answer. Drawn 15 cm wide as an editable PowerPoint slide (Chinese).
 //   node roadmap.js <out.pptx>
 const pptxgen = require("pptxgenjs");
 
-const W = 5.906, H = 3.7;                          // inches
-const INK = "000000", ARROW = "6B7B8C";
-const GREY = ["F4F6F8", "DDE3E8"], PURPLE = ["EEE4F4", "D8C3E6"];
-const MOD = [["FBEAD4", "EDC48F"], ["E4F0D7", "BCD79F"], ["DDEAF6", "B7D1EA"]];   // [frame tint, header fill]
+const W = 5.906, H = 3.76;                          // inches
+const INK = "1A1A1A", FRAME = "7F7F7F";
 const FONT = "Times New Roman";                     // East Asian runs are set to 宋体 afterwards (fix_fonts.py)
-const FS = 8;                                       // one size for every box
+const FS = 7.5, FS_L = 8.5, FS_Q = 8, FS_T = 9.5;
+const TINT = ["FCE9D9", "E2EFDA", "DCE6F2"], TOP = "DDF0EE", BOTTOM = "F9DEDC";
 
 const pres = new pptxgen();
 pres.defineLayout({ name: "FIG", width: W, height: H });
@@ -19,80 +17,117 @@ const s = pres.addSlide();
 
 function box(x, y, w, h, text, o = {}) {
   s.addText(text, {
-    x, y, w, h, fontFace: FONT, fontSize: FS, color: INK, align: "center", valign: "middle",
-    fill: { color: o.fill || "FFFFFF" },
-    line: { color: INK, width: o.lw || 0.75, dashType: o.dash || "solid" },
-    margin: [1, 2, 1, 2], lineSpacingMultiple: 1.0, objectName: o.name,
+    x, y, w, h, fontFace: FONT, fontSize: o.fs || FS, bold: !!o.bold, color: INK, align: "center", valign: "middle",
+    fill: o.fill === null ? undefined : { color: o.fill || "FFFFFF" },
+    line: o.noline ? { type: "none" } : { color: o.lc || INK, width: o.lw || 0.5, dashType: o.dash || "solid" },
+    margin: [1, 1.5, 1, 1.5], lineSpacingMultiple: 0.95, objectName: o.name,
   });
 }
-function seg(x1, y1, x2, y2, arrow) {
-  const ln = { color: INK, width: 0.75 };
+function seg(x1, y1, x2, y2, arrow, lw) {
+  const ln = { color: INK, width: lw || 0.75 };
   if (arrow) ln.endArrowType = "triangle";
   s.addShape(pres.ShapeType.line, {
     x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.max(Math.abs(x2 - x1), 0.0001), h: Math.max(Math.abs(y2 - y1), 0.0001),
     flipH: x2 < x1, flipV: y2 < y1, line: ln,
   });
 }
-
-// geometry
-const LX = 0.03, LW = 0.36;                         // row-label column
-const AX0 = 0.5, AX1 = W - 0.03, GAPM = 0.28;       // module area and the space between modules (sequence arrows)
-const FW = (AX1 - AX0 - 2 * GAPM) / 3, BW = FW - 0.22;
-const fx = [0, 1, 2].map((k) => AX0 + k * (FW + GAPM));
-const cx = fx.map((x) => x + FW / 2), MID = (AX0 + AX1) / 2;
-const FY = 0.5, HB = 0.3, BH = 0.38, AG = 0.15;
-const rows = [FY + 0.08];                           // header row, then four content rows
-for (let i = 1; i < 5; i++) rows.push(rows[i - 1] + (i === 1 ? HB : BH) + AG);
-const FB = rows[4] + BH + 0.08, FH = FB - FY;
-
-// top: the thesis title, broken down into the three research contents
-box(MID - 1.75, 0.03, 3.5, 0.3, "拟南芥叶序形成中生长素时间整合的建模研究", { fill: GREY[1], name: "title" });
-
-// module frames first (so lines and boxes sit on top)
-MOD.forEach(([tint], k) => box(fx[k], FY, FW, FH, "", { fill: tint, dash: "dash", lw: 1.0, name: `frame_${k}` }));
-
-const bus0 = 0.42;
-seg(MID, 0.33, MID, bus0); seg(cx[0], bus0, cx[2], bus0);
-cx.forEach((c) => seg(c, bus0, c, rows[0], true));
-
-// row labels
-const LABELS = ["研究\n内容", "数据\n材料", "关键\n方法", "定量\n检验", "阶段\n产出"];
-LABELS.forEach((t, i) => {
-  const h = i === 0 ? HB : BH, y = rows[i] + h / 2 - 0.19;
-  box(LX, y, LW, 0.38, t, { fill: GREY[1], name: `label_${i}` });
-});
-
-const CELLS = [
-  ["成像数据定量", "21个茎尖qDII与DR5\n4个茎尖PIN1成像", "以P0为参照对齐阶段\n结合细胞移动估计轨迹",
-   "PIN1极性与低生长素区\nDR5激活时序", "细胞生长素轨迹\nDR5时序与空间分布"],
-  ["模型建立与检验", "前期表皮层与内层模型\n生长素轨迹与空间分布", "纳入原基供给\n与中央周边差异",
-   "参数抽样与筛选\n经换算对照DR5", "运输与响应模型\n及参数取值范围"],
-  ["启动规则比较", "相同运输与生长设定\n文献叶序与留出茎尖", "瞬时阈值规则\n时间整合规则",
-   "DR5延迟、平均发生间隔\n发散角与发生顺序", "两类规则的解释力\n处理后叶序预测"],
-];
-CELLS.forEach((col, k) => {
-  col.forEach((t, i) => {
-    const h = i === 0 ? HB : BH, w = i === 0 ? BW * 0.86 : BW;
-    box(cx[k] - w / 2, rows[i], w, h, t, { fill: i === 0 ? MOD[k][1] : "FFFFFF", name: `cell_${k}_${i}` });
-    if (i > 0) seg(cx[k], rows[i - 1] + (i === 1 ? HB : BH), cx[k], rows[i], true);
+const split = (px, py, xs, cy, arrow) => {          // parent (centre px, bottom py) -> children tops at cy
+  const by = py + (cy - py) / 2;
+  seg(px, py, px, by); seg(Math.min(...xs, px), by, Math.max(...xs, px), by);
+  xs.forEach((x) => seg(x, by, x, cy, arrow));
+};
+const merge = (xs, ys, px, py) => {                 // children bottoms -> parent top; bus nearer the children
+  const by = Math.max(...ys) + (py - Math.max(...ys)) * 0.4;
+  xs.forEach((x, i) => seg(x, ys[i], x, by));
+  seg(Math.min(...xs, px), by, Math.max(...xs, px), by); seg(px, by, px, py, true);
+};
+const chain = (x, y, w, texts, h, gap) => {         // vertical chain of steps; returns the bottom
+  texts.forEach((t, j) => {
+    if (j > 0) { seg(x + w / 2, y, x + w / 2, y + gap, true); y += gap; }
+    box(x, y, w, h, t); y += h;
   });
-});
+  return y;
+};
 
-// sequence between research contents: the result of one is used by the next
+const M = 0.03, BH = 0.28, TG = 0.16, PAD = 0.05, TS = 0.12;
+box(M, 0.03, W - 2 * M, 0.27, "在拟南芥茎尖中，细胞对生长素信号的时间整合如何影响原基启动与叶序形成？",
+    { fs: FS_T, bold: true, fill: TOP, lw: 0.9, name: "question" });
+
+const GAP = 0.18, FW = (W - 2 * M - 2 * GAP) / 3, FY = 0.44;
+const HH = 0.36, IN = FY + 0.21, RB = 0.2, NB = 0.3, TB = 0.38, RH = 0.28;   // sub-problem, rule, common, test, result
+const BODY = HH + 5 * TG + RB + NB + TB + RH + RH;   // stage 3 is the tallest column
+const FH = 0.21 + BODY + 0.06, OY = IN + BODY - RH;
+const fx = [M, M + FW + GAP, M + 2 * (FW + GAP)];
+split(W / 2, 0.3, fx.map((x) => x + FW / 2), FY);
+
+function frame(k, label, problem) {
+  const x = fx[k];
+  box(x, FY, FW, FH, "", { fill: TINT[k], lc: FRAME, lw: 0.75, dash: "dash", name: `frame_${k}` });
+  box(x, FY + 0.02, FW, 0.17, label, { fs: FS_L, noline: true, fill: null });
+  box(x + PAD, IN, FW - 2 * PAD, HH, problem, { fs: FS_Q, bold: true, lw: 0.75, name: `problem_${k}` });
+  const hx = x + PAD, hw = FW - 2 * PAD, tw = (hw - TS) / 2;
+  return { cx: x + FW / 2, hx, hw, tw, tx: [hx, hx + tw + TS], mids: [hx + tw / 2, hx + tw + TS + tw / 2] };
+}
+const ty = IN + HH + TG;                            // first row of track boxes (stages 1, 2)
+const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step track
+
+// stage 1: time course (left), two parallel imaging measurements grouped without arrows (right)
+{
+  const f = frame(0, "第一阶段：成像定量", "茎尖生长素输入的时空分布\n与DR5响应时序");
+  split(f.cx, IN + HH, f.mids, ty, true);
+  const b = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "输入升高与\nDR5激活先后", "估计细胞移动", "外推细胞\n生长素轨迹"], BH, AG);
+  const gx = f.tx[1], gh = b - ty, ih = (gh - 0.05 * 2 - 0.1) / 2;
+  box(gx, ty, f.tw, gh, "", { fill: null, lc: FRAME, dash: "sysDash", name: "imaging_group" });
+  box(gx + 0.05, ty + 0.05, f.tw - 0.1, ih, "PIN1成像\n极性方向");
+  box(gx + 0.05, ty + 0.05 + ih + 0.1, f.tw - 0.1, ih, "qDII成像\n低生长素区与\n区域输入比值");
+  merge(f.mids, [b, b], f.cx, OY);
+  box(f.hx, OY, f.hw, RH, "生长素轨迹、DR5时序与空间分布", { lw: 0.75, name: "result_0" });
+}
+
+// stage 2: transport model (left) first; once it reproduces the input distribution the response parameters are fixed
+{
+  const f = frame(1, "第二阶段：机制建模", "空间分布与响应延迟\n的形成机制");
+  split(f.cx, IN + HH, f.mids, ty, true);
+  const bl = chain(f.tx[0], ty, f.tw, ["扩展已有表皮层\n与内层运输模型", "纳入原基供给与\n中央周边差异", "参数抽样，按\n分布与极性筛选", "再现生长素\n输入分布"], BH, AG);
+  const br = chain(f.tx[1], ty, f.tw, ["细胞生长素轨迹\n输入响应模型", "经报告信号换算", "对照DR5变化", "确定响应参数"], BH, AG);
+  seg(f.tx[0] + f.tw, bl - BH / 2, f.tx[1], bl - BH / 2, true);   // transport reproduces input -> response fixed
+  merge(f.mids, [bl, br], f.cx, OY);
+  box(f.hx, OY, f.hw, RH, "运输与响应衔接的\n生长素-PIN1模型", { lw: 0.75, name: "result_1" });
+}
+
+// stage 3: both rules -> one common setting -> both tests -> result -> predictions that follow from it
+{
+  const f = frame(2, "第三阶段：规则检验", "时间整合对原基启动\n与叶序的作用");
+  let y = ty;
+  split(f.cx, IN + HH, f.mids, y, true);
+  box(f.tx[0], y, f.tw, RB, "瞬时阈值规则");
+  box(f.tx[1], y, f.tw, RB, "时间整合规则");
+  merge(f.mids, [y + RB, y + RB], f.cx, y + RB + TG);
+  y += RB + TG;
+  box(f.hx, y, f.hw, NB, "相同运输、生长与\n信号换算设定下比较", { name: "common_setting" });
+  split(f.cx, y + NB, f.mids, y + NB + TG, true);
+  y += NB + TG;
+  box(f.tx[0], y, f.tw, TB, "留出茎尖信号：\nDR5延迟、\n平均发生间隔");
+  box(f.tx[1], y, f.tw, TB, "成熟茎叶序：\n发散角变异、\n发生顺序");
+  merge(f.mids, [y + TB, y + TB], f.cx, y + TB + TG);
+  y += TB + TG;
+  box(f.hx, y, f.hw, RH, "两类规则的解释力\n及其预测出现差异的条件", { lw: 0.75, name: "result_2" });
+  seg(f.cx, y + RH, f.cx, y + RH + TG, true);
+  y += RH + TG;
+  box(f.hx, y, f.hw, RH, "可检验预测：改变处理时长、\n抑制极性运输后的叶序", { dash: "dash", name: "predictions" });
+}
+
+// each stage's result goes along the gutter into the next stage's sub-problem
 [0, 1].forEach((k) => {
-  s.addShape(pres.ShapeType.rightArrow, {
-    x: fx[k] + FW + 0.04, y: FY + FH / 2 - 0.13, w: GAPM - 0.08, h: 0.26,
-    fill: { color: ARROW }, line: { type: "none" }, objectName: `sequence_${k}`,
-  });
+  const x0 = fx[k] + FW - PAD, gx = fx[k] + FW + GAP / 2, x1 = fx[k + 1] + PAD;
+  const y0 = OY + RH / 2, y1 = IN + HH / 2;
+  seg(x0, y0, gx, y0, false, 1.0); seg(gx, y0, gx, y1, false, 1.0); seg(gx, y1, x1, y1, true, 1.0);
 });
 
-// bottom: research goal
-const bus1 = FB + 0.1, GY = FB + 0.22, GH = H - 0.03 - GY;
-cx.forEach((c) => seg(c, rows[4] + BH, c, bus1));
-seg(cx[0], bus1, cx[2], bus1); seg(MID, bus1, MID, GY, true);
-box(LX, GY + GH / 2 - 0.19, LW, 0.38, "研究\n目标", { fill: GREY[1], name: "label_goal" });
-box(MID - 2.0, GY, 4.0, GH, "构建“生长素输入 → 时间整合 → 原基启动 → 叶序形成”的生长素-PIN1模型\n明确时间整合影响叶序精度与稳健性的条件",
-    { fill: PURPLE[1], name: "goal" });
-console.log("goal box", GY.toFixed(3), GH.toFixed(3));
-
-pres.writeFile({ fileName: process.argv[2] || "roadmap3.pptx" }).then((f) => console.log("wrote", f));
+// answer
+const fb = FY + FH, RY = fb + 0.15;
+merge(fx.map((x) => x + FW / 2), [fb, fb, fb], W / 2, RY);
+box(M, RY, W - 2 * M, H - RY - 0.03, "明确时间整合在何种条件下影响原基启动时序、叶序精度与稳健性",
+    { fs: FS_L, bold: true, fill: BOTTOM, lw: 0.9, name: "answer" });
+console.log("answer box", RY.toFixed(3), (H - RY - 0.03).toFixed(3), "AG", AG.toFixed(3));
+pres.writeFile({ fileName: process.argv[2] || "roadmap4.pptx" }).then((f) => console.log("wrote", f));
