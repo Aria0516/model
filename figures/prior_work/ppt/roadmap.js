@@ -86,12 +86,12 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
   box(f.hx, OY, f.hw, RH, "生长素轨迹、DR5时序与空间分布", { lw: 0.75, name: "result_0" });
 }
 
-// stage 2: transport model (left) first; once it reproduces the input distribution the response parameters are fixed
+// stage 2: transport model (left) first; once it reproduces the input distribution the response model is fixed
 {
   const f = frame(1, "第二阶段：机制建模", "空间分布与响应延迟\n的形成机制");
   split(f.cx, IN + HH, f.mids, ty, true);
-  const bl = chain(f.tx[0], ty, f.tw, ["基于已有表皮层\n与内层运输模型", "实测与文献参数\n直接取值", "参数抽样，按\n分布与极性筛选", "再现生长素\n输入分布"], BH, AG);
-  const br = chain(f.tx[1], ty, f.tw, ["细胞生长素轨迹\n输入响应模型", "区分中央与\n周边的响应", "经报告信号换算\n对照DR5变化", "确定响应参数"], BH, AG);
+  const bl = chain(f.tx[0], ty, f.tw, ["基于已有表皮层\n与内层运输模型", "比较模拟与实测\n空间分布", "优化运输模型", "再现生长素\n输入分布"], BH, AG);
+  const br = chain(f.tx[1], ty, f.tw, ["细胞生长素轨迹\n输入响应模型", "区分中央与\n周边的响应", "经报告信号换算\n对照DR5变化", "确定响应模型"], BH, AG);
   seg(f.tx[0] + f.tw, bl - BH / 2, f.tx[1], bl - BH / 2, true);   // transport reproduces input -> response fixed
   merge(f.mids, [bl, br], f.cx, OY);
   box(f.hx, OY, f.hw, RH, "运输与响应模型\n及参数取值范围", { lw: 0.75, name: "result_1" });
