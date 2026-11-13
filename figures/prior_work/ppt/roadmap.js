@@ -75,7 +75,7 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
 // stage 1: time course (left), two parallel imaging measurements on one card (right)
 {
   const f = frame(0, "第一阶段：成像定量", "茎尖生长素输入的时空分布\n与DR5响应时序");
-  const b = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "输入升高与\nDR5激活先后", "估计细胞移动", "外推细胞\n生长素轨迹"], BH, AG);
+  const b = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "生长素升高与\nDR5激活时间", "估计细胞移动", "外推细胞\n生长素轨迹"], BH, AG);
   // two parallel measurements on one snug card; the arrows meet the card, not the boxes
   const CP = 0.05, P1 = 0.34, P2 = 0.46, PG = 0.09, ch = CP + P1 + PG + P2 + CP, cy = ty + (b - ty - ch) / 2;
   split(f.cx, IN + HH, f.mids, [ty, cy], true);
@@ -90,7 +90,7 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
 {
   const f = frame(1, "第二阶段：机制建模", "空间分布与响应延迟\n的形成机制");
   split(f.cx, IN + HH, f.mids, ty, true);
-  const bl = chain(f.tx[0], ty, f.tw, ["扩展已有表皮层\n与内层运输模型", "纳入原基对\n生长素的供给", "参数抽样，按\n分布与极性筛选", "再现生长素\n输入分布"], BH, AG);
+  const bl = chain(f.tx[0], ty, f.tw, ["基于已有表皮层\n与内层运输模型", "实测与文献参数\n直接取值", "参数抽样，按\n分布与极性筛选", "再现生长素\n输入分布"], BH, AG);
   const br = chain(f.tx[1], ty, f.tw, ["细胞生长素轨迹\n输入响应模型", "区分中央与\n周边的响应", "经报告信号换算\n对照DR5变化", "确定响应参数"], BH, AG);
   seg(f.tx[0] + f.tw, bl - BH / 2, f.tx[1], bl - BH / 2, true);   // transport reproduces input -> response fixed
   merge(f.mids, [bl, br], f.cx, OY);
