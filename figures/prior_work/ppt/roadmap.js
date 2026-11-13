@@ -1,15 +1,13 @@
-// Fig. 2-1 technical roadmap as an editable PowerPoint slide (Chinese), drawn at its printed size (15 cm wide).
-// Topic -> three stage sub-problems; parallel tracks inside each stage; each stage's result feeds the next -> one conclusion.
-//   node roadmap.js <out.pptx>
+// Fig. 2-1 technical roadmap, layered layout (title -> starting point -> materials -> three research contents -> model),
+// drawn at 15 cm wide as an editable PowerPoint slide (Chinese).
+//   RH=3.82 node roadmap.js <out.pptx>   (RH: slide height in inches)
 const pptxgen = require("pptxgenjs");
 
-const W = 5.906, H = 3.42;                        // inches (15 cm wide)
-const INK = "1A1A1A", FRAME = "44546A", RES = "2F5597";   // text/lines, stage frame border, result text
-const FONT = "Times New Roman";                  // East Asian runs are set to 宋体 afterwards (fix_fonts.py)
-const FS = 7.5, FS_H = 8.5, FS_T = 9.5;
-const TINT = ["FEE8D6", "C8E5B2", "B6C7EA"];        // stage frames
-const FILL = ["FFF0CB", "E3F3D9", "D9E5F1"];        // boxes inside each stage
-const TOP = "D2F5F0", BOTTOM = "FADCDF";
+const W = 5.906, H = Number(process.env.RH || 4.0);  // inches
+const INK = "1A1A1A", DASH = "8C8C8C";
+const PINK = "FFD8D7", BLUE = "E2EBFF";
+const FONT = "Times New Roman";                    // East Asian runs are set to 宋体 afterwards (fix_fonts.py)
+const FS = 7.5, FS_H = 8, FS_T = 9.5, FS_C = 8.5;
 
 const pres = new pptxgen();
 pres.defineLayout({ name: "FIG", width: W, height: H });
@@ -19,130 +17,98 @@ const s = pres.addSlide();
 
 function box(x, y, w, h, runs, o = {}) {
   s.addText(runs, {
-    x, y, w, h, shape: o.round ? pres.ShapeType.roundRect : undefined, rectRadius: o.round, fontFace: FONT, fontSize: o.fs || FS, bold: !!o.bold, color: o.color || INK, align: "center", valign: "middle",
-    fill: o.fill ? { color: o.fill, transparency: o.transp || 0 } : undefined,
-    line: o.noline ? { type: "none" } : { color: o.lc || INK, width: o.lw || 0.75, dashType: o.dash || "solid" },
-    margin: [1, 1.5, 1, 1.5], lineSpacingMultiple: 0.95, objectName: o.name,
+    x, y, w, h, fontFace: FONT, fontSize: o.fs || FS, bold: !!o.bold, color: INK, align: "center", valign: "middle",
+    fill: { color: o.fill || BLUE }, line: { color: INK, width: 0.75 },
+    margin: [1, 2, 1, 2], lineSpacingMultiple: 0.95, objectName: o.name,
   });
 }
-function seg(x1, y1, x2, y2, arrow, lw) {
-  const ln = { color: INK, width: lw || 0.75 };
+function seg(x1, y1, x2, y2, arrow) {
+  const ln = { color: INK, width: 0.75 };
   if (arrow) ln.endArrowType = "triangle";
   s.addShape(pres.ShapeType.line, {
     x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.max(Math.abs(x2 - x1), 0.0001), h: Math.max(Math.abs(y2 - y1), 0.0001),
     flipH: x2 < x1, flipV: y2 < y1, line: ln,
   });
 }
-// one parent (bottom centre px, py) to several children (centres xs, top cy): plain tree, as a problem is broken down
-function split(px, py, xs, cy) {
-  const by = py + (cy - py) / 2;
-  seg(px, py, px, by);
-  seg(Math.min(...xs, px), by, Math.max(...xs, px), by);
-  xs.forEach((x) => seg(x, by, x, cy));
+function rule(y) {                                   // dashed separator between layers
+  s.addShape(pres.ShapeType.line, { x: 0.02, y, w: W - 0.04, h: 0.0001, line: { color: DASH, width: 0.75, dashType: "dash" } });
 }
-// several children (centres xs, bottom ys) to one parent (centre px, top py)
-function merge(xs, ys, px, py) {             // bus nearer the children, so the arrow into the parent stays long
-  const by = Math.max(...ys) + (py - Math.max(...ys)) * 0.4;
-  xs.forEach((x, i) => seg(x, ys[i], x, by));
-  seg(Math.min(...xs, px), by, Math.max(...xs, px), by);
-  seg(px, by, px, py, true);
-}
-function chain(x, y, w, texts, h, gap, fill) {    // vertical chain of boxes; returns bottom y
-  texts.forEach((t, j) => {
-    if (j > 0) { seg(x + w / 2, y, x + w / 2, y + gap, true); y += gap; }
-    box(x, y, w, h, t, { fill });
-    y += h;
-  });
-  return y;
-}
+const lines = (...t) => t.map((x, i) => ({ text: x, options: i < t.length - 1 ? { breakLine: true } : {} }));
 
-const M = 0.03, BH = 0.28, TG = 0.2;              // margin, box height, gap of a split/merge
-const FS_Q = 8;                                    // stage sub-problem boxes
-box(M, 0.03, W - 2 * M, 0.25, "生长素信号时间整合对原基启动与叶序的影响", { fs: FS_T, bold: true, fill: TOP, name: "topic" });
+const M = 0.03, G = 0.2, CW = (W - 2 * M - 2 * G) / 3;
+const cx = [0, 1, 2].map((k) => M + k * (CW + G) + CW / 2);
+const CX = W / 2;
 
-const GAP = 0.18, FW = (W - 2 * M - 2 * GAP) / 3, FY = 0.43;
-const HH = 0.25, IN = FY + 0.2;                   // sub-problem box height and top
-const BODY = HH + TG + BH + TG + BH + TG + BH + TG + BH;
-const FH = 0.2 + BODY + 0.06;
-const OY = IN + BODY - HH;                         // row of the stage results (stages 1 and 2)
-const fx = [M, M + FW + GAP, M + 2 * (FW + GAP)];
-const PAD = 0.05, TS = 0.06;                       // frame inner padding, space between two tracks
-split(W / 2, 0.28, fx.map((x) => x + FW / 2), FY);
+// title and starting point
+let y = 0.03;
+box(CX - 2.1, y, 4.2, 0.26, "拟南芥叶序形成中生长素时间整合的建模研究", { fs: FS_T, bold: true, fill: PINK, name: "title" });
+y += 0.26;
+seg(CX, y, CX, y + 0.15, true); y += 0.15;
+box(CX - 1.85, y, 3.7, 0.34, lines("成像观测：原基处生长素输入逐步升高，DR5激活滞后近一个叶间期",
+                                    "前期模拟：启动积分时间常数接近一个叶间期时，规则螺旋比例下降"), { name: "start" });
+y += 0.34;
+rule(y + 0.07);
+seg(CX, y, CX, y + 0.15, true); y += 0.15;
 
-// frame: tinted stage band with "stage: approach" on top and the stage's sub-problem in the white box
-function frame(k, name, problem) {
-  const x = fx[k];
-  box(x, FY, FW, FH, "", { fill: TINT[k], lc: FRAME, lw: 0.9, dash: "dash", round: 0.08, name: `frame_${k}` });
-  box(x, FY + 0.02, FW, 0.17, name, { fs: FS_H, bold: true, noline: true });
-  box(x + PAD, IN, FW - 2 * PAD, HH, problem, { fs: FS_Q, fill: FILL[k], name: `problem_${k}` });
-  const hx = x + PAD, hw = FW - 2 * PAD, tw = (hw - TS) / 2;
-  return { cx: x + FW / 2, hx, hw, tw, tx: [hx, hx + tw + TS], mids: [hx + tw / 2, hx + tw + TS + tw / 2] };
-}
-const ty = IN + HH + TG;                           // top of the first row of track boxes
-const AG = (OY - TG - ty - 3 * BH) / 2;           // arrow gap inside a three-step track
+// materials
+box(CX - 0.55, y, 1.1, 0.2, "研究材料", { fs: FS_H, fill: PINK, name: "materials" });
+y += 0.2;
+const bus1 = y + 0.08;
+seg(CX, y, CX, bus1); seg(cx[0], bus1, cx[2], bus1);
+y += 0.17;
+cx.forEach((c) => seg(c, bus1, c, y, true));
+const MAT = [
+  lines("茎尖成像数据：21个茎尖", "qDII与DR5时序，4个茎尖PIN1"),
+  lines("前期模型：表皮层与内层", "生长素-PIN1模型及检验流程"),
+  lines("文献叶序测量：成熟茎的", "发散角与发生顺序"),
+];
+MAT.forEach((t, k) => box(cx[k] - CW / 2, y, CW, 0.34, t, { name: `material_${k}` }));
+y += 0.34;
+rule(y + 0.08);
+cx.forEach((c) => seg(c, y, c, y + 0.17, true));
+y += 0.17;
 
-// stage 1: time course (left) and two parallel imaging measurements (right, grouped, no arrows between them)
-{
-  const f = frame(0, "第一阶段：成像定量", "原基生长素输入与DR5响应时序");
-  split(f.cx, IN + HH, f.mids, ty);
-  const b0 = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "输入升高与\nDR5激活先后", "结合细胞移动\n估计生长素轨迹"], BH, AG, FILL[0]);
-  const gh = b0 - ty, gx = f.tx[1];
-  box(gx, ty, f.tw, gh, "", { lc: FRAME, lw: 0.6, dash: "sysDash", name: "imaging_group" });
-  const ih = (gh - 0.04 * 2 - 0.08) / 2;
-  box(gx + 0.04, ty + 0.04, f.tw - 0.08, ih, "PIN1成像\n极性方向", { fill: FILL[0] });
-  box(gx + 0.04, ty + 0.04 + ih + 0.08, f.tw - 0.08, ih, "qDII成像\n低生长素区与\n区域输入比值", { fill: FILL[0] });
-  merge(f.mids, [b0, b0], f.cx, OY);
-  box(f.hx, OY, f.hw, HH, "生长素轨迹、DR5时序与空间分布", { color: RES, fill: FILL[0], name: "result_0" });
-}
-
-// stage 2: transport model (left) and response model (right)
-{
-  const f = frame(1, "第二阶段：机制建模", "空间分布与响应延迟的形成机制");
-  split(f.cx, IN + HH, f.mids, ty);
-  const b = [chain(f.tx[0], ty, f.tw, ["纳入原基供给与\n中央周边差异", "参数抽样，按\n分布与极性筛选", "再现生长素\n输入分布"], BH, AG, FILL[1]),
-             chain(f.tx[1], ty, f.tw, ["细胞生长素轨迹\n输入响应模型", "经报告信号换算\n对照DR5变化", "确定响应参数"], BH, AG, FILL[1])];
-  merge(f.mids, b, f.cx, OY);
-  box(f.hx, OY, f.hw, HH, "经数据约束的运输与响应模型", { color: RES, fill: FILL[1], name: "result_1" });
-}
-
-// stage 3: both rules go through both tests -> judgement -> predictions that follow from it
-{
-  const f = frame(2, "第三阶段：规则检验", "时间整合对启动与叶序的作用");
-  let y = ty;
-  split(f.cx, IN + HH, f.mids, y);
-  const RB = 0.2, TB = 2 * BH - RB;                // one-line rule boxes, three-line test boxes
-  box(f.tx[0], y, f.tw, RB, "瞬时阈值规则", { fill: FILL[2] });
-  box(f.tx[1], y, f.tw, RB, "时间整合规则", { fill: FILL[2] });
-  const by = y + RB + TG * 0.4;                    // both rules go through both tests
-  f.mids.forEach((m) => seg(m, y + RB, m, by));
-  seg(f.mids[0], by, f.mids[1], by);
-  y += RB + TG;
-  f.mids.forEach((m) => seg(m, by, m, y, true));
-  box(f.tx[0], y, f.tw, TB, "留出茎尖检验：\nDR5延迟激活与\n平均发生间隔", { fill: FILL[2] });
-  box(f.tx[1], y, f.tw, TB, "文献叶序检验：\n发散角变异与\n发生顺序", { fill: FILL[2] });
-  merge(f.mids, [y + TB, y + TB], f.cx, y + TB + TG);
-  y += TB + TG;
-  box(f.hx, y, f.hw, BH, "两类规则对观测的解释力\n及预测出现差异的条件", { color: RES, fill: FILL[2], name: "result_2" });
-  seg(f.cx, y + BH, f.cx, y + BH + TG, true);
-  y += BH + TG;
-  box(f.hx, y, f.hw, BH, "可检验预测：改变处理时长、\n抑制极性运输后的叶序", { color: RES, fill: FILL[2], dash: "dash", name: "predictions" });
-}
-
-// links between stages: each stage's result goes along the gutter into the next stage's sub-problem box
-[0, 1].forEach((k) => {
-  const x0 = fx[k] + FW - PAD, gx = fx[k] + FW + GAP / 2, x1 = fx[k + 1] + PAD;
-  const y0 = OY + HH / 2, y1 = IN + HH / 2;
-  seg(x0, y0, gx, y0, false, 1.0);
-  seg(gx, y0, gx, y1, false, 1.0);
-  seg(gx, y1, x1, y1, true, 1.0);
+// three research contents: heading -> approach -> result; each result also feeds the next content
+const HEAD = ["茎尖成像数据的定量分析", "生长素-PIN1模型的建立与检验", "两类启动规则的比较与叶序预测"];   // = 研究内容（1）–（3）
+const WAY = [
+  lines("以P0为参照按叶间期对齐阶段，", "结合细胞移动估计生长素轨迹，", "定量PIN1极性、低生长素区", "与区域输入比值"),
+  lines("纳入原基供给与中央、周边差异，", "参数抽样后按分布与极性筛选；", "将生长素轨迹输入响应模型，", "经报告信号换算对照DR5"),
+  lines("相同设定下比较瞬时阈值与", "时间整合规则；留出茎尖检验", "DR5延迟激活与平均发生间隔，", "文献叶序检验发散角与发生顺序"),
+];
+const RES = [
+  lines("生长素轨迹、DR5激活时序", "与空间分布"),
+  lines("经数据约束的运输", "与响应模型"),
+  lines("两类规则的解释力与出现差异的", "条件；处理后叶序的可检验预测"),
+];
+const HW = CW, WH = 0.53, RH = 0.34, AG = 0.14;
+HEAD.forEach((t, k) => box(cx[k] - HW / 2, y, HW, 0.22, t, { fs: FS_H, fill: PINK, name: `content_${k}` }));
+y += 0.22;
+cx.forEach((c) => seg(c, y, c, y + AG, true));
+y += AG;
+const wy = y;
+WAY.forEach((t, k) => box(cx[k] - CW / 2, y, CW, WH, t, { name: `approach_${k}` }));
+y += WH;
+cx.forEach((c) => seg(c, y, c, y + AG, true));
+y += AG;
+const ry = y;
+RES.forEach((t, k) => box(cx[k] - CW / 2, y, CW, RH, t, { name: `result_${k}` }));
+y += RH;
+[0, 1].forEach((k) => {                              // result k -> approach k+1, along the gutter
+  const x0 = cx[k] + CW / 2, gx = x0 + G / 2, x1 = cx[k + 1] - CW / 2;
+  const y0 = ry + RH / 2, y1 = wy + WH / 2;
+  seg(x0, y0, gx, y0); seg(gx, y0, gx, y1); seg(gx, y1, x1, y1, true);
 });
+rule(y + 0.08);
 
-// conclusion
-const fb = FY + FH, RY = fb + 0.2;
-merge(fx.map((x) => x + FW / 2), [fb, fb, fb], W / 2, RY);
-box(M, RY, W - 2 * M, H - RY - 0.03, [
-  { text: "建立经成像数据约束的生长素-PIN1叶序模型，", options: { breakLine: true } },
-  { text: "明确时间整合在何种条件下影响原基启动时序、叶序精度与稳健性", options: {} },
-], { fs: FS_H, bold: true, fill: BOTTOM, name: "conclusion" });
+// model
+const bus2 = y + 0.12;
+cx.forEach((c) => seg(c, y, c, bus2));
+seg(cx[0], bus2, cx[2], bus2);
+y = bus2 + 0.13;
+seg(CX, bus2, CX, y, true);
+box(CX - 2.6, y, 5.2, H - 0.03 - y, lines("构建“生长素输入 → 时间整合 → 原基启动 → 叶序形成”的生长素-PIN1模型",
+                                         "明确时间整合在何种条件下影响原基启动时序、叶序精度与稳健性"),
+    { fs: FS_C, bold: true, fill: PINK, name: "model" });
+console.log("bottom box top", y.toFixed(3), "height", (H - 0.03 - y).toFixed(3));
 
-pres.writeFile({ fileName: process.argv[2] || "roadmap.pptx" }).then((f) => console.log("wrote", f));
+pres.writeFile({ fileName: process.argv[2] || "roadmap2.pptx" }).then((f) => console.log("wrote", f));
