@@ -3,7 +3,7 @@
 //   node roadmap.js <out.pptx>
 const pptxgen = require("pptxgenjs");
 
-const W = 5.906, H = 3.77;                          // inches
+const W = 5.906, H = 3.84;                          // inches
 const INK = "1A1A1A", FRAME = "7F7F7F";
 const FONT = "Times New Roman";                     // East Asian runs are set to 宋体 afterwards (fix_fonts.py)
 const FS = 7.5, FS_L = 8.5, FS_Q = 8, FS_T = 9.5;
@@ -126,10 +126,10 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
   seg(x0, y0, gx, y0, false, 1.0); seg(gx, y0, gx, y1, false, 1.0); seg(gx, y1, x1, y1, true, 1.0);
 });
 
-// answer to the question on top
+// the model obtained (cell response left open: threshold or integration) and the answer to the question on top
 const fb = FY + FH, RY = fb + 0.17;
 merge(fx.map((x) => x + FW / 2), [fb, fb, fb], W / 2, RY);
-box(M, RY, W - 2 * M, H - RY - 0.03, "明确生长素信号的时间整合在何种条件下影响原基启动时序、叶序精度与稳健性",
+box(M, RY, W - 2 * M, H - RY - 0.03, "构建“生长素输入 → 细胞响应 → 原基启动 → 叶序形成”的生长素-PIN1模型\n明确生长素信号的时间整合在何种条件下影响原基启动时序、叶序精度与稳健性",
     { fs: FS_L, bold: true, fill: BOTTOM, lw: 0.9, name: "answer" });
 console.log("answer box", RY.toFixed(3), (H - RY - 0.03).toFixed(3), "AG", AG.toFixed(3));
 pres.writeFile({ fileName: process.argv[2] || "roadmap4.pptx" }).then((f) => console.log("wrote", f));
