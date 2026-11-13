@@ -3,8 +3,8 @@
 //   node roadmap.js <out.pptx>
 const pptxgen = require("pptxgenjs");
 
-const W = 5.906, H = 3.8;                          // inches
-const INK = "1A1A1A", FRAME = "7F7F7F";
+const W = 5.906, H = 3.84;                          // inches
+const INK = "1A1A1A", FRAME = "7F7F7F", PLUS = "64717E";
 const FONT = "Times New Roman";                     // East Asian runs are set to 宋体 afterwards (fix_fonts.py)
 const FS = 7.5, FS_L = 8.5, FS_Q = 8, FS_T = 9.5;
 const TINT = ["FCE9D9", "E2EFDA", "DCE6F2"], TOP = "DDF0EE", BOTTOM = "F9DEDC";
@@ -31,13 +31,14 @@ function seg(x1, y1, x2, y2, arrow, lw) {
     flipH: x2 < x1, flipV: y2 < y1, line: ln,
   });
 }
-const split = (px, py, xs, cy, arrow) => {          // parent (centre px, bottom py) -> children tops at cy
-  const by = py + (cy - py) / 2;
+const split = (px, py, xs, cy, arrow) => {          // parent (centre px, bottom py) -> children tops at cy (number or list)
+  const cys = Array.isArray(cy) ? cy : xs.map(() => cy);
+  const by = py + (Math.min(...cys) - py) * (arrow ? 0.3 : 0.5);   // bus nearer the parent: arrows stay long
   seg(px, py, px, by); seg(Math.min(...xs, px), by, Math.max(...xs, px), by);
-  xs.forEach((x) => seg(x, by, x, cy, arrow));
+  xs.forEach((x, i) => seg(x, by, x, cys[i], arrow));
 };
 const merge = (xs, ys, px, py) => {                 // children bottoms -> parent top; bus nearer the children
-  const by = Math.max(...ys) + (py - Math.max(...ys)) * 0.4;
+  const by = Math.max(...ys) + (py - Math.max(...ys)) * 0.3;
   xs.forEach((x, i) => seg(x, ys[i], x, by));
   seg(Math.min(...xs, px), by, Math.max(...xs, px), by); seg(px, by, px, py, true);
 };
@@ -49,16 +50,16 @@ const chain = (x, y, w, texts, h, gap) => {         // vertical chain of steps; 
   return y;
 };
 
-const M = 0.03, BH = 0.28, TG = 0.15, PAD = 0.05, TS = 0.12;
-box(M, 0.03, W - 2 * M, 0.27, "在拟南芥茎尖中，细胞对生长素信号的时间整合如何影响原基启动与叶序形成？",
+const M = 0.03, BH = 0.28, TG = 0.17, PAD = 0.05, TS = 0.15;
+box(M, 0.03, W - 2 * M, 0.26, "在拟南芥茎尖中，细胞对生长素信号的时间整合如何影响原基启动与叶序形成？",
     { fs: FS_T, bold: true, fill: TOP, lw: 0.9, name: "question" });
 
-const GAP = 0.18, FW = (W - 2 * M - 2 * GAP) / 3, FY = 0.44;
-const HH = 0.36, IN = FY + 0.21, RB = 0.2, NB = 0.3, TB = 0.38, RH = 0.28;   // sub-problem, rule, common, test, result
+const GAP = 0.18, FW = (W - 2 * M - 2 * GAP) / 3, FY = 0.42;
+const HH = 0.34, IN = FY + 0.21, RB = 0.2, NB = 0.3, TB = 0.38, RH = 0.28;   // sub-problem, rule, common, test, result
 const BODY = HH + 5 * TG + RB + NB + TB + RH + RH;   // stage 3 is the tallest column
 const FH = 0.21 + BODY + 0.06, OY = IN + BODY - RH;
 const fx = [M, M + FW + GAP, M + 2 * (FW + GAP)];
-split(W / 2, 0.3, fx.map((x) => x + FW / 2), FY);
+split(W / 2, 0.29, fx.map((x) => x + FW / 2), FY);
 
 function frame(k, label, problem) {
   const x = fx[k];
@@ -74,13 +75,16 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
 // stage 1: time course (left), two parallel imaging measurements grouped without arrows (right)
 {
   const f = frame(0, "第一阶段：成像定量", "茎尖生长素输入的时空分布\n与DR5响应时序");
-  split(f.cx, IN + HH, f.mids, ty, true);
   const b = chain(f.tx[0], ty, f.tw, ["以P0为参照\n按叶间期对齐", "输入升高与\nDR5激活先后", "估计细胞移动", "外推细胞\n生长素轨迹"], BH, AG);
-  const gx = f.tx[1], gh = b - ty, ih = (gh - 0.05 * 2 - 0.1) / 2;
-  box(gx, ty, f.tw, gh, "", { fill: null, lc: FRAME, dash: "sysDash", name: "imaging_group" });
-  box(gx + 0.05, ty + 0.05, f.tw - 0.1, ih, "PIN1成像\n极性方向");
-  box(gx + 0.05, ty + 0.05 + ih + 0.1, f.tw - 0.1, ih, "qDII成像\n低生长素区与\n区域输入比值");
-  merge(f.mids, [b, b], f.cx, OY);
+  const gx = f.tx[1], P1 = 0.34, P2 = 0.46, PG = 0.24, GP = 0.06, gh = GP + P1 + PG + P2 + GP;
+  const gy = ty + (b - ty - gh) / 2;                // two parallel measurements, grouped, joined by a plus
+  split(f.cx, IN + HH, f.mids, [ty, gy], true);
+  box(gx, gy, f.tw, gh, "", { fill: null, lc: FRAME, dash: "sysDash", name: "imaging_group" });
+  box(gx + GP, gy + GP, f.tw - 2 * GP, P1, "PIN1成像\n极性方向");
+  s.addShape(pres.ShapeType.mathPlus, { x: gx + f.tw / 2 - 0.09, y: gy + GP + P1 + PG / 2 - 0.09, w: 0.18, h: 0.18,
+    fill: { color: PLUS }, line: { type: "none" }, objectName: "parallel_plus" });
+  box(gx + GP, gy + GP + P1 + PG, f.tw - 2 * GP, P2, "qDII成像\n低生长素区与\n区域输入比值");
+  merge(f.mids, [b, gy + gh], f.cx, OY);
   box(f.hx, OY, f.hw, RH, "生长素轨迹、DR5时序与空间分布", { lw: 0.75, name: "result_0" });
 }
 
@@ -125,7 +129,7 @@ const AG = (OY - TG - ty - 4 * BH) / 3;             // arrow gap in a four-step 
 });
 
 // answer: the model obtained and what it settles
-const fb = FY + FH, RY = fb + 0.15;
+const fb = FY + FH, RY = fb + 0.17;
 merge(fx.map((x) => x + FW / 2), [fb, fb, fb], W / 2, RY);
 box(M, RY, W - 2 * M, H - RY - 0.03, "构建“生长素输入 → 时间整合 → 原基启动 → 叶序形成”的生长素-PIN1模型\n明确时间整合在何种条件下影响原基启动时序、叶序精度与稳健性",
     { fs: FS_L, bold: true, fill: BOTTOM, lw: 0.9, name: "answer" });
