@@ -1,0 +1,6 @@
+1-PI-LD_E35_171110_sam04_t00 by name: s_X 0.088 s_PI 0.060 sigma_PIN 0.064 | corrected sides: s_X 0.096 s_PI 0.060 sigma_PIN 0.075
+1-PI-LD_E35_171110_sam06_t00 by name: s_X 0.183 s_PI 0.164 sigma_PIN 0.081 | corrected sides: s_X 0.212 s_PI 0.167 sigma_PIN 0.130
+1-PI-LD_E37_171113_sam05_t00 by name: s_X 0.104 s_PI 0.067 sigma_PIN 0.080 | corrected sides: s_X 0.124 s_PI 0.067 sigma_PIN 0.104
+1-PI-LD_E37_171113_sam07_t00 by name: s_X 0.133 s_PI 0.080 sigma_PIN 0.107 | corrected sides: s_X 0.162 s_PI 0.079 sigma_PIN 0.141
+by_name: sigma_PIN median 0.080 (range 0.064-0.107); s_X median 0.119
+corrected: sigma_PIN median 0.117 (range 0.075-0.141); s_X median 0.143

@@ -1,0 +1,8 @@
+rin 0.0 seed 1: primordia 171  main +0.3383  wall asymmetry (end state) +0.5112  frac outer higher 0.892
+rin 0.0 seed 2: primordia 176  main +0.3364  wall asymmetry (end state) +0.4928  frac outer higher 0.861
+rin 2.0 seed 1: primordia 180  main +0.3765  wall asymmetry (end state) +0.5393  frac outer higher 0.846
+rin 2.0 seed 2: primordia 184  main +0.3718  wall asymmetry (end state) +0.5357  frac outer higher 0.857
+       main   10-20   20-30   30-40   40-50
+rin                                        
+0.0  0.3373  0.2947  0.2590  0.3420  0.3949
+2.0  0.3741  0.3015  0.2922  0.3766  0.4406

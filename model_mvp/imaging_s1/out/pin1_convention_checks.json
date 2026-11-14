@@ -1,0 +1,34 @@
+[
+ {
+  "frame": "qDII-CLV3-PIN1-PI-LD_E35_171110_sam04_t00",
+  "walls": 1268,
+  "normal_left_to_right": 1.0,
+  "n_normal": 1268,
+  "polarity_agrees_with_right_minus_left": 0.9614325068870524,
+  "n_polarity": 1089
+ },
+ {
+  "frame": "qDII-CLV3-PIN1-PI-LD_E35_171110_sam06_t00",
+  "walls": 836,
+  "normal_left_to_right": 1.0,
+  "n_normal": 832,
+  "polarity_agrees_with_right_minus_left": 0.9341500765696784,
+  "n_polarity": 653
+ },
+ {
+  "frame": "qDII-CLV3-PIN1-PI-LD_E37_171113_sam05_t00",
+  "walls": 1347,
+  "normal_left_to_right": 1.0,
+  "n_normal": 1346,
+  "polarity_agrees_with_right_minus_left": 0.9412795793163892,
+  "n_polarity": 1141
+ },
+ {
+  "frame": "qDII-CLV3-PIN1-PI-LD_E37_171113_sam07_t00",
+  "walls": 1127,
+  "normal_left_to_right": 1.0,
+  "n_normal": 1120,
+  "polarity_agrees_with_right_minus_left": 0.9180851063829787,
+  "n_polarity": 940
+ }
+]
