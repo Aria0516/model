@@ -1,0 +1,4 @@
+1-PI-LD_E35_171110_sam04_t00  cells 25-50 um with a clear tangential auxin gradient: 151  efflux follows the gradient tangentially in 0.656 [0.583,0.728]  (0.5 = unrelated)
+1-PI-LD_E35_171110_sam06_t00  cells 25-50 um with a clear tangential auxin gradient: 158  efflux follows the gradient tangentially in 0.449 [0.380,0.525]  (0.5 = unrelated)
+1-PI-LD_E37_171113_sam05_t00  cells 25-50 um with a clear tangential auxin gradient: 160  efflux follows the gradient tangentially in 0.706 [0.637,0.775]  (0.5 = unrelated)
+1-PI-LD_E37_171113_sam07_t00  cells 25-50 um with a clear tangential auxin gradient: 152  efflux follows the gradient tangentially in 0.559 [0.480,0.638]  (0.5 = unrelated)
