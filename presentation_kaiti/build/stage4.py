@@ -413,15 +413,33 @@ text(EX, 0.8, 5.85, 11.73, 1.2, [
     anchor=MSO_ANCHOR.MIDDLE)
 notes(EX, "本研究预期得到三方面结果。一是建立以细胞响应衔接时间整合的生长素–PIN1叶序模型，并由茎尖定量成像数据给出其参数取值范围。二是在同一模型中定量比较瞬时阈值与时间整合两类启动规则产生的发生间隔、发散角变异和发生顺序，明确时间整合起作用的条件。三是预测延长或缩短生长素处理、抑制极性运输后叶序的变化，供实验检验。在应用上，这些预测可用于确定后续实验的观测指标、成像时间和处理条件；模型及配套的成像定量和叶序统计流程，也可用于其他突变体和作物的叶序分析。")
 
-# ---------------------------------------------------------------- schedule (plain list, as in the reference deck)
+# ---------------------------------------------------------------- workload and schedule (Gantt)
 SC = new_slide("PL", "进度安排")
-PLAN = [("2026年11月—2027年1月", "完成原基阶段核对、PIN1极性提取和原基周围低生长素区的定量，确定DR5的激活时序和平均发生间隔，推算细胞经历的生长素变化"),
-        ("2027年2月—2027年7月", "完善并检验生长素–PIN1模型，完成运输模型的检验，建立响应模型并与两类启动规则衔接"),
-        ("2027年8月—2027年10月", "比较两类启动规则，分析叶序的稳健性，提出可供实验检验的预测"),
-        ("2027年11月—2028年1月", "整理结果，撰写并修改学位论文")]
-text(SC, 1.0, 1.8, 11.4, 5.0, [dict(runs=[("➢  ", 18, False, RULE, BODY), (t + "：", 19, True, NAVY, BODY), (c, 19, False, INK, BODY)],
-                                     line=1.45, after=16) for t, c in PLAN], anchor=MSO_ANCHOR.MIDDLE)
-notes(SC, "最后是进度安排。2026年11月到2027年1月，完成原基阶段核对、PIN1极性提取和原基周围低生长素区的定量，确定DR5的激活时序和平均发生间隔，推算细胞经历的生长素变化。2027年2月到7月，完善并检验生长素–PIN1模型，完成运输模型的检验，建立响应模型并与两类启动规则衔接。2027年8月到10月，比较两类启动规则，分析叶序的稳健性，提出可供实验检验的预测。2027年11月到2028年1月，整理结果，撰写并修改学位论文。图像处理、茎尖形态测量和基础模型都已完成，后续工作都在前期建立的数据流程、模型代码和检验流程上开展。")
+GX0, GX1, GY0 = 4.75, 12.83, 1.75
+MONTHS = ["11", "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "1"]
+MW = (GX1 - GX0) / len(MONTHS)
+for (lab, a, b) in (("2026", 0, 2), ("2027", 2, 14), ("2028", 14, 15)):
+    shape(SC, MSO_SHAPE.RECTANGLE, GX0 + a * MW + 0.01, GY0, (b - a) * MW - 0.02, 0.36, fill=BLUE)
+    text(SC, GX0 + a * MW, GY0, (b - a) * MW, 0.36, [para(lab, 14, True, WHITE, ("Times New Roman", "宋体"), align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE, inset=0)
+for i, mth in enumerate(MONTHS):
+    shape(SC, MSO_SHAPE.RECTANGLE, GX0 + i * MW + 0.01, GY0 + 0.4, MW - 0.02, 0.32, fill=RGBColor(0xDC, 0xE4, 0xF0))
+    text(SC, GX0 + i * MW, GY0 + 0.4, MW, 0.32, [para(mth, 13, color=INK, align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE, inset=0)
+TASKS = [("成像数据定量", "约3个月", 0, 3, RGBColor(0xC5, 0x5A, 0x11), "核对原基阶段，提取PIN1极性，定量低生长素区；确定DR5激活时序，推算细胞经历的生长素变化"),
+         ("模型完善与检验", "约6个月", 3, 9, RGBColor(0x54, 0x82, 0x35), "检验运输模型，建立响应模型并衔接启动规则"),
+         ("规则比较与叶序预测", "约3个月", 9, 12, RGBColor(0x2F, 0x55, 0x97), "比较两类启动规则，分析叶序稳健性，提出预测"),
+         ("论文撰写", "约3个月", 12, 15, RGBColor(0x7F, 0x7F, 0x7F), "整理结果，撰写并修改学位论文")]
+TY0, TR = GY0 + 0.95, 1.12
+for i, (name, dur, a, b, col, out) in enumerate(TASKS):
+    y = TY0 + i * TR
+    if i % 2 == 0:
+        shape(SC, MSO_SHAPE.RECTANGLE, 0.5, y - 0.06, GX1 - 0.5, TR - 0.06, fill=RGBColor(0xF6, 0xF8, 0xFB))
+    text(SC, 0.6, y, 4.05, 0.4, [para(name, 18, True, INK, HEAD)])
+    text(SC, 0.6, y + 0.4, 4.05, 0.62, [para(out, 13, color=GREY, line=1.05)])
+    shape(SC, MSO_SHAPE.ROUNDED_RECTANGLE, GX0 + a * MW + 0.04, y + 0.2, (b - a) * MW - 0.08, 0.56, fill=col, adj=0.3)
+    text(SC, GX0 + a * MW, y + 0.2, (b - a) * MW, 0.56, [para(dur, 15, True, WHITE, HEAD, align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE, inset=0)
+notes(SC, "最后是进度安排。2026年11月到2027年1月进行成像数据定量：核对原基阶段，提取PIN1极性，定量原基周围低生长素区，确定DR5的激活时序和平均发生间隔，推算细胞经历的生长素变化。2027年2月到7月完善并检验模型：检验运输模型，建立响应模型并与两类启动规则衔接。2027年8月到10月比较两类启动规则，分析叶序的稳健性，提出可供实验检验的预测。2027年11月到2028年1月整理结果，撰写并修改学位论文。图像处理、茎尖形态测量和基础模型都已完成，后续工作都在前期建立的数据流程、模型代码和检验流程上开展。")
+
+
 
 # ---------------------------------------------------------------- references (full list of the proposal, two columns)
 import html
