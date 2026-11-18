@@ -84,7 +84,7 @@ for n, nm in ((6, "SG"), (7, "PL")):
     mx.write_text(m.replace("</p:sldLayoutIdLst>", f'<p:sldLayoutId id="{max(used) + 1}" r:id="{rid}"/></p:sldLayoutIdLst>'), encoding="utf-8")
     ct.write_text(ct.read_text(encoding="utf-8").replace("</Types>", f'<Override PartName="/ppt/slideLayouts/slideLayout{n}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml"/></Types>'), encoding="utf-8")
 
-for n, num, label in ((2, "01", "研究背景"), (6, "02", "研究意义"), (3, "03", "研究内容与方案"), (4, "03", "研究内容与方案"), (7, "04", "预期结果与进度安排")):
+for n, num, label in ((2, "01", "研究背景"), (6, "02", "研究意义"), (3, "03", "研究内容与方案"), (4, "03", "研究内容与方案"), (7, "04", "进度安排")):
     p = L / f"slideLayout{n}.xml"
     x = p.read_text(encoding="utf-8")
     tree_end = x.index("</p:spTree>")
