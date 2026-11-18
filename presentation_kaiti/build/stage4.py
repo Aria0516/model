@@ -387,29 +387,27 @@ def draw_roadmap(s, X0=0.5, Y0=1.62, W=12.33, Y1=7.28):
          FT, True, fill=RGBColor(0xF9, 0xDE, 0xDC), lw=1.0)
 
 
-def draw_question_chain(s, cx=3.05, y0=1.78, w=4.4):
-    """Auxin transport -> auxin input of a cell -> cell response (threshold or integration?) -> initiation -> phyllotaxis."""
-    ACC = RGBColor(0xC5, 0x5A, 0x11)
-    NODE = RGBColor(0xDC, 0xE6, 0xF2)
-    H, G, RHt = 0.62, 0.3, 1.62
-    x = cx - w / 2
+def draw_question_chain(s, x=0.62, y0=1.85, w=5.45):
+    """Question chain in the roadmap style: auxin transport -> auxin input -> cell response (threshold or integration)
+    -> initiation -> phyllotaxis."""
+    cx = x + w / 2
+    H, G, FHq = 0.56, 0.32, 1.6
     y = y0
-    for i, (t, kind) in enumerate([("PIN1极性运输塑造生长素分布", "n"), ("细胞接收的生长素输入随时间变化", "n"), (None, "r"),
-                                   ("原基启动", "n"), ("叶序：发散角、发生间隔与发生顺序", "n")]):
-        if i > 0:
-            nseg(s, cx, y, cx, y + G, True, lw=1.25); y += G
-        if kind == "n":
-            nbox(s, x, y, w, H, t, 16, fill=NODE, line=None, adj=0.18)
-            y += H
-        else:
-            nbox(s, x, y, w, RHt, "", fill=RGBColor(0xFC, 0xE9, 0xD9), line=ACC, lw=1.75, adj=0.08)
-            text(s, x, y + 0.06, w, 0.4, [para("细胞如何读取生长素信号？", 16, True, ACC, HEAD, align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE)
-            bw = (w - 0.6) / 2
-            nbox(s, x + 0.2, y + 0.55, bw, 0.9, "瞬时阈值\n只看当前浓度", 15, fill=WHITE, line=ACC, lw=0.9, adj=0.12)
-            nbox(s, x + 0.4 + bw, y + 0.55, bw, 0.9, "时间整合\n累积浓度与时长", 15, fill=WHITE, line=ACC, lw=0.9, adj=0.12)
-            text(s, x + w + 0.08, y + 0.2, 0.7, 1.2, [para("?", 54, True, RGBColor(0xC0, 0x00, 0x00), ("Arial", "Arial"), align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE)
-            y += RHt
-    return y
+    nbox(s, x, y, w, H, "PIN1极性运输塑造茎尖的生长素分布", 15, True, fill=RGBColor(0xDD, 0xF0, 0xEE), lw=1.0)
+    y += H; nseg(s, cx, y, cx, y + G, True); y += G
+    nbox(s, x + 0.35, y, w - 0.7, H, "细胞接收的生长素输入随时间变化", 14, lw=0.75)
+    y += H; nseg(s, cx, y, cx, y + G, True); y += G
+    nbox(s, x, y, w, FHq, "", fill=RGBColor(0xFC, 0xE9, 0xD9), line=RGBColor(0x7F, 0x7F, 0x7F), lw=0.9, dash=True)
+    text(s, x, y + 0.05, w, 0.4, [para("细胞如何读取生长素信号？", 15, True, RGBColor(0x40, 0x40, 0x40), HEAD, align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE)
+    bw = (w - 0.2 - 0.3) / 2
+    nbox(s, x + 0.1, y + 0.55, bw, 0.92, "瞬时阈值：\n只看当前浓度", 14, lw=0.75)
+    nbox(s, x + 0.1 + bw + 0.3, y + 0.55, bw, 0.92, "时间整合：\n累积浓度与作用时长", 14, lw=0.75)
+    text(s, x + 0.1 + bw, y + 0.55, 0.3, 0.92, [para("或", 13, False, GREY, BODY, align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE, inset=0)
+    y += FHq; nseg(s, cx, y, cx, y + G, True); y += G
+    nbox(s, x + 0.35, y, w - 0.7, H, "原基何时启动", 14, lw=0.75)
+    y += H; nseg(s, cx, y, cx, y + G, True); y += G
+    nbox(s, x, y, w, H, "叶序：发散角、发生间隔与发生顺序", 15, True, fill=RGBColor(0xF9, 0xDE, 0xDC), lw=1.0)
+    return y + H
 
 
 # ---------------------------------------------------------------- cover
