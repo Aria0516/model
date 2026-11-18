@@ -180,21 +180,26 @@ def aspect(path):
     return w / h
 
 
-def figs(s, items, y0, hmax, x0=0.62, x1=12.71, gap=0.4):
-    """A row of figures scaled to one height; each item (file, caption, source). Returns the bottom of the captions."""
+def figs(s, items, y0=None, hmax=None, x0=0.5, x1=12.83, gap=0.4, top=1.7, bottom=6.95):
+    """A row of figures scaled to one height; each item (file, caption, source). With y0=None the block is centred
+    between top and bottom. Returns the bottom of the captions."""
     paths = [BGF / f for f, _, _ in items]
     ars = [aspect(p) for p in paths]
+    if hmax is None:
+        hmax = bottom - top - 0.62
     h = min(hmax, (x1 - x0 - gap * (len(items) - 1)) / sum(ars))
+    if y0 is None:
+        y0 = top + (bottom - top - h - 0.62) / 2
     total = h * sum(ars) + gap * (len(items) - 1)
     x = x0 + (x1 - x0 - total) / 2
     for p, a, (_, cap, src) in zip(paths, ars, items):
         w = a * h
         picture(s, p, x, y0, h=h)
         cw = max(w + gap - 0.06, 2.6)
-        text(s, x + w / 2 - cw / 2, y0 + h + 0.06, cw, 0.32, [para(cap, 13, align=PP_ALIGN.CENTER)])
-        text(s, x + w / 2 - cw / 2, y0 + h + 0.36, cw, 0.26, [para(src, 10, color=GREY, align=PP_ALIGN.CENTER)])
+        text(s, x + w / 2 - cw / 2, y0 + h + 0.06, cw, 0.32, [para(cap, 14, align=PP_ALIGN.CENTER)])
+        text(s, x + w / 2 - cw / 2, y0 + h + 0.38, cw, 0.26, [para(src, 10, color=GREY, align=PP_ALIGN.CENTER)])
         x += w + gap
-    return y0 + h + 0.62
+    return y0 + h + 0.64
 
 
 def fig_at(s, f, x, y, w=None, h=None, cap=None, src=None, cw=None):
@@ -206,9 +211,9 @@ def fig_at(s, f, x, y, w=None, h=None, cap=None, src=None, cw=None):
     picture(s, p, x, y, w=w)
     cw = cw or max(w, 2.6)
     if cap:
-        text(s, x + w / 2 - cw / 2, y + h + 0.06, cw, 0.32, [para(cap, 13, align=PP_ALIGN.CENTER)])
+        text(s, x + w / 2 - cw / 2, y + h + 0.06, cw, 0.32, [para(cap, 14, align=PP_ALIGN.CENTER)])
     if src:
-        text(s, x + w / 2 - cw / 2, y + h + 0.36, cw, 0.26, [para(src, 10, color=GREY, align=PP_ALIGN.CENTER)])
+        text(s, x + w / 2 - cw / 2, y + h + 0.38, cw, 0.26, [para(src, 10, color=GREY, align=PP_ALIGN.CENTER)])
     return y + h + 0.62
 
 
@@ -265,28 +270,25 @@ notes(CO, "汇报分五部分：先介绍研究背景和本研究的意义，然
 
 # ---------------------------------------------------------------- 01 research background (7 slides)
 B1 = new_slide("BG", "叶序：茎尖周边依次发生的原基排列成规则的几何结构")
-figs(B1, [("s02_1.png", "二列互生、螺旋、交互对生与轮生", "Kuhlemeier C. Trends Plant Sci. (2007)"),
-          ("s03_1.png", "拟南芥茎尖：中央区与周边区（A）、原基编号（B）与生长素分布（C）", "Galvan-Ampudia C.S., et al. eLife (2020)")], 1.9, 3.9)
-takeaway(B1, "原基之间的局部相互作用与茎尖的形态、生长共同决定新原基发生的位置与时间")
+figs(B1, [("kuhlemeier_2x2.png", "二列、螺旋、对生与轮生", "Kuhlemeier C. Trends Plant Sci. (2007)"),
+          ("s03_1.png", "拟南芥茎尖：中央区与周边区（A）、原基编号（B）与生长素分布（C）", "Galvan-Ampudia C.S., et al. eLife (2020)")])
 notes(B1, "首先介绍叶序。叶片、花等侧生器官绕茎轴的排列方式称为叶序，常见类型有二列、螺旋、交互对生和轮生，左图来自Kuhlemeier的综述。最常见的是螺旋叶序，相继发生的器官多以接近137.5°的发散角依次排列。这些器官都来自茎尖分生组织：右图是拟南芥花序茎尖的俯视图，A中洋红色是中央区，青色是周边区，新原基在周边区逐个产生；B按发生次序给原基编号，P0是正在发生的原基，P-1、P-2是将要发生的位置，P1、P2、P3依次更老；C是对应的生长素分布。原基之间的局部相互作用与茎尖的形态、生长共同影响新原基发生的位置和时间，螺旋叶序就在这一过程中逐步形成，而介导这种相互作用的重要信号是生长素。（Kuhlemeier, 2007；Godin et al., 2020；Galvan-Ampudia et al., 2020）")
 
 B2 = new_slide("BG", "生长素的局部积累诱导原基，PIN1极性运输决定积累的位置")
 figs(B2, [("s04_3.png", "pin1：局部施加IAA诱导花芽", "Reinhardt D., et al. Plant Cell (2000)"),
           ("s05_2.png", "PIN1极性指向将要发生原基的位点I1", "Heisler M.G., et al. Curr. Biol. (2005)"),
-          ("s05_3.png", "极性运输模型：已有原基作为汇", "Reinhardt D., et al. Nature (2003)")], 1.9, 3.9)
-takeaway(B2, "生长素持续流向已有原基，新的积累只出现在与已有原基保持一定距离的位置")
+          ("s05_3.png", "极性运输模型：原基作为汇", "Reinhardt D., et al. Nature (2003)")])
 notes(B2, "生长素的局部积累是原基发生的重要条件。极性运输严重受损的pin1突变体花序轴上不形成花芽（Okada等，1991）；左图来自Reinhardt等2000年，在pin1花序顶端侧面局部施加IAA，就能在施加位点所在的径向位置诱导出花芽。在野生型茎尖中，这种局部高浓度由生长素外排载体PIN1介导的定向运输产生：中图是Heisler等2005年的活体成像，周围细胞的PIN1都指向将要发生原基的位点I1，生长素在那里汇聚；右图是Reinhardt等2003年提出的模型，已有原基像汇一样吸走生长素，在周围形成生长素较低的区域，所以新的积累只出现在与已有原基保持一定最小间距的位置，并在那里诱导新原基。（Okada et al., 1991；Reinhardt et al., 2000, 2003；Heisler et al., 2005）")
 
 B3 = new_slide("BG", "生长素积累不等于转录响应，响应又反过来调节运输")
-fig_at(B3, "vernoux5BD.png", 0.62, 2.35, w=7.75, cap="茎尖中的DII-VENUS（B）、不可降解对照mDII（C）与DR5（D）", src="Vernoux T., et al. Mol. Syst. Biol. (2011)")
-fig_at(B3, "bhatia_ga.png", 8.83, 1.72, w=3.88, cap="MONOPTEROS经正反馈调节PIN1极性", src="Bhatia N., et al. Curr. Biol. (2016)")
-takeaway(B3, "原基定位既取决于生长素被运往何处，也取决于细胞如何响应：运输与响应相互耦合")
+fig_at(B3, "vernoux5BD.png", 0.5, 2.75, w=7.55, cap="茎尖中的DII-VENUS（B）、不可降解对照mDII（C）与DR5（D）", src="Vernoux T., et al. Mol. Syst. Biol. (2011)")
+fig_at(B3, "bhatia_ga.png", 8.4, 1.82, w=4.43, cap="MONOPTEROS经正反馈调节PIN1极性", src="Bhatia N., et al. Curr. Biol. (2016)")
 notes(B3, "不过，生长素并不只在原基处出现。左图来自Vernoux等2011年：B是生长素传感器DII-VENUS，信号越弱表示生长素越高；C是不受生长素降解的对照mDII；D是合成启动子DR5驱动的转录报告。茎尖中央同样存在生长素积累，DR5信号却很弱，主要出现在原基处，说明积累并不等同于响应。右图来自Bhatia等2016年：生长素响应因子MONOPTEROS能调节PIN1极性，反过来影响运输方向。因此，原基定位既取决于生长素被运往何处，也取决于细胞如何响应，运输与响应相互耦合。（Vernoux et al., 2011；Ma et al., 2019；Bhatia et al., 2016）")
 
 B4 = new_slide("BG", "已有叶序模型：运输规则产生叶序，原基启动另设规则")
 figs(B4, [("s06_2.png", "模拟的二列、对生、轮生与螺旋", "Smith R.S., et al. PNAS (2006)"),
           ("s06_3.png", "实测（蓝）与模拟（红）的发散角", "Smith R.S., et al. PNAS (2006)"),
-          ("besnard4de.png", "AHP6抑制场：野生型（d）与ahp6（e）", "Besnard F., et al. Nature (2014)")], 1.72, 3.0)
+          ("besnard4de.png", "AHP6抑制场：野生型（d）与ahp6（e）", "Besnard F., et al. Nature (2014)")], y0=1.72)
 RULES = [("浓度阈值", "相邻细胞生长素达到预设阈值即启动", "Smith et al., 2006"),
          ("细胞分裂素抑制场", "AHP6抑制场规定器官发生的时间顺序", "Besnard et al., 2014"),
          ("随机发生", "发生率随局部抑制水平变化", "Refahi et al., 2016")]
@@ -300,21 +302,19 @@ notes(B4, "在这些实验基础上，Jönsson等和Smith等在2006年建立了�
 
 B5 = new_slide("BG", "定量成像：茎尖间生长素分布高度一致，PIN1总体指向中心")
 figs(B5, [("s09_2.png", "21个茎尖对齐叠加：10 h（E）与0 h旋转137.5°（F）几乎相同", "Galvan-Ampudia C.S., et al. eLife (2020)"),
-          ("s08_3.png", "PIN1极性指向茎尖中心", "Galvan-Ampudia C.S., et al. eLife (2020)")], 1.85, 3.95)
-takeaway(B5, "生长素输入最大区以离心波的形式向外推进，快于细胞移动，不同位置的细胞经历不同的生长素变化")
+          ("s08_3.png", "PIN1极性指向茎尖中心", "Galvan-Ampudia C.S., et al. eLife (2020)")])
 notes(B5, "要追踪细胞所经历的生长素变化，需要在细胞水平分别读出信号输入与转录输出的报告系统，例如DII-VENUS和比率型的R2D2、DR5v2。左图来自本课题的核心文献Galvan-Ampudia等2020年：21个独立采集的茎尖按原基位置对齐后叠加，10小时的平均分布与0小时分布旋转137.5°后几乎相同，所以可以把不同阶段的图像按一个叶间期的间隔排在同一时间轴上，重建平均的发育过程。追踪还显示，生长素输入最大区并不固定在特定细胞上，而是从中央的高生长素区以离心波的形式向外推进，在P1到P4阶段可以快于细胞的移动，不同位置的细胞因而经历不同的生长素变化历程。右图是4个茎尖的PIN1极性矢量，在组织尺度上总体指向茎尖中心；较老原基与茎尖交界处还表达生长素合成基因YUC1、YUC4，提示较老原基可能向茎尖供给生长素。（Brunoud et al., 2012；Liao et al., 2015；Galvan-Ampudia et al., 2020；Shi et al., 2018）")
 
 B6 = new_slide("BG", "转录响应滞后近一个叶间期：细胞对生长素进行时间整合")
 figs(B6, [("s10_1.png", "各阶段生长素输入（G）与DR5转录输出（H）", "Galvan-Ampudia C.S., et al. eLife (2020)"),
-          ("s10_2.png", "IAA处理30、120、300 min后的DR5", "Galvan-Ampudia C.S., et al. eLife (2020)")], 1.9, 3.9)
+          ("s10_2.png", "IAA处理30、120、300 min后的DR5", "Galvan-Ampudia C.S., et al. eLife (2020)")], bottom=6.4)
 takeaway(B6, "转录响应取决于生长素浓度与作用时长的共同作用——时间整合")
 notes(B6, "最关键的发现是时间整合。左图G和H分别是各原基阶段的生长素输入和DR5转录输出：在原基形成的位置，生长素输入升高后，DR5要再过近一个叶间期才开始表达，同样的生长素水平在不同细胞中引起的响应也不同。右图是外施IAA的实验：短时处理主要在已经接触过生长素的位点增强DR5，延长处理时间后周边区大多数细胞才出现响应；浓度较低而时间较长的处理，可以引起与浓度较高而时间较短的处理相当甚至更强的响应。可见转录响应取决于生长素浓度与作用时长的共同作用，这被称为时间整合。arf3突变体和每日限时施加IAA的茎尖都出现叶序改变，说明时间整合参与叶序调控，但它如何影响原基的发生间隔、发散角和发生顺序，目前还不清楚。（Galvan-Ampudia et al., 2020）")
 
 B7 = new_slide("BG", "叶序的变异与稳健性：次序颠倒、茎尖大小与生长素信号")
 figs(B7, [("s12_3.png", "发散角序列：野生型与ahp6", "Refahi Y., et al. eLife (2016)"),
           ("s11_1.png", "茎尖越大，次序颠倒越多", "Landrein B., et al. J. Exp. Bot. (2015)"),
-          ("s11_2.png", "玉米abph1：茎尖增大，叶序变为交互对生", "Giulini A., et al. Nature (2004)")], 1.9, 3.7)
-takeaway(B7, "叶序的稳健性也体现在发生间隔和发生顺序上；茎尖大小与生长素信号往往同时改变")
+          ("s11_2.png", "玉米abph1：茎尖增大，叶序变为交互对生", "Giulini A., et al. Nature (2004)")])
 notes(B7, "原基的发生间隔、发散角和发生顺序并非固定不变。即使在野生型拟南芥中，茎上器官的次序也时有颠倒，主要来源是相邻器官同时起始，ahp6突变体中明显增多（Besnard等，2014）。左图来自Refahi等2016年，是相邻长角果之间的发散角序列，黑线实测、蓝线模型预测；这些异常可以用来反推控制叶序动态的参数，Mirabet等的理论分析也表明随机性会造成手性反转、同时起始和二列发散角等缺陷。中图来自Landrein等2015年：茎尖越大，次序颠倒越多，而原基起始的空间位置并未改变。右图来自Giulini等2004年：玉米abph1突变体的茎尖增大，叶序由二列互生转为交互对生；Lee等2009年进一步发现，该突变体原基处的PIN1表达较晚、生长素水平较低。可见叶序的稳健性不仅体现在平均发散角上，也体现在发生间隔和发生顺序上；而实验中茎尖大小与生长素信号往往同时改变，模型可以分别改变二者，区分各自的作用。（Besnard et al., 2014；Refahi et al., 2016；Mirabet et al., 2012；Landrein et al., 2015；Giulini et al., 2004；Lee et al., 2009）")
 
 # ---------------------------------------------------------------- 02 significance
