@@ -236,6 +236,182 @@ def logo_disc(s, cx, cy, d):
     picture(s, K / "work_b" / "ppt" / "media" / "image4.png", cx - d * 0.45, cy - d * 0.45, w=d * 0.9, h=d * 0.9)
 
 
+# ---------------------------------------------------------------- native diagrams (roadmap redrawn for the slide, question chain)
+from pptx.enum.shapes import MSO_CONNECTOR
+from pptx.enum.dml import MSO_LINE
+
+RINK = RGBColor(0x1A, 0x1A, 0x1A)
+
+
+def nbox(s, x, y, w, h, t, size=12, bold=False, fill=WHITE, line=RINK, lw=0.6, dash=False, color=INK, face=BODY, adj=None, shape_=MSO_SHAPE.RECTANGLE):
+    sh = shape(s, shape_ if adj is None else MSO_SHAPE.ROUNDED_RECTANGLE, x, y, w, h, fill=fill, line=line, lw=lw, adj=adj)
+    if dash and line is not None:
+        sh.line.dash_style = MSO_LINE.DASH
+    if t:
+        tf = sh.text_frame
+        tf.word_wrap = True
+        tf.margin_left = tf.margin_right = Inches(0.04)
+        tf.margin_top = tf.margin_bottom = Inches(0.02)
+        tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+        for i, ln in enumerate(t.split("\n")):
+            p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
+            p.alignment = PP_ALIGN.CENTER
+            p.line_spacing = 0.95
+            r = p.add_run(); r.text = ln
+            style_run(r, size, bold, color, face)
+    return sh
+
+
+def nseg(s, x1, y1, x2, y2, arrow=False, lw=0.9, color=RINK):
+    c = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x1), Inches(y1), Inches(x2), Inches(y2))
+    c.line.color.rgb = color
+    c.line.width = Pt(lw)
+    if arrow:
+        ln = c.line._get_or_add_ln()
+        te = etree.SubElement(ln, qn("a:tailEnd"))
+        te.set("type", "triangle"); te.set("w", "med"); te.set("len", "med")
+    return c
+
+
+def nsplit(s, px, py, xs, cys, f=0.35):
+    cys = cys if isinstance(cys, (list, tuple)) else [cys] * len(xs)
+    by = py + (min(cys) - py) * f
+    nseg(s, px, py, px, by)
+    nseg(s, min(xs + [px]), by, max(xs + [px]), by)
+    for x, cy in zip(xs, cys):
+        nseg(s, x, by, x, cy, True)
+
+
+def nmerge(s, xs, ys, px, py, f=0.35):
+    by = max(ys) + (py - max(ys)) * f
+    for x, y in zip(xs, ys):
+        nseg(s, x, y, x, by)
+    nseg(s, min(xs + [px]), by, max(xs + [px]), by)
+    nseg(s, px, by, px, py, True)
+
+
+def nchain(s, x, y, w, texts, h, gap, size):
+    for j, t in enumerate(texts):
+        if j > 0:
+            nseg(s, x + w / 2, y, x + w / 2, y + gap, True); y += gap
+        nbox(s, x, y, w, h, t, size)
+        y += h
+    return y
+
+
+def draw_roadmap(s, X0=0.5, Y0=1.62, W=12.33, Y1=7.28):
+    TINTS = [RGBColor(0xFC, 0xE9, 0xD9), RGBColor(0xE2, 0xEF, 0xDA), RGBColor(0xDC, 0xE6, 0xF2)]
+    FRAMEC = RGBColor(0x7F, 0x7F, 0x7F)
+    FS, FQ, FT = 12, 13, 14
+    QH, GAPQ = 0.42, 0.24
+    nbox(s, X0, Y0, W, QH, "在拟南芥茎尖中，细胞对生长素信号的时间整合如何影响原基启动与叶序形成？", FT, True,
+         fill=RGBColor(0xDD, 0xF0, 0xEE), lw=1.0)
+    GAP = 0.32
+    FW = (W - 2 * GAP) / 3
+    FY = Y0 + QH + GAPQ
+    fx = [X0 + k * (FW + GAP) for k in range(3)]
+    BH, TG, LB, HH, PAD, TS = 0.46, 0.2, 0.3, 0.52, 0.1, 0.22
+    RB, NB, TB, RH = 0.34, 0.46, 0.62, 0.46
+    AH, ANS = 0.62, 0.2                                  # answer box height and gap above it
+    FH = Y1 - AH - ANS - FY
+    IN = FY + LB
+    top = IN + HH + TG
+    OY = FY + FH - 0.1 - RH                               # result row of stages 1 and 2
+    AG = (OY - TG - top - 4 * BH) / 3
+    nsplit(s, X0 + W / 2, Y0 + QH, [x + FW / 2 for x in fx], FY, 0.5)
+
+    def frame(k, label, problem):
+        x = fx[k]
+        nbox(s, x, FY, FW, FH, "", fill=TINTS[k], line=FRAMEC, lw=0.9, dash=True)
+        text(s, x, FY + 0.02, FW, LB - 0.04, [para(label, 13, True, RGBColor(0x40, 0x40, 0x40), HEAD, align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE)
+        nbox(s, x + PAD, IN, FW - 2 * PAD, HH, problem, FQ, True, lw=0.9)
+        hx, hw = x + PAD, FW - 2 * PAD
+        tw = (hw - TS) / 2
+        tx = [hx, hx + tw + TS]
+        return dict(cx=x + FW / 2, hx=hx, hw=hw, tw=tw, tx=tx, mids=[t + tw / 2 for t in tx])
+
+    # stage 1
+    f = frame(0, "第一阶段：成像定量", "茎尖生长素输入的时空分布\n与DR5响应时序")
+    b = nchain(s, f["tx"][0], top, f["tw"], ["以P0为参照\n按叶间期对齐", "生长素升高与\nDR5激活时间", "追踪细胞随茎尖\n生长的位置变化", "推算细胞经历的\n生长素变化"], BH, AG, FS)
+    CP, P1, P2, PG = 0.08, 0.5, 0.66, 0.14
+    ch = CP + P1 + PG + P2 + CP
+    cy = top + (b - top - ch) / 2
+    nsplit(s, f["cx"], IN + HH, f["mids"], [top, cy])
+    nbox(s, f["tx"][1], cy, f["tw"], ch, "", fill=RGBColor(0xF6, 0xD5, 0xBC), line=None)
+    nbox(s, f["tx"][1] + 0.07, cy + CP, f["tw"] - 0.14, P1, "PIN1成像：\n极性方向", FS)
+    nbox(s, f["tx"][1] + 0.07, cy + CP + P1 + PG, f["tw"] - 0.14, P2, "qDII成像：\n低生长素区及\n区域输入比值", FS)
+    nmerge(s, f["mids"], [b, cy + ch], f["cx"], OY)
+    nbox(s, f["hx"], OY, f["hw"], RH, "生长素轨迹、DR5时序\n与空间分布", FS, lw=0.9)
+
+    # stage 2
+    f = frame(1, "第二阶段：机制建模", "空间分布与响应延迟\n的形成机制")
+    nsplit(s, f["cx"], IN + HH, f["mids"], top)
+    bl = nchain(s, f["tx"][0], top, f["tw"], ["基于已有表皮层\n与内层运输模型", "比较模拟与实测\n空间分布", "优化运输模型", "再现生长素\n输入分布"], BH, AG, FS)
+    br = nchain(s, f["tx"][1], top, f["tw"], ["细胞生长素轨迹\n输入响应模型", "区分中央与\n周边的响应", "经报告信号换算\n对照DR5变化", "确定响应模型"], BH, AG, FS)
+    nseg(s, f["tx"][0] + f["tw"], bl - BH / 2, f["tx"][1], bl - BH / 2, True)
+    nmerge(s, f["mids"], [bl, br], f["cx"], OY)
+    nbox(s, f["hx"], OY, f["hw"], RH, "运输与响应模型\n及参数取值范围", FS, lw=0.9)
+
+    # stage 3
+    f = frame(2, "第三阶段：规则检验", "时间整合对原基启动\n与叶序的作用")
+    free = (FY + FH - 0.1) - top - (RB + NB + TB + RH + RH)
+    tg = free / 4
+    y = top
+    nsplit(s, f["cx"], IN + HH, f["mids"], y)
+    nbox(s, f["tx"][0], y, f["tw"], RB, "瞬时阈值规则", FS)
+    nbox(s, f["tx"][1], y, f["tw"], RB, "时间整合规则", FS)
+    nmerge(s, f["mids"], [y + RB, y + RB], f["cx"], y + RB + tg)
+    y += RB + tg
+    nbox(s, f["hx"], y, f["hw"], NB, "相同运输、生长与\n信号换算设定下比较", FS)
+    nsplit(s, f["cx"], y + NB, f["mids"], y + NB + tg)
+    y += NB + tg
+    nbox(s, f["tx"][0], y, f["tw"], TB, "留出茎尖信号：\nDR5延迟、\n平均发生间隔", FS)
+    nbox(s, f["tx"][1], y, f["tw"], TB, "成熟茎叶序：\n发散角变异、\n发生顺序", FS)
+    nmerge(s, f["mids"], [y + TB, y + TB], f["cx"], y + TB + tg)
+    y += TB + tg
+    nbox(s, f["hx"], y, f["hw"], RH, "两类规则的解释力\n及其预测出现差异的条件", FS, lw=0.9)
+    nseg(s, f["cx"], y + RH, f["cx"], y + RH + tg, True)
+    y += RH + tg
+    nbox(s, f["hx"], y, f["hw"], RH, "可检验预测：改变处理时长、\n抑制极性运输后的叶序", FS, dash=True)
+
+    # links between stages, through the gutters
+    for k in (0, 1):
+        x0, gx, x1 = fx[k] + FW - PAD, fx[k] + FW + GAP / 2, fx[k + 1] + PAD
+        y0, y1 = OY + RH / 2, IN + HH / 2
+        nseg(s, x0, y0, gx, y0, lw=1.5); nseg(s, gx, y0, gx, y1, lw=1.5); nseg(s, gx, y1, x1, y1, True, lw=1.5)
+
+    # answer
+    fb = FY + FH
+    nmerge(s, [x + FW / 2 for x in fx], [fb] * 3, X0 + W / 2, Y1 - AH, 0.5)
+    nbox(s, X0, Y1 - AH, W, AH, "构建“生长素输入 → 细胞响应 → 原基启动 → 叶序形成”的生长素–PIN1模型\n明确生长素信号的时间整合在何种条件下影响原基启动时序、叶序精度与稳健性",
+         FT, True, fill=RGBColor(0xF9, 0xDE, 0xDC), lw=1.0)
+
+
+def draw_question_chain(s, cx=3.05, y0=1.78, w=4.4):
+    """Auxin transport -> auxin input of a cell -> cell response (threshold or integration?) -> initiation -> phyllotaxis."""
+    ACC = RGBColor(0xC5, 0x5A, 0x11)
+    NODE = RGBColor(0xDC, 0xE6, 0xF2)
+    H, G, RHt = 0.62, 0.3, 1.62
+    x = cx - w / 2
+    y = y0
+    for i, (t, kind) in enumerate([("PIN1极性运输塑造生长素分布", "n"), ("细胞接收的生长素输入随时间变化", "n"), (None, "r"),
+                                   ("原基启动", "n"), ("叶序：发散角、发生间隔与发生顺序", "n")]):
+        if i > 0:
+            nseg(s, cx, y, cx, y + G, True, lw=1.25); y += G
+        if kind == "n":
+            nbox(s, x, y, w, H, t, 16, fill=NODE, line=None, adj=0.18)
+            y += H
+        else:
+            nbox(s, x, y, w, RHt, "", fill=RGBColor(0xFC, 0xE9, 0xD9), line=ACC, lw=1.75, adj=0.08)
+            text(s, x, y + 0.06, w, 0.4, [para("细胞如何读取生长素信号？", 16, True, ACC, HEAD, align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE)
+            bw = (w - 0.6) / 2
+            nbox(s, x + 0.2, y + 0.55, bw, 0.9, "瞬时阈值\n只看当前浓度", 15, fill=WHITE, line=ACC, lw=0.9, adj=0.12)
+            nbox(s, x + 0.4 + bw, y + 0.55, bw, 0.9, "时间整合\n累积浓度与时长", 15, fill=WHITE, line=ACC, lw=0.9, adj=0.12)
+            text(s, x + w + 0.08, y + 0.2, 0.7, 1.2, [para("?", 54, True, RGBColor(0xC0, 0x00, 0x00), ("Arial", "Arial"), align=PP_ALIGN.CENTER)], anchor=MSO_ANCHOR.MIDDLE)
+            y += RHt
+    return y
+
+
 # ---------------------------------------------------------------- cover
 CV = new_slide("DEFAULT")
 picture(CV, DBG / "cover_bg.jpg", 0, 0, w=13.333, h=7.5)
@@ -332,7 +508,7 @@ for i, (h, b) in enumerate(GAPS):
 notes(G1, "综合以上背景，现有研究有三点不足。上图是Galvan-Ampudia等对时间整合的概括：随着原基从P-2发育到P3，生长素水平先在起始位点逐步升高，转录响应则要滞后一段时间才出现。第一，生长素信号的时间整合虽有成像实验支持，现有叶序模型却尚未纳入这一过程：经典运输模型以某一时刻的浓度阈值触发原基，随机发生模型虽按局部抑制水平累积发生概率，却不包含生长素运输，时间整合因而没有与PIN1运输和原基启动联系起来。第二，成像显示茎尖中央的生长素输入较高、原基起始位点处的输入逐步升高、周边细胞的转录激活滞后近一个叶间期，现有运输规则与细胞响应过程结合后能否同时解释这些现象，尚未得到系统检验。第三，瞬时阈值与时间整合两类规则缺乏统一框架下的定量比较，二者可能给出相近的平均发散角，而在信号响应、发生间隔和发生顺序上不同，因此时间整合对叶序精度与稳健性的作用需要依据这些指标来判断。")
 
 G2 = new_slide("SG", "研究目的与意义")
-fig_at(G2, "model_scheme.png", 0.75, 1.72, h=4.55, cap="本研究的生长素–PIN1模型结构（开题报告图1-2 B）", cw=5.4)
+draw_question_chain(G2)
 AIM_TEXT = ("本研究拟在生长素–PIN1模型中，以反映时间整合的细胞响应衔接生长素输入、转录响应与原基启动，"
             "用茎尖定量成像确定模型参数，检验模型能否同时再现中央区的高输入、起始位点处输入的逐步升高"
             "以及延迟出现的转录激活；进而在同一模型中比较瞬时阈值与时间整合两类启动规则，分析时间整合"
@@ -340,14 +516,12 @@ AIM_TEXT = ("本研究拟在生长素–PIN1模型中，以反映时间整合的
             "叶序格局，其预测也可为后续实验的观测指标、成像时间和处理条件提供依据。")
 _box = text(G2, 6.45, 1.72, 6.3, 5.2, [para(AIM_TEXT, 19, line=1.55, align=PP_ALIGN.JUSTIFY)], anchor=MSO_ANCHOR.MIDDLE)
 _box.text_frame.paragraphs[0]._p.get_or_add_pPr().set("indent", str(int(Pt(38))))
-notes(G2, "针对上述不足，本研究旨在通过生长素–PIN1模型，分析生长素浓度与作用时长如何共同影响原基启动。左图是本研究的模型结构，生长素在表皮层经PIN1运输，细胞对生长素的时间整合M决定原基启动，原基又反过来作为汇和极化线索。研究目的有三点：第一，以反映时间整合的细胞响应把生长素输入、转录响应和原基启动衔接起来，从细胞读取生长素信号的方式出发，检验时间整合能否解释原基依次发生的节律。第二，分析原基对生长素的排出与供给以及茎尖中央与周边响应差异的作用，用茎尖定量成像确定模型参数及其合理取值范围，考察模型能否同时再现中央区的高输入、起始位点处输入的逐步升高以及延迟出现的转录激活，解释持续生长的茎尖中原基定位与启动时间如何协调。第三，在同一模型中比较瞬时阈值与时间整合两类启动规则，并分别改变茎尖大小与生长素信号，分析时间整合在什么条件下影响叶序的精度与稳健性；若两类规则给出相近的平均排列而变异不同，便可比较哪类规则更能解释实测的叶序变异。总之，本研究把生长素时空动态、细胞响应与器官排列放在同一模型中，从细胞读取生长素信号的方式解释组织尺度的叶序格局，模型参数由茎尖定量成像确定，模拟结果直接与观测比较，其预测也可用于确定后续实验的观测指标、成像时间和处理条件。")
+notes(G2, "针对上述不足，左图概括了本研究要回答的问题。PIN1极性运输塑造茎尖中的生长素分布，细胞接收到的生长素输入随时间变化；细胞如何读取这一信号，是只看当前浓度的瞬时阈值，还是累积浓度与作用时长的时间整合，决定了原基何时启动，进而决定发散角、发生间隔和发生顺序。本研究拟在生长素–PIN1模型中，以反映时间整合的细胞响应衔接生长素输入、转录响应和原基启动，用茎尖定量成像确定模型参数，检验模型能否同时再现中央区的高输入、起始位点处输入的逐步升高以及延迟出现的转录激活；进而在同一模型中比较瞬时阈值与时间整合两类启动规则，并分别改变茎尖大小与生长素信号，分析时间整合在什么条件下影响叶序的精度与稳健性。若两类规则给出相近的平均排列而变异不同，便可比较哪类规则更能解释实测的叶序变异。这一工作可以从细胞读取生长素信号的方式解释组织尺度的叶序格局，其预测也可为后续实验的观测指标、成像时间和处理条件提供依据。")
 
 
 # ---------------------------------------------------------------- 03 research contents and plan (simple: title + large figure)
 RD = new_slide("RS", "技术路线")
-pic = picture(RD, FIG / "fig2-1_roadmap.png", 0, 1.6, h=5.47)
-pic.left = int((prs.slide_width - pic.width) / 2)
-text(RD, 0.5, 7.09, 12.33, 0.3, [para("栏间箭头表示前一阶段的产出用于后一阶段；虚线框为可供实验检验的预测。", 12, color=GREY, align=PP_ALIGN.CENTER)])
+draw_roadmap(RD)
 notes(RD, "本研究的内容和方案用这张技术路线图概括。从顶部的科学问题出发，研究分三个阶段依次推进，栏间的箭头表示前一阶段的产出交给后一阶段。第一阶段是茎尖成像数据的定量分析，回答茎尖生长素输入的时空分布与DR5响应时序：以P0为参照按叶间期对齐原基阶段，确定DR5的激活时序，追踪细胞位置并推算细胞经历的生长素变化；同时提取PIN1极性，定量低生长素区和区域输入比值。第二阶段是生长素–PIN1模型的建立与检验，回答空间分布与响应延迟的形成机制：在已有的表皮层与内层模型上比较模拟与实测的空间分布、优化运输模型；建立区分中央与周边的响应模型，经报告信号换算对照DR5，确定响应模型。第三阶段是两类启动规则的比较与叶序预测：在相同的运输、生长和信号换算设定下比较瞬时阈值与时间整合，分别用留出的茎尖信号和成熟茎叶序检验，得到两类规则的解释力及其预测出现差异的条件，并预测改变生长素处理时长、抑制极性运输后的叶序。最终构建从生长素输入、细胞响应、原基启动到叶序形成的生长素–PIN1模型，明确时间整合在何种条件下影响原基启动时序、叶序精度与稳健性；模型的预测还可用于确定后续实验的观测指标、成像时间和处理条件。下面介绍前两项研究目前已经完成的工作。")
 
 C1 = new_slide("RS", "茎尖成像数据的处理与测量")
