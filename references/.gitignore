@@ -1,0 +1,6 @@
+# The repository is public: keep the papers themselves out of git.
+# Delete these lines only if the repository has been made private.
+*.pdf
+*.PDF
+*.zip
+supplementary/
