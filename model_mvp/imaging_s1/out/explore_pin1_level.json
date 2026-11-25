@@ -1,0 +1,58 @@
+[
+ {
+  "meristem": "E35 SAM4",
+  "cells": 685,
+  "sites": 16,
+  "corr_aux_wall": 0.19444658634402542,
+  "site_contrast_wall": 0.13738656066145355,
+  "site_p_wall": 0.045,
+  "corr_aux_cellpin": 0.2356784413605874,
+  "site_contrast_cellpin": 0.14405196428897368,
+  "site_p_cellpin": 0.02,
+  "corr_aux_conv": 0.3046672402757403,
+  "site_contrast_conv": 0.003025933930282395,
+  "site_p_conv": 0.03
+ },
+ {
+  "meristem": "E35 SAM6",
+  "cells": 470,
+  "sites": 15,
+  "corr_aux_wall": 0.5818062764488234,
+  "site_contrast_wall": 0.39695137591982116,
+  "site_p_wall": 0.03,
+  "corr_aux_cellpin": 0.5951106400768923,
+  "site_contrast_cellpin": 0.39493042923171406,
+  "site_p_cellpin": 0.01,
+  "corr_aux_conv": 0.15894178273461806,
+  "site_contrast_conv": 0.002143260410619777,
+  "site_p_conv": 0.205
+ },
+ {
+  "meristem": "E37 SAM5",
+  "cells": 642,
+  "sites": 5,
+  "corr_aux_wall": 0.4258797907845628,
+  "site_contrast_wall": 0.342554439649665,
+  "site_p_wall": 0.01,
+  "corr_aux_cellpin": 0.4446858035332808,
+  "site_contrast_cellpin": 0.3615488846335554,
+  "site_p_cellpin": 0.0,
+  "corr_aux_conv": 0.32589281265571773,
+  "site_contrast_conv": 0.009186602729494505,
+  "site_p_conv": 0.0
+ },
+ {
+  "meristem": "E37 SAM7",
+  "cells": 513,
+  "sites": 9,
+  "corr_aux_wall": 0.2615547012668638,
+  "site_contrast_wall": 0.1342373707819953,
+  "site_p_wall": 0.125,
+  "corr_aux_cellpin": 0.27146297235109645,
+  "site_contrast_cellpin": 0.1423513298990314,
+  "site_p_cellpin": 0.145,
+  "corr_aux_conv": 0.11146328536910788,
+  "site_contrast_conv": 0.0017778355397988221,
+  "site_p_conv": 0.23
+ }
+]

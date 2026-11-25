@@ -1,0 +1,4 @@
+E35 SAM4   cells  685 auxin sites 16  | corr with auxin (15-50 um, detrended): walls +0.19  cell table +0.24  convergence +0.30  | site contrast (P vs random angle): walls +0.137 (0.04)  cell table +0.144 (0.02)  convergence +0.0030 (0.03)
+E35 SAM6   cells  470 auxin sites 15  | corr with auxin (15-50 um, detrended): walls +0.58  cell table +0.60  convergence +0.16  | site contrast (P vs random angle): walls +0.397 (0.03)  cell table +0.395 (0.01)  convergence +0.0021 (0.20)
+E37 SAM5   cells  642 auxin sites 5  | corr with auxin (15-50 um, detrended): walls +0.43  cell table +0.44  convergence +0.33  | site contrast (P vs random angle): walls +0.343 (0.01)  cell table +0.362 (0.00)  convergence +0.0092 (0.00)
+E37 SAM7   cells  513 auxin sites 9  | corr with auxin (15-50 um, detrended): walls +0.26  cell table +0.27  convergence +0.11  | site contrast (P vs random angle): walls +0.134 (0.12)  cell table +0.142 (0.14)  convergence +0.0018 (0.23)
