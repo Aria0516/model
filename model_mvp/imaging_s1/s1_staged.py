@@ -1,7 +1,8 @@
 """First-stage protocol sections 3 and 5 with revision 3 (development group only; groups.json).
 
 python s1_staged.py sites      # section 3: credible sites, developmental time axis (geometry only)
-python s1_staged.py signals    # section 5: staged input / DR5 contrasts, t50 and DR5 delay
+python s1_staged.py signals    # section 5 as changed by revision 5: per-frame staging (Codex labels), t50 and DR5 delay,
+                               # GA2020 Fig 4G/H target, bridge to the published measure, sensitivity analyses
 
 Implementation details fixed before running (not stated in the protocol text):
 - cross-frame check between consecutive frames in which a site is present; for a 10 h gap the radius-ratio range is
@@ -181,6 +182,236 @@ def sites_cmd(source="auto"):
     return n_full
 
 
+# ---------------------------------------------------------------- section 5, revision 5
+OUT5 = HERE / "out" / "staged_signals"
+GA = HERE / "ga2020" / "fig4GH_digitized.csv"
+QMIN = 0.02
+_NUC = {}
+
+
+def nuclei(seq, fr):
+    if (seq, fr) not in _NUC:
+        n = pd.read_csv(frame_file(seq, fr, "aligned_L1_normalized_signal_data"),
+                        usecols=["aligned_x", "aligned_y", "radial_distance", "clv3_radius", "qDII", "Normalized_DR5", "DR5", "TagBFP", "layer"])
+        _NUC[(seq, fr)] = n[n.layer == 1].reset_index(drop=True)
+    return _NUC[(seq, fr)]
+
+
+def kernel_value(n, x, y, col, sigma=3.9):
+    """Stand-in for the authors' local 2-D signal at an extremum (tissue_nukem_3d is not installed here).
+    A Gaussian of sigma 3.9 um reproduces the authors' extrema table on the development group best among the kernels tried
+    (tanh disc 7.5 um / k 0.55: median |diff| 0.002 Auxin; Gaussian 3.9 um: 0.0005 Auxin, 0.0025 x 10^4 DR5); the residual is
+    reported in the log. Used only for the bridge with Codex labels."""
+    d = np.hypot(n.aligned_x.values - x, n.aligned_y.values - y)
+    w = np.exp(-d ** 2 / (2 * sigma ** 2))
+    return float((w * n[col].values).sum() / w.sum())
+
+
+def measures(sub):
+    q = sub.qDII.values
+    ok = q >= QMIN
+    return dict(n=len(q), n_excl=int((~ok).sum()), saturated=bool((~ok).sum() > len(q) / 2),
+                lnq=float(np.median(-np.log(q[ok]))) if ok.any() else np.nan,
+                aux=float(np.median(1 - q)), ndr5=float(np.median(sub.Normalized_DR5)),
+                lr=float(np.median(np.log(sub.DR5.values / sub.TagBFP.values))), dr5raw=float(np.median(sub.DR5)) / 1e4)
+
+
+def site_values(sites, radius):
+    rows = []
+    for (seq, fr), g in sites.groupby(["seq", "frame"]):
+        n = nuclei(seq, fr)
+        X = n[["aligned_x", "aligned_y"]].values
+        D = np.hypot(X[:, None, 0] - g.x.values[None], X[:, None, 1] - g.y.values[None])
+        rc = float(n.clv3_radius.iloc[0])
+        ref = measures(n[(n.radial_distance >= rc) & (n.radial_distance <= 55) & (D.min(1) > 9)])
+        for j, (_, s) in enumerate(g.iterrows()):
+            near = n[D[:, j] <= radius]
+            r = dict(s)
+            if len(near) < 4:
+                r.update(n=len(near))
+                rows.append(r); continue
+            m = measures(near)
+            if m["saturated"]:
+                m["lnq"] = np.nan
+            r.update(m)
+            for key in ("lnq", "aux", "ndr5", "lr"):
+                r[f"c_{key}"] = m[key] - ref[key]
+            r["ext_aux"] = 1 - kernel_value(n, s.x, s.y, "qDII")
+            r["ext_dr5"] = kernel_value(n, s.x, s.y, "DR5") / 1e4
+            rows.append(r)
+    return pd.DataFrame(rows)
+
+
+def cells(df, col, T=12.0, mins=5, minm=3):
+    d = df.dropna(subset=[col])
+    c = d.groupby(["k", "h"]).agg(med=(col, "median"), n=(col, "size"), nm=("seq", "nunique")).reset_index()
+    c = c[(c.n >= mins) & (c.nm >= minm)].copy()
+    c["tau"] = T * c.k + c.h
+    return c.sort_values("tau").reset_index(drop=True)
+
+
+def t50(c):
+    """Baseline = median of cells with tau < -18 h; plateau = max cell; first upward crossing of the midpoint."""
+    if c is None or len(c) < 2:
+        return dict(t50=np.nan, why="too few cells")
+    base = c[c.tau < -18].med
+    if not len(base):
+        return dict(t50=np.nan, why="no baseline cell")
+    b, p = float(base.median()), float(c.med.max())
+    mid = (b + p) / 2
+    t, v = c.tau.values, c.med.values
+    for i in range(len(v) - 1):
+        if v[i] < mid <= v[i + 1]:
+            return dict(t50=float(t[i] + (mid - v[i]) / (v[i + 1] - v[i]) * (t[i + 1] - t[i])), base=b, plateau=p, mid=mid,
+                        peak_tau=float(t[np.argmax(v)]), why="ok")
+    return dict(t50=np.nan, base=b, plateau=p, why="no crossing")
+
+
+def delay(df, cin, cout, T=12.0):
+    a, b = t50(cells(df, cin, T)), t50(cells(df, cout, T))
+    return b["t50"] - a["t50"], a, b
+
+
+def boot_delay(df, cin, cout, T=12.0, nboot=1000, seed=20261128):
+    rng = np.random.default_rng(seed)
+    seqs = df.seq.unique()
+    groups = {q: g for q, g in df.groupby("seq")}
+    vals = []
+    for i in range(nboot):
+        pick = rng.choice(seqs, len(seqs), replace=True)
+        bd = pd.concat([groups[q].assign(seq=f"{q}#{j}") for j, q in enumerate(pick)])
+        vals.append(delay(bd, cin, cout, T)[0])
+    v = np.array(vals)
+    good = v[np.isfinite(v)]
+    return dict(median=float(np.median(good)) if len(good) else np.nan,
+                lo=float(np.percentile(good, 2.5)) if len(good) else np.nan,
+                hi=float(np.percentile(good, 97.5)) if len(good) else np.nan,
+                fail=float(1 - len(good) / nboot))
+
+
+def published():
+    d = pd.read_csv(GA)
+    out = {}
+    for scale in ("auxin", "lnq"):
+        a = d[d.panel == "G"].rename(columns={"stage": "k", "hour": "h"}).copy()
+        if scale == "lnq":
+            a["median"] = -np.log(1 - a["median"])
+        ca = a.assign(med=a["median"], tau=12 * a.k + a.h).sort_values("tau").reset_index(drop=True)
+        b = d[d.panel == "H"].rename(columns={"stage": "k", "hour": "h"})
+        cb = b.assign(med=b["median"], tau=12 * b.k + b.h).sort_values("tau").reset_index(drop=True)
+        ta, tb = t50(ca), t50(cb)
+        out[scale] = dict(t50_in=ta, t50_dr5=tb, delay=tb["t50"] - ta["t50"])
+    return out
+
+
+def signals_cmd():
+    OUT5.mkdir(parents=True, exist_ok=True)
+    lines = []
+    S = pd.concat([load_sites_codex(q) for q in G["development"]], ignore_index=True)
+    cred = pd.read_csv(HERE / "out" / "staged_codex" / "sites.csv")[["seq", "frame", "k", "credible"]]
+    S = S.merge(cred, on=["seq", "frame", "k"], how="left")
+    V7, V10 = site_values(S, 7.0), site_values(S, 10.0)
+    V7.to_csv(OUT5 / "site_values_r7.csv", index=False)
+    V10.to_csv(OUT5 / "site_values_r10.csv", index=False)
+    lines.append(f"development group: {S.seq.nunique()} meristems, {len(S)} labelled site-frames (Codex, all confidence levels)")
+    few = V7[V7.n < 4]
+    lines.append(f"sites with < 4 nuclei within 7 um: {len(few)} (by P: {few.k.value_counts().sort_index().to_dict()}; median r {few.r.median():.1f} um, "
+                 f"outside the L1 nuclei crop); saturated (-ln qDII not used): {int(V7.saturated.fillna(False).sum())}")
+
+    # bridge 0: our kernel reimplementation vs the authors' extrema table at the same points
+    chk = []
+    for seq in G["development"]:
+        for fr, h in FR.items():
+            pe = pd.read_csv(frame_file(seq, fr, "aligned_primordia_extrema"))
+            pe = pe[pe.extremum_type == "minimum"]
+            n = nuclei(seq, fr)
+            for _, e in pe.iterrows():
+                chk.append(dict(seq=seq, frame=fr, h=h, k=int(e.primordium), Auxin=e.Auxin, DR5=e.DR5 / 1e4,
+                                my_aux=1 - kernel_value(n, e.aligned_x, e.aligned_y, "qDII"),
+                                my_dr5=kernel_value(n, e.aligned_x, e.aligned_y, "DR5") / 1e4))
+    A = pd.DataFrame(chk)
+    A.to_csv(OUT5 / "authors_extrema_dev.csv", index=False)
+    lines.append(f"kernel stand-in vs authors' extrema table ({len(A)} points): |diff| median / max  Auxin "
+                 f"{np.abs(A.Auxin - A.my_aux).median():.4f} / {np.abs(A.Auxin - A.my_aux).max():.4f}, "
+                 f"DR5 {np.abs(A.DR5 - A.my_dr5).median():.4f} / {np.abs(A.DR5 - A.my_dr5).max():.4f} (10^4)")
+
+    # target: published curves
+    P = published()
+    res = dict(published=P)
+    for sc in ("auxin", "lnq"):
+        p = P[sc]
+        lines.append(f"PUBLISHED (GA2020 Fig 4G/H, N=21, {sc} scale): t50 input {p['t50_in']['t50']:+.1f} h, "
+                     f"t50 DR5 {p['t50_dr5']['t50']:+.1f} h, delay {p['delay']:+.1f} h; DR5 peak at tau {p['t50_dr5']['peak_tau']:+.0f} h")
+
+    # bridge 1 and 2: published measure on the development group
+    ga = pd.read_csv(GA)
+    gm = {(r.panel, r.stage, r.hour): r["median"] for _, r in ga.iterrows()}
+    bridge = {}
+    for name, D, ca, cd in (("authors' labels", A, "Auxin", "DR5"), ("Codex labels", V7, "ext_aux", "ext_dr5")):
+        Ca, Cd = cells(D, ca, mins=1, minm=1), cells(D, cd, mins=1, minm=1)
+        ma = np.mean([abs(r.med - gm[("G", r.k, r.h)]) for _, r in Ca.iterrows() if ("G", r.k, r.h) in gm])
+        md = np.mean([abs(r.med - gm[("H", r.k, r.h)]) for _, r in Cd.iterrows() if ("H", r.k, r.h) in gm])
+        dl, ta, tb = delay(D, ca, cd)
+        bridge[name] = dict(mad_auxin=float(ma), mad_dr5=float(md), delay=float(dl), t50_in=ta, t50_dr5=tb,
+                            cells_auxin=Ca[["k", "h", "med", "n", "nm"]].to_dict("records"), cells_dr5=Cd[["k", "h", "med", "n", "nm"]].to_dict("records"))
+        rat = [r.med / gm[("H", r.k, r.h)] for _, r in Cd.iterrows() if ("H", r.k, r.h) in gm]
+        bridge[name]["dr5_ratio_median"] = float(np.median(rat))
+        lines.append(f"BRIDGE {name}: dev / published DR5 median ratio over cells {np.median(rat):.2f} (range {min(rat):.2f}-{max(rat):.2f})")
+        lines.append(f"BRIDGE {name}: mean |dev median - published median| over P-3..P1 cells: Auxin {ma:.3f}, DR5 {md:.3f} (10^4); "
+                     f"delay {dl:+.1f} h (t50 input {ta['t50']:+.1f}, DR5 {tb['t50']:+.1f})")
+    res["bridge"] = bridge
+
+    # main exploratory analysis and sensitivity analyses
+    nolow = V7[V7.confidence != "low"]
+    analyses = [
+        ("main: -ln qDII, Normalized DR5, contrast, r 7 um, T 12 h", V7, "c_lnq", "c_ndr5", 12.0),
+        ("T = 11.9 h", V7, "c_lnq", "c_ndr5", 11.9),
+        ("T = 9.2 h", V7, "c_lnq", "c_ndr5", 9.2),
+        ("T = 16.4 h", V7, "c_lnq", "c_ndr5", 16.4),
+        ("without low-confidence labels", nolow, "c_lnq", "c_ndr5", 12.0),
+        ("radius 10 um", V10, "c_lnq", "c_ndr5", 12.0),
+        ("input 1 - qDII", V7, "c_aux", "c_ndr5", 12.0),
+        ("output ln(DR5/TagBFP)", V7, "c_lnq", "c_lr", 12.0),
+        ("no reference subtraction", V7, "lnq", "ndr5", 12.0),
+        ("without DR5-TEST", V7[~V7.seq.str.contains("DR5-TEST")], "c_lnq", "c_ndr5", 12.0),
+        ("cross-frame credible sites only", V7[V7.credible.fillna(False).astype(bool)], "c_lnq", "c_ndr5", 12.0),
+    ]
+    res["analyses"] = []
+    for name, D, ci, co, T in analyses:
+        dl, ta, tb = delay(D, ci, co, T)
+        bt = boot_delay(D, ci, co, T)
+        res["analyses"].append(dict(name=name, n_meristems=int(D.seq.nunique()), n_sites=int(D[[ci, co]].dropna().shape[0]),
+                                    delay=float(dl), t50_in=ta, t50_dr5=tb, boot=bt, T=T, cin=ci, cout=co))
+        lines.append(f"{name:55s} t50 input {ta['t50']:+6.1f} h  DR5 {tb['t50']:+6.1f} h  delay {dl:+6.1f} h  "
+                     f"95% [{bt['lo']:+.1f}, {bt['hi']:+.1f}]  boot failures {bt['fail']:.1%}  (DR5 peak tau {tb.get('peak_tau', np.nan):+.0f} h)")
+    main = cells(V7, "c_lnq"), cells(V7, "c_ndr5")
+    main[0].to_csv(OUT5 / "cells_main_input.csv", index=False)
+    main[1].to_csv(OUT5 / "cells_main_dr5.csv", index=False)
+
+    # same organ 0 h -> 10 h
+    pair = V7.pivot_table(index=["seq", "k"], columns="h", values=["c_lnq", "c_ndr5"])
+    pr = []
+    for k in sorted(V7.k.unique()):
+        for col, cc in (("c_lnq", main[0]), ("c_ndr5", main[1])):
+            try:
+                dd = (pair[(col, 10)] - pair[(col, 0)]).xs(k, level="k").dropna()
+            except KeyError:
+                continue
+            c0, c1 = cc[(cc.k == k) & (cc.h == 0)].med, cc[(cc.k == k) & (cc.h == 10)].med
+            pr.append(dict(k=int(k), measure=col, n_pairs=len(dd), paired_median=float(dd.median()) if len(dd) else np.nan,
+                           cell_diff=float(c1.iloc[0] - c0.iloc[0]) if len(c0) and len(c1) else np.nan))
+    res["same_organ_0_10h"] = pr
+    lines.append("same organ 10 h - 0 h (paired median | cell difference):")
+    for r in pr:
+        lines.append(f"   P{r['k']:+d} {r['measure']:7s} n {r['n_pairs']:2d}  {r['paired_median']:+.3f} | {r['cell_diff']:+.3f}")
+    lines.append("STOP RULE (section 10) was triggered in section 3; everything above except the published target is exploratory.")
+    json.dump(res, open(OUT5 / "summary.json", "w"), indent=1, default=float)
+    (OUT5 / "signals_log.txt").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "sites":
         sites_cmd(sys.argv[2] if len(sys.argv) > 2 else "auto")
+    elif sys.argv[1] == "signals":
+        signals_cmd()
