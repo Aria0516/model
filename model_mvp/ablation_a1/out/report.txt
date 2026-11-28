@@ -1,0 +1,45 @@
+A1 paired ablation: 120 complete parameter sets (480 runs)
+
+== all: 120 parameter sets
+Co-initiation                sets used 120  off-on mean +0.0189 [+0.0041, +0.0343]  margin +-0.05  -> negligible
+Interval CV                  sets used 120  off-on mean -0.0163 [-0.0435, +0.0102]  margin +-0.05  -> negligible
+P1-P5 spread (°)             sets used 120  off-on mean +3.3221 [+1.3024, +5.3755]  margin +-2  -> insufficient evidence
+Mean divergence (°)          sets used 120  off-on mean -1.7477 [-8.3813, +4.7788]  margin +-2  -> insufficient evidence
+Pattern type changed         sets 120  fraction 0.683 [0.600, 0.767]  margin 0-0.05 -> substantial
+  reference: seed 1 vs 2 (on) pattern differs in 0.542 of sets (not part of the decision)
+  reference: |seed1 - seed2| (on) Co-initiation            median 0.0336  (n=120)
+  reference: |seed1 - seed2| (on) Interval CV              median 0.0817  (n=120)
+  reference: |seed1 - seed2| (on) P1-P5 spread (°)         median 3.8213  (n=120)
+  reference: |seed1 - seed2| (on) Mean divergence (°)      median 10.2986  (n=120)
+
+== R0 holds (transport-limited): 70 parameter sets
+Co-initiation                sets used  70  off-on mean +0.0297 [+0.0074, +0.0530]  margin +-0.05  -> insufficient evidence
+Interval CV                  sets used  70  off-on mean +0.0134 [-0.0232, +0.0485]  margin +-0.05  -> negligible
+P1-P5 spread (°)             sets used  70  off-on mean +5.1241 [+1.8681, +8.2753]  margin +-2  -> insufficient evidence
+Mean divergence (°)          sets used  70  off-on mean -4.5552 [-11.8256, +2.6442]  margin +-2  -> insufficient evidence
+Pattern type changed         sets  70  fraction 0.800 [0.700, 0.886]  margin 0-0.05 -> substantial
+  reference: seed 1 vs 2 (on) pattern differs in 0.586 of sets (not part of the decision)
+  reference: |seed1 - seed2| (on) Co-initiation            median 0.0474  (n=70)
+  reference: |seed1 - seed2| (on) Interval CV              median 0.0859  (n=70)
+  reference: |seed1 - seed2| (on) P1-P5 spread (°)         median 5.4118  (n=70)
+  reference: |seed1 - seed2| (on) Mean divergence (°)      median 4.7749  (n=70)
+
+== R0 fails: 50 parameter sets
+Co-initiation                sets used  50  off-on mean +0.0038 [-0.0117, +0.0170]  margin +-0.05  -> negligible
+Interval CV                  sets used  50  off-on mean -0.0579 [-0.0964, -0.0259]  margin +-0.05  -> insufficient evidence
+P1-P5 spread (°)             sets used  50  off-on mean +0.7992 [-0.2821, +1.9044]  margin +-2  -> negligible
+Mean divergence (°)          sets used  50  off-on mean +2.1829 [-10.7192, +15.4699]  margin +-2  -> insufficient evidence
+Pattern type changed         sets  50  fraction 0.520 [0.380, 0.660]  margin 0-0.05 -> substantial
+  reference: seed 1 vs 2 (on) pattern differs in 0.480 of sets (not part of the decision)
+  reference: |seed1 - seed2| (on) Co-initiation            median 0.0192  (n=50)
+  reference: |seed1 - seed2| (on) Interval CV              median 0.0693  (n=50)
+  reference: |seed1 - seed2| (on) P1-P5 spread (°)         median 2.6662  (n=50)
+  reference: |seed1 - seed2| (on) Mean divergence (°)      median 26.9623  (n=50)
+
+run class (rows: field on, columns: field off; normal = not stalled and >= 12 events in 1250-1700):
+                      normal  insufficient       stalled
+normal                   240             0             0
+insufficient               0             0             0
+stalled                    0             0             0
+
+conclusion (all sets): not all indicators negligible: coinit_org=negligible, gap_cv=negligible, spread=insufficient evidence, alpha=insufficient evidence, type_change=substantial

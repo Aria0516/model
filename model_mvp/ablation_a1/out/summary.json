@@ -1,0 +1,148 @@
+{
+ "summary": {
+  "all": {
+   "coinit_org": {
+    "n_sets": 120,
+    "mean": 0.0189047530281688,
+    "lo": 0.004111116875333872,
+    "hi": 0.034305561957434914,
+    "margin": 0.05,
+    "decision": "negligible"
+   },
+   "gap_cv": {
+    "n_sets": 120,
+    "mean": -0.016309311295341602,
+    "lo": -0.043468516881877146,
+    "hi": 0.010162240545104652,
+    "margin": 0.05,
+    "decision": "negligible"
+   },
+   "spread": {
+    "n_sets": 120,
+    "mean": 3.322079612323944,
+    "lo": 1.3024170940651065,
+    "hi": 5.375470298008751,
+    "margin": 2.0,
+    "decision": "insufficient evidence"
+   },
+   "alpha": {
+    "n_sets": 120,
+    "mean": -1.7476953766933694,
+    "lo": -8.381330485381765,
+    "hi": 4.7787797838206165,
+    "margin": 2.0,
+    "decision": "insufficient evidence"
+   },
+   "type_change": {
+    "n_sets": 120,
+    "mean": 0.6833333333333333,
+    "lo": 0.6,
+    "hi": 0.7666666666666667,
+    "decision": "substantial",
+    "seed_baseline": 0.5416666666666666
+   }
+  },
+  "R0 holds (transport-limited)": {
+   "coinit_org": {
+    "n_sets": 70,
+    "mean": 0.029705810181218116,
+    "lo": 0.007377652593412187,
+    "hi": 0.05297344981673512,
+    "margin": 0.05,
+    "decision": "insufficient evidence"
+   },
+   "gap_cv": {
+    "n_sets": 70,
+    "mean": 0.013399153469604878,
+    "lo": -0.023161689904939872,
+    "hi": 0.048492221604584794,
+    "margin": 0.05,
+    "decision": "negligible"
+   },
+   "spread": {
+    "n_sets": 70,
+    "mean": 5.124103739611215,
+    "lo": 1.8681337610804074,
+    "hi": 8.275274181649023,
+    "margin": 2.0,
+    "decision": "insufficient evidence"
+   },
+   "alpha": {
+    "n_sets": 70,
+    "mean": -4.555230191189244,
+    "lo": -11.825578070588582,
+    "hi": 2.6442091403617884,
+    "margin": 2.0,
+    "decision": "insufficient evidence"
+   },
+   "type_change": {
+    "n_sets": 70,
+    "mean": 0.8,
+    "lo": 0.7,
+    "hi": 0.8857142857142857,
+    "decision": "substantial",
+    "seed_baseline": 0.5857142857142857
+   }
+  },
+  "R0 fails": {
+   "coinit_org": {
+    "n_sets": 50,
+    "mean": 0.0037832730138997604,
+    "lo": -0.011650433406018608,
+    "hi": 0.016960083968463494,
+    "margin": 0.05,
+    "decision": "negligible"
+   },
+   "gap_cv": {
+    "n_sets": 50,
+    "mean": -0.057901161966266684,
+    "lo": -0.0963692770719259,
+    "hi": -0.02591156419275278,
+    "margin": 0.05,
+    "decision": "insufficient evidence"
+   },
+   "spread": {
+    "n_sets": 50,
+    "mean": 0.7992458341217641,
+    "lo": -0.28208809193820034,
+    "hi": 1.9043674526353525,
+    "margin": 2.0,
+    "decision": "negligible"
+   },
+   "alpha": {
+    "n_sets": 50,
+    "mean": 2.182853363600854,
+    "lo": -10.71919770118035,
+    "hi": 15.469898598090095,
+    "margin": 2.0,
+    "decision": "insufficient evidence"
+   },
+   "type_change": {
+    "n_sets": 50,
+    "mean": 0.52,
+    "lo": 0.38,
+    "hi": 0.66,
+    "decision": "substantial",
+    "seed_baseline": 0.48
+   }
+  }
+ },
+ "run_class": [
+  [
+   240,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "n_sets": 120
+}
