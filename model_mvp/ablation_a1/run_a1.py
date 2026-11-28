@@ -3,7 +3,9 @@
 python run_a1.py [n_proc]     # writes out/events_<cond>_<i>_<seed>.json, skipping files that exist
 """
 import json
+import os
 import sys
+import time
 from multiprocessing import Pool
 from pathlib import Path
 
@@ -18,11 +20,16 @@ SAMPLES = json.load(open(V3 / "out" / "samples.json"))
 CAL = {int(k): v for k, v in json.load(open(V3 / "out" / "calib.json")).items()}
 
 
+DEADLINE = float(os.environ.get("A1_DEADLINE", "inf"))     # unix time; jobs not started by then are skipped
+
+
 def job(arg):
     cond, i, seed = arg
     f = OUT / f"events_{cond}_{i:03d}_{seed}.json"
     if f.exists():
         return str(f.name)
+    if time.time() > DEADLINE:
+        return "skipped (deadline)"
     s = dict(SAMPLES[i])
     if cond == "off":
         s["k_rel"] = 0.0
