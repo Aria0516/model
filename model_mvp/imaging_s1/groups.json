@@ -1,0 +1,20 @@
+{
+  "note": "Fixed 2026-11-28 (implementation plan v3, step 1). Whole meristems: all frames, cells and walls of a meristem belong to its group. Scripts read data only through this file.",
+  "trial": ["qDII-DR5-CLV3-LD_E27_170817_sam07"],
+  "development": [
+    "qDII-DR5-CLV3-LD_DR5-TEST_170226_sam04", "qDII-DR5-CLV3-LD_DR5-TEST_170226_sam06", "qDII-DR5-CLV3-LD_DR5-TEST_170226_sam08",
+    "qDII-DR5-CLV3-LD_E25_170811_sam01", "qDII-DR5-CLV3-LD_E25_170811_sam03", "qDII-DR5-CLV3-LD_E25_170811_sam04",
+    "qDII-DR5-CLV3-LD_E25_170811_sam05", "qDII-DR5-CLV3-LD_E25_170811_sam07", "qDII-DR5-CLV3-LD_E25_170811_sam09",
+    "qDII-DR5-CLV3-LD_E27_170817_sam01", "qDII-DR5-CLV3-LD_E27_170817_sam03", "qDII-DR5-CLV3-LD_E27_170817_sam04",
+    "qDII-DR5-CLV3-LD_E27_170817_sam09", "qDII-DR5-CLV3-LD_E27_170817_sam11"
+  ],
+  "held_out": [
+    "qDII-DR5-CLV3-LD_E31_171102_sam01", "qDII-DR5-CLV3-LD_E31_171102_sam11",
+    "qDII-DR5-CLV3-LD_E33_171106_sam01", "qDII-DR5-CLV3-LD_E33_171106_sam02", "qDII-DR5-CLV3-LD_E33_171106_sam03",
+    "qDII-DR5-CLV3-LD_E33_171106_sam04", "qDII-DR5-CLV3-LD_E33_171106_sam07"
+  ],
+  "pin1": [
+    "qDII-CLV3-PIN1-PI-LD_E35_171110_sam04", "qDII-CLV3-PIN1-PI-LD_E35_171110_sam06",
+    "qDII-CLV3-PIN1-PI-LD_E37_171113_sam05", "qDII-CLV3-PIN1-PI-LD_E37_171113_sam07"
+  ]
+}
