@@ -1,0 +1,8 @@
+1-PI-LD_E35_171110_sam04_t00 own CLV3 radius  18.1 um | wall ratio CZ/PZ own 0.657 (walls 204/372), fixed 27.3 um 0.593 | cell-table ratio own 0.664, fixed 0.603
+1-PI-LD_E35_171110_sam06_t00 own CLV3 radius   9.1 um | wall ratio CZ/PZ own 0.898 (walls 56/113), fixed 27.3 um 1.404 | cell-table ratio own 0.596, fixed 1.629
+1-PI-LD_E37_171113_sam05_t00 own CLV3 radius  15.9 um | wall ratio CZ/PZ own 0.583 (walls 204/328), fixed 27.3 um 0.492 | cell-table ratio own 0.566, fixed 0.527
+1-PI-LD_E37_171113_sam07_t00 own CLV3 radius  15.4 um | wall ratio CZ/PZ own 0.542 (walls 180/389), fixed 27.3 um 0.654 | cell-table ratio own 0.596, fixed 0.404
+wall_ratio_own     median 0.620  range 0.542-0.898
+wall_ratio_fixed   median 0.623  range 0.492-1.404
+cell_ratio_own     median 0.596  range 0.566-0.664
+cell_ratio_fixed   median 0.565  range 0.404-1.629
