@@ -1,0 +1,20 @@
+development group: 14 meristems; time axis fitted for 6
+_DR5-TEST_170226_sam04 handedness  3.23  credible sites 3  fit sites 2  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+_DR5-TEST_170226_sam06 handedness  1.05  credible sites 3  fit sites 2  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+_DR5-TEST_170226_sam08 handedness  0.03  credible sites 2  fit sites 1  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+V3-LD_E25_170811_sam01 handedness  1.82  credible sites 5  fit sites 1  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+V3-LD_E25_170811_sam03 handedness  2.67  credible sites 4  fit sites 3  ok  a 3.516  G_s 0.306  v_s 0.0222/h  T_hat 13.8 h  phase +0.04  edge-of-window 0.27
+V3-LD_E25_170811_sam04 handedness  1.24  credible sites 4  fit sites 3  ok  a 3.479  G_s 0.263  v_s 0.0153/h  T_hat 17.2 h  phase -0.09  edge-of-window 0.17
+V3-LD_E25_170811_sam05 handedness  1.69  credible sites 5  fit sites 3  ok  a 3.489  G_s 0.224  v_s 0.0223/h  T_hat 10.1 h  phase -0.06  edge-of-window 0.13
+V3-LD_E25_170811_sam07 handedness  7.31  credible sites 5  fit sites 3  ok  a 3.358  G_s 0.267  v_s 0.0151/h  T_hat 17.7 h  phase -0.54  edge-of-window 0.07
+V3-LD_E25_170811_sam09 handedness 14.90  credible sites 3  fit sites 1  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+V3-LD_E27_170817_sam01 handedness  9.11  credible sites 4  fit sites 3  ok  a 3.696  G_s 0.111  v_s 0.0150/h  T_hat 7.4 h  phase +1.74  edge-of-window 0.27
+V3-LD_E27_170817_sam03 handedness  8.08  credible sites 3  fit sites 2  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+V3-LD_E27_170817_sam04 handedness  3.09  credible sites 1  fit sites 1  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+V3-LD_E27_170817_sam09 handedness  1.95  credible sites 3  fit sites 2  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+V3-LD_E27_170817_sam11 handedness  8.99  credible sites 4  fit sites 3  ok  a 3.705  G_s 0.096  v_s 0.0109/h  T_hat 8.9 h  phase +2.10  edge-of-window 0.33
+T_hat over fitted meristems: median 11.9 h, quartiles 9.2-16.4 h
+sites in fitted meristems: 45 labelled, 26 credible
+reasons for non-credible sites (fitted meristems): {"one frame only": 7, "jump t05->t10": 5, "jump t00->t05": 2, "order violated at t10 (P4 r 68.5 >= P5 r 68.0)": 2, "order violated at t00 (P-2 r 22.6 >= P-1 r 18.6)": 2, "jump t00->t10": 1}
+STOP RULE: meristems with credible P0-P2 in all three frames (and included): 3/14 (need >= 8)
+agreement with automatic labels (meristem x frame x P): same point 101, different point 154, Codex only 16, automatic only 77

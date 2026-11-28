@@ -51,6 +51,34 @@ def load_sites(seq):
     return pd.DataFrame(rows)
 
 
+LABEL_KEY = HERE / "labels" / "out" / "label_key.json"
+CODEX = HERE / "labels" / "codex_returned"
+
+
+def load_sites_codex(seq):
+    """Revision 4: positions of the maxima Codex labelled (minima of qDII, ids from all_extrema)."""
+    key = {v: k for k, v in json.load(open(LABEL_KEY))["key"].items()}
+    code = key[seq]
+    lab = pd.read_csv(CODEX / "labels.csv")
+    lab = lab[lab.code == code]
+    rows = []
+    for fr, h in FR.items():
+        ex = pd.read_csv(frame_file(seq, fr, "all_extrema"))
+        ex = ex[ex.extremum_type == "minimum"].set_index("label")
+        rc = float(pd.read_csv(frame_file(seq, fr, "aligned_L1_normalized_signal_data"), usecols=["clv3_radius"]).clv3_radius.iloc[0])
+        for _, q in lab[lab.hour == h].iterrows():
+            e = ex.loc[int(q.max_id)]
+            rows.append(dict(seq=seq, frame=fr, h=h, k=int(q.P), r=float(e.radial_distance), theta=float(e.aligned_theta),
+                             x=float(e.aligned_x), y=float(e.aligned_y), rc=rc, confidence=q.confidence))
+    return pd.DataFrame(rows)
+
+
+def codex_direction(seq):
+    key = {v: k for k, v in json.load(open(LABEL_KEY))["key"].items()}
+    h = pd.read_csv(CODEX / "handedness.csv").set_index("code")
+    return h.loc[key[seq], "direction"]
+
+
 def credible(sites):
     out, reason = {}, {}
     for k, g in sites.groupby("k"):
@@ -84,12 +112,15 @@ def window_edge_fraction(s):
     return float(((abs(x - rmin) / rmin <= 0.1) | (abs(x - rmax) / rmax <= 0.1)).mean())
 
 
-def sites_cmd():
+def sites_cmd(source="auto"):
+    global OUT
+    if source == "codex":
+        OUT = HERE / "out" / "staged_codex"
     OUT.mkdir(parents=True, exist_ok=True)
     allrows, fits, lines = [], [], []
     for seq in G["development"]:
         marg = handedness_margin(seq)
-        s = load_sites(seq)
+        s = load_sites(seq) if source == "auto" else load_sites_codex(seq)
         cred, why = credible(s)
         s["credible"] = s.k.map(cred).fillna(False)
         s["reason"] = s.k.map(why)
@@ -99,8 +130,10 @@ def sites_cmd():
         fitset = c[(c.k >= 0) & (c.k <= 4)]
         nsite = fitset.groupby("k").size()
         fit = dict(seq=seq, margin=marg, n_credible=int(c.k.nunique()), n_fit_sites=int((nsite >= 2).sum()))
-        if marg < 2:
+        if source == "auto" and marg < 2:
             fit["status"] = "excluded: handedness margin < 2"
+        elif source == "codex" and codex_direction(seq) == "unclear":
+            fit["status"] = "excluded: Codex direction unclear"
         elif (nsite >= 2).sum() < 3:
             fit["status"] = "excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames"
         else:
@@ -130,9 +163,24 @@ def sites_cmd():
     lines.append(f"sites in fitted meristems: {used.groupby(['seq', 'k']).ngroups} labelled, {used[used.credible].groupby(['seq', 'k']).ngroups} credible")
     lines.append("reasons for non-credible sites (fitted meristems): " + json.dumps(
         used[~used.credible].drop_duplicates(["seq", "k"]).reason.str.split(":").str[0].value_counts().to_dict()))
+    cred = S[S.credible]
+    full = cred.groupby(["seq", "k"]).frame.nunique()
+    n_full = sum({0, 1, 2} <= {k for (q, k), n in full.items() if q == seq and n == 3} and
+                 F.set_index("seq").status[seq] == "ok" for seq in G["development"])
+    lines.append(f"STOP RULE: meristems with credible P0-P2 in all three frames (and included): {n_full}/14 (need >= 8)")
+    if source == "codex":
+        auto = pd.concat([load_sites(q) for q in G["development"]])
+        m = S.merge(auto[["seq", "frame", "k", "r", "theta"]], on=["seq", "frame", "k"], how="outer", suffixes=("_c", "_a"), indicator=True)
+        both = m[m._merge == "both"]
+        same = ((both.r_c - both.r_a).abs() < 0.5) & ((both.theta_c - both.theta_a + 180) % 360 - 180 < 0.5)
+        lines.append(f"agreement with automatic labels (meristem x frame x P): same point {int(same.sum())}, "
+                     f"different point {int((~same).sum())}, Codex only {int((m._merge == 'left_only').sum())}, "
+                     f"automatic only {int((m._merge == 'right_only').sum())}")
     (OUT / "sites_log.txt").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
+    return n_full
 
 
 if __name__ == "__main__":
-    {"sites": sites_cmd}[sys.argv[1]]()
+    if sys.argv[1] == "sites":
+        sites_cmd(sys.argv[2] if len(sys.argv) > 2 else "auto")
