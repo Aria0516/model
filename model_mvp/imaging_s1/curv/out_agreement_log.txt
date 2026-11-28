@@ -1,0 +1,21 @@
+all sites (before region): 93 | in region 22-48 um: 60
+
+cross table in region (rows: automatic, columns: Codex):
+codex       visible_0h  event_0_5  event_5_10  unclear  absent
+auto                                                          
+visible_0h          18          1           0        3       2
+event_0_5            1          1           0        0       1
+event_5_10           3          2           1        0       9
+unclear              1          0           0        0       4
+absent               4          3           2        4       0
+
+judgeable: automatic 18, Codex 10, both 4
+Cohen kappa (judgeable vs not) = 0.09  [95% bootstrap over meristems -0.06, 0.26]  (standard >= 0.6)
+interval agreement among both-judgeable: 2/4 = 0.50  (standard >= 0.80)
+
+automatic only               meristems with >=1 event 10/14 (>= 8) | events 18 (>= 20) | largest share 0.17 (<= 0.25)
+Codex only                   meristems with >=1 event 7/14 (>= 8) | events 10 (>= 20) | largest share 0.20 (<= 0.25)
+both judgeable (consensus)   meristems with >=1 event 4/14 (>= 8) | events 4 (>= 20) | largest share 0.25 (<= 0.25)
+
+Codex: first_visible in region: {'visible_0h': 27, 'absent': 16, 'event_0_5': 7, 'unclear': 7, 'event_5_10': 3}
+automatic: categories in region: {'visible_0h': 24, 'event_5_10': 15, 'absent': 13, 'unclear': 5, 'event_0_5': 3}

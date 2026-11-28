@@ -1,0 +1,10 @@
+== sensitivity: match radius 7 um
+judgeable: automatic 18, Codex 10, both 3
+Cohen kappa (judgeable vs not) = 0.02  [95% bootstrap over meristems -0.17, 0.26]  (standard >= 0.6)
+interval agreement among both-judgeable: 2/3 = 0.67  (standard >= 0.80)
+both judgeable (consensus)   meristems with >=1 event 3/14 (>= 8) | events 3 (>= 20) | largest share 0.33 (<= 0.25)
+== sensitivity: match radius 15 um
+judgeable: automatic 18, Codex 10, both 4
+Cohen kappa (judgeable vs not) = 0.09  [95% bootstrap over meristems -0.06, 0.26]  (standard >= 0.6)
+interval agreement among both-judgeable: 2/4 = 0.50  (standard >= 0.80)
+both judgeable (consensus)   meristems with >=1 event 4/14 (>= 8) | events 4 (>= 20) | largest share 0.25 (<= 0.25)
