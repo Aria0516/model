@@ -1,0 +1,18 @@
+development group: 14 meristems; time axis fitted for 4
+_DR5-TEST_170226_sam04 handedness  3.23  credible sites 4  fit sites 4  ok  a 3.241  G_s 0.291  v_s 0.0160/h  T_hat 18.2 h  phase -0.50  edge-of-window 0.33
+_DR5-TEST_170226_sam06 handedness  1.05  credible sites 0  fit sites 0  excluded: handedness margin < 2
+_DR5-TEST_170226_sam08 handedness  0.03  credible sites 0  fit sites 0  excluded: handedness margin < 2
+V3-LD_E25_170811_sam01 handedness  1.82  credible sites 1  fit sites 1  excluded: handedness margin < 2
+V3-LD_E25_170811_sam03 handedness  2.67  credible sites 1  fit sites 1  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+V3-LD_E25_170811_sam04 handedness  1.24  credible sites 5  fit sites 4  excluded: handedness margin < 2
+V3-LD_E25_170811_sam05 handedness  1.69  credible sites 1  fit sites 1  excluded: handedness margin < 2
+V3-LD_E25_170811_sam07 handedness  7.31  credible sites 6  fit sites 3  ok  a 3.358  G_s 0.267  v_s 0.0151/h  T_hat 17.7 h  phase -0.11  edge-of-window 0.06
+V3-LD_E25_170811_sam09 handedness 14.90  credible sites 4  fit sites 3  ok  a 3.759  G_s 0.106  v_s 0.0073/h  T_hat 14.4 h  phase +3.51  edge-of-window 0.75
+V3-LD_E27_170817_sam01 handedness  9.11  credible sites 1  fit sites 1  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+V3-LD_E27_170817_sam03 handedness  8.08  credible sites 4  fit sites 3  ok  a 3.414  G_s 0.263  v_s 0.0242/h  T_hat 10.8 h  phase +0.11  edge-of-window 0.27
+V3-LD_E27_170817_sam04 handedness  3.09  credible sites 1  fit sites 0  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+V3-LD_E27_170817_sam09 handedness  1.95  credible sites 2  fit sites 2  excluded: handedness margin < 2
+V3-LD_E27_170817_sam11 handedness  8.99  credible sites 0  fit sites 0  excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames
+T_hat over fitted meristems: median 16.1 h, quartiles 13.5-17.8 h
+sites in fitted meristems: 36 labelled, 18 credible
+reasons for non-credible sites (fitted meristems): {"jump t05->t10": 5, "one frame only": 4, "jump t00->t05": 4, "order violated at t00 (P4 r 70.6 >= P5 r 59.4)": 2, "order violated at t05 (P4 r 64.9 >= P5 r 64.5)": 2, "jump t00->t10": 1}

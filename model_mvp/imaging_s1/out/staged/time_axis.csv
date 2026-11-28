@@ -1,0 +1,15 @@
+seq,margin,n_credible,n_fit_sites,status,a,G,v,T_hat,edge_frac,delta
+qDII-DR5-CLV3-LD_DR5-TEST_170226_sam04,3.23,4,4,ok,3.2411633046230452,0.2906684972793453,0.015971064475859838,18.199694686518164,0.3333333333333333,-0.4983772816809834
+qDII-DR5-CLV3-LD_DR5-TEST_170226_sam06,1.05,0,0,excluded: handedness margin < 2,,,,,,
+qDII-DR5-CLV3-LD_DR5-TEST_170226_sam08,0.03,0,0,excluded: handedness margin < 2,,,,,,
+qDII-DR5-CLV3-LD_E25_170811_sam01,1.82,1,1,excluded: handedness margin < 2,,,,,,
+qDII-DR5-CLV3-LD_E25_170811_sam03,2.67,1,1,excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames,,,,,,
+qDII-DR5-CLV3-LD_E25_170811_sam04,1.24,5,4,excluded: handedness margin < 2,,,,,,
+qDII-DR5-CLV3-LD_E25_170811_sam05,1.69,1,1,excluded: handedness margin < 2,,,,,,
+qDII-DR5-CLV3-LD_E25_170811_sam07,7.31,6,3,ok,3.3579141206920955,0.26688503148347753,0.015066508292986414,17.713794483338567,0.0625,-0.10533284433026188
+qDII-DR5-CLV3-LD_E25_170811_sam09,14.9,4,3,ok,3.7589226069903554,0.10613519977812572,0.00734506413903484,14.449866981293937,0.75,3.5134123985489225
+qDII-DR5-CLV3-LD_E27_170817_sam01,9.11,1,1,excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames,,,,,,
+qDII-DR5-CLV3-LD_E27_170817_sam03,8.08,4,3,ok,3.4141376396427474,0.26295349288406544,0.02424391623541241,10.846164057437909,0.2727272727272727,0.10690772412641059
+qDII-DR5-CLV3-LD_E27_170817_sam04,3.09,1,0,excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames,,,,,,
+qDII-DR5-CLV3-LD_E27_170817_sam09,1.95,2,2,excluded: handedness margin < 2,,,,,,
+qDII-DR5-CLV3-LD_E27_170817_sam11,8.99,0,0,excluded: fewer than 3 credible sites (k = 0..4) with >= 2 frames,,,,,,
