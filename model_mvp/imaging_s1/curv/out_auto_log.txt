@@ -1,0 +1,18 @@
+_DR5-TEST_170226_sam04 bulges per frame t00:0 t05:0 t10:2 | sites 2 events 2
+_DR5-TEST_170226_sam06 bulges per frame t00:0 t05:1 t10:2 | sites 3 events 2
+_DR5-TEST_170226_sam08 bulges per frame t00:2 t05:2 t10:2 | sites 3 events 1
+V3-LD_E25_170811_sam01 bulges per frame t00:1 t05:1 t10:3 | sites 4 events 3
+V3-LD_E25_170811_sam03 bulges per frame t00:3 t05:1 t10:2 | sites 4 events 1
+V3-LD_E25_170811_sam04 bulges per frame t00:2 t05:1 t10:1 | sites 3 events 1
+V3-LD_E25_170811_sam05 bulges per frame t00:2 t05:4 t10:3 | sites 5 events 2
+V3-LD_E25_170811_sam07 bulges per frame t00:3 t05:3 t10:3 | sites 5 events 2
+V3-LD_E25_170811_sam09 bulges per frame t00:3 t05:3 t10:1 | sites 5 events 0
+V3-LD_E27_170817_sam01 bulges per frame t00:2 t05:2 t10:2 | sites 2 events 0
+V3-LD_E27_170817_sam03 bulges per frame t00:2 t05:3 t10:1 | sites 3 events 0
+V3-LD_E27_170817_sam04 bulges per frame t00:2 t05:3 t10:3 | sites 3 events 1
+V3-LD_E27_170817_sam09 bulges per frame t00:2 t05:1 t10:2 | sites 3 events 1
+V3-LD_E27_170817_sam11 bulges per frame t00:2 t05:2 t10:3 | sites 5 events 3
+
+labels: {'visible_at_0h': 26, 'event': 19, 'unclear_disappears': 5}
+automatic side only: meristems with >=1 event 11/14 (standard >= 8); events 19 (standard >= 20); largest share 0.16 (standard <= 0.25)
+intervals: {'(5,10]': 16, '(0,5]': 3}

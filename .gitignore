@@ -40,3 +40,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Unzipped copy of the blind package (the zip is tracked)
+/model_mvp/imaging_s1/curv/package/
