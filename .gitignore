@@ -43,3 +43,4 @@ desktop.ini
 
 # Unzipped copy of the blind package (the zip is tracked)
 /model_mvp/imaging_s1/curv/package/
+/model_mvp/imaging_s1/labels/package/
