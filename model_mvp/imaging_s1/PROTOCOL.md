@@ -276,3 +276,5 @@ PIN1 图用全部 4 个茎尖。留出组在第三阶段之前不出现在任何
 4. 报告 Codex 编号与作者自动编号的一致比例（按茎尖 × 帧 × 编号）。
 
 **开发组的盲性：** Codex 会看到开发组的生长素输入，开发组本就用于开发，不影响留出组。用户仍未看过任何信号图。
+
+交出的材料：`labels/label_package.zip`，SHA-256 `68c4ac8cae2cac02bd6c5f438dc66837c4ecc1ab3cea5dea12ac757f2ca59f79`；代号对应表 `labels/out/label_key.json` 不随材料导出。
